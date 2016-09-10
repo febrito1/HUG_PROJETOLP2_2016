@@ -1,4 +1,4 @@
-package prato;
+package restaurante;
 
 import excecoes.*;
 
