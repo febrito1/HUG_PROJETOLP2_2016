@@ -13,9 +13,6 @@ import quarto.QuartoPresidencial;
 import quarto.QuartoSimples;
 
 public class HospedeTest {
-	// private String nomeHospede;
-	// private String emailHospede;
-	// private int anoNascimento;
 
 	@Before
 	public void setUp() throws Exception {
