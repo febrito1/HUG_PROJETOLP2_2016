@@ -16,8 +16,8 @@ public class Excecoes {
 	}
 	
 	public static void inteiroException(int numInteiro) throws Exception {
-		if(numInteiro < 0){
-			throw new Exception("Numero nao pode ser negativo.");
+		if(numInteiro <= 0){
+			throw new Exception("Numero nao pode ser negativo ou zero.");
 		}
 	}
 

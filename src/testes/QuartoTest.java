@@ -13,7 +13,6 @@ import quarto.QuartoPresidencial;
 import quarto.QuartoSimples;
 
 public class QuartoTest {
-	private Quarto quarto;
 
 	@Before
 	public void setUp() throws Exception {
