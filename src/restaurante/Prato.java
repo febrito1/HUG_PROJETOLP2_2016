@@ -1,11 +1,14 @@
 package restaurante;
 
 import excecoes.*;
+import java.util.Set;
+import java.util.HashSet;
 
 public class Prato {
 
 	private String nomePrato, descricaoPrato;
 	private double precoPrato;
+	private HashSet<Prato> pratos;
 	
 	public Prato(String nomePrato, double precoPrato, String descricaoPrato) throws Exception {
 		Excecoes.StringException(nomePrato);
@@ -17,8 +20,7 @@ public class Prato {
 		this.descricaoPrato = descricaoPrato;
 		
 	}
-
-
+	
 	public String getNomePrato() {
 		return nomePrato;
 	}
@@ -75,6 +77,14 @@ public class Prato {
 				&& outro.getDescricaoPrato().equalsIgnoreCase(descricaoPrato)){
 			return true;
 		}return false;
+	}
+
+	public HashSet<Prato> getPratos() {
+		return pratos;
+	}
+
+	public void setPratos(HashSet<Prato> pratos) {
+		this.pratos = pratos;
 	}
 	
 }

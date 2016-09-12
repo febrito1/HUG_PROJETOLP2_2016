@@ -1,6 +1,4 @@
 package restaurante;
-
-
 import java.util.HashSet;
 import excecoes.*;
 
@@ -20,6 +18,16 @@ public class RefeicaoCompleta {
 		this.listaPrato = listaPrato;
 		
 	}
+	
+	public double calculaConta(){
+		double desconto = 0.1;
+		double contaAPagar = 0;
+		
+		for (Prato prato : listaPrato) {
+			contaAPagar += prato.getPrecoPrato();
+		}
+		return contaAPagar = contaAPagar * desconto;
+	}
 
 	public String getNomeRefeicao() {
 		return nomeRefeicao;
@@ -28,7 +36,6 @@ public class RefeicaoCompleta {
 	public String getDescricaoRefeicao() {
 		return descricaoRefeicao;
 	}
-
 	public HashSet<Prato> getListaPrato() {
 		return listaPrato;
 	}
