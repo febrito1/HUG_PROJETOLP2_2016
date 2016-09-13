@@ -12,8 +12,6 @@ public class Hospede {
 	
 	public Hospede(String nomeHospede, String emailHospede, int anoNascimento) throws Exception {
 		
-		// colocar excecoes nos sets
-		
 		Excecoes.StringException(nomeHospede);
 		Excecoes.StringException(emailHospede);
 		Excecoes.inteiroException(anoNascimento);
