@@ -1,5 +1,6 @@
 package excecoes;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import restaurante.Prato;
 
@@ -28,7 +29,7 @@ public class Excecoes {
 		}
 	}
 	
-	public static void verificaTamanhoSet(HashSet<Prato> listaPrato) throws Exception {
+	public static void verificaTamanhoArray(ArrayList<Prato> listaPrato) throws Exception {
 		if(listaPrato.size() < 3){
 			throw new Exception("A lista de pratos nao pode ser menor que 3");
 		}

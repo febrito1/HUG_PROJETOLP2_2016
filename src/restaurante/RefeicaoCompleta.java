@@ -1,17 +1,19 @@
 package restaurante;
-import java.util.HashSet;
-import excecoes.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import excecoes.Excecoes;
 
 public class RefeicaoCompleta {
 	
 	private String nomeRefeicao, descricaoRefeicao;
-	private HashSet<Prato> listaPrato;
+	private List<Prato> listaPrato;
 	
-	public RefeicaoCompleta(String nomeRefeicao, String descricaoRefeicao, HashSet<Prato> listaPrato) throws Exception {
+	public RefeicaoCompleta(String nomeRefeicao, String descricaoRefeicao, ArrayList<Prato> listaPrato) throws Exception {
 		
 		Excecoes.StringException(nomeRefeicao);
 		Excecoes.StringException(descricaoRefeicao);
-		Excecoes.verificaTamanhoSet(listaPrato);
+		Excecoes.verificaTamanhoArray(listaPrato);
 		
 		this.nomeRefeicao = nomeRefeicao;
 		this.descricaoRefeicao = descricaoRefeicao;
@@ -36,7 +38,7 @@ public class RefeicaoCompleta {
 	public String getDescricaoRefeicao() {
 		return descricaoRefeicao;
 	}
-	public HashSet<Prato> getListaPrato() {
+	public List<Prato> getListaPrato() {
 		return listaPrato;
 	}
 
@@ -50,11 +52,24 @@ public class RefeicaoCompleta {
 		this.descricaoRefeicao = descricaoRefeicao;
 	}
 
-	public void setListaPrato(HashSet<Prato> listaPrato) throws Exception {
-		Excecoes.verificaTamanhoSet(listaPrato);
+	public void setListaPrato(ArrayList<Prato> listaPrato) throws Exception {
+		Excecoes.verificaTamanhoArray(listaPrato);
 		this.listaPrato = listaPrato;
 	}
-
+	public void adicionaPrato(Prato prato){
+		if(!(listaPrato.contains(prato))){
+			listaPrato.add(prato);
+		}
+	}
+	
+	public void defineOrdemPrato(){
+		for (int i = 1; i < listaPrato.size(); i++) {
+			Prato entrada = listaPrato.get(1);
+			Prato pratoPrincipal = listaPrato.get(2);
+			Prato sobremesa = listaPrato.get(3);
+			Prato petitFour = listaPrato.get(4);
+		}
+	}
 	@Override
 	public String toString() {
 		
