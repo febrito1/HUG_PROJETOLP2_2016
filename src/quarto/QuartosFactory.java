@@ -2,6 +2,8 @@ package quarto;
 
 public class QuartosFactory {
 
+	public QuartosFactory(){}
+	
 	public Quarto criaQuarto(String id, String tipoQuarto) throws Exception {
 		if(tipoQuarto.equalsIgnoreCase("luxo")){
 			return criaQuartoLuxo(id);
@@ -15,6 +17,7 @@ public class QuartosFactory {
 		
 		return null;
 	}
+	
 	
 	
 	private Quarto criaQuartoLuxo(String id) throws Exception{
