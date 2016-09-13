@@ -27,24 +27,6 @@ public class PratosFactory {
 		return null;
 	}
 	
-	private Prato criaPratoEntrada(String nomePrato, double precoPrato, String descricaoPrato) throws Exception{
-		Prato entrada = new Entrada(nomePrato, precoPrato, descricaoPrato);
-		return entrada;
-	}
 	
-	private Prato criaPratoPrincipal(String nomePrato, double precoPrato, String descricaoPrato) throws Exception{
-		Prato PratoPrincipal = new PratoPrincipal(nomePrato, precoPrato, descricaoPrato);
-		return PratoPrincipal;
-	}
-	
-	private Prato criaPratoSobremesa(String nomePrato, double precoPrato, String descricaoPrato) throws Exception{
-		Prato sobremesa = new Sobremesa(nomePrato, precoPrato, descricaoPrato);
-		return sobremesa;
-	}
-	
-	private Prato criaPratoPetit(String nomePrato, double precoPrato, String descricaoPrato) throws Exception{
-		Prato petit = new PetitFour(nomePrato, precoPrato, descricaoPrato);
-		return petit;
-	}
 
 }

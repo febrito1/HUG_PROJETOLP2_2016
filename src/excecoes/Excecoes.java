@@ -1,6 +1,8 @@
 package excecoes;
 
 import java.util.HashSet;
+
+import hotel.Hospede;
 import restaurante.Prato;
 
 public class Excecoes {
@@ -42,7 +44,13 @@ public class Excecoes {
 		if(prato == null){
 			throw new Exception("Prato não pode ser nulo.");
 		}
+	
 		
+	}
+	public static void verificaCadastro(Hospede hospede) throws Exception{
+		if(hospede == null){
+			throw new Exception("Hospede não pode ser nulo.");
+		}
 	}
 	
 }
