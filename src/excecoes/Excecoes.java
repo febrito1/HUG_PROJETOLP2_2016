@@ -37,5 +37,12 @@ public class Excecoes {
 		}
 	}
 	
+	public static void verificaPrato(Prato prato) throws Exception{
+		
+		if(prato == null){
+			throw new Exception("Prato não pode ser nulo.");
+		}
+		
+	}
 	
 }
