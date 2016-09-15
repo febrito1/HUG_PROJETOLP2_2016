@@ -1,8 +1,9 @@
 	package quarto;
 
 import excecoes.*;
+import hotel.Estadia;
 
-public abstract class Quarto {
+public abstract class Quarto extends Estadia {
 	
 	private String ID;
 	

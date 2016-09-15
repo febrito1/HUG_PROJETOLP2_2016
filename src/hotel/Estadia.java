@@ -1,5 +1,6 @@
 package hotel;
 
+<<<<<<< HEAD
 import excecoes.Excecoes;
 import quarto.Quarto;
 import quarto.QuartosFactory;
@@ -22,6 +23,37 @@ public class Estadia {
 		Excecoes.StringException(nomeHospede);
 		Excecoes.inteiroException(qtdDias);
 		Excecoes.inteiroException(anoNascimento);
+=======
+import quarto.Quarto;
+
+public class Estadia {
+	private int quantidadeDias;
+	private double total = 0;
+	private Quarto quarto;
+
+	public Estadia() {
+	}
+
+	public double calculaGastoTotal() {
+		return total += quantidadeDias * quarto.getValorDiaria();
+	}
+
+	public int getQuantidadeDias() {
+		return quantidadeDias;
+	}
+
+	public void setQuantidadeDias(int quantidadeDias) {
+		this.quantidadeDias = quantidadeDias;
+	}
+
+	public double getTotal() {
+		return total;
+	}
+
+	public void setTotal(double total) {
+		this.total = total;
+	}
+>>>>>>> af06d4a59bb3a76755f82ab332ce7478aabbfd2d
 
 		
 		this.nomeHospede = nomeHospede;

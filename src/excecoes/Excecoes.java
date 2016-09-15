@@ -1,6 +1,9 @@
 package excecoes;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+
+import hotel.Hospede;
 import restaurante.Prato;
 
 public class Excecoes {
@@ -16,8 +19,8 @@ public class Excecoes {
 	}
 	
 	public static void inteiroException(int numInteiro) throws Exception {
-		if(numInteiro < 0){
-			throw new Exception("Numero nao pode ser negativo.");
+		if(numInteiro <= 0){
+			throw new Exception("Numero nao pode ser negativo ou zero.");
 		}
 	}
 
@@ -28,7 +31,7 @@ public class Excecoes {
 		}
 	}
 	
-	public static void verificaTamanhoSet(HashSet<Prato> listaPrato) throws Exception {
+	public static void verificaTamanhoArray(ArrayList<Prato> listaPrato) throws Exception {
 		if(listaPrato.size() < 3){
 			throw new Exception("A lista de pratos nao pode ser menor que 3");
 		}
@@ -37,5 +40,18 @@ public class Excecoes {
 		}
 	}
 	
+	public static void verificaPrato(Prato prato) throws Exception{
+		
+		if(prato == null){
+			throw new Exception("Prato não pode ser nulo.");
+		}
+	
+		
+	}
+	public static void verificaCadastro(Hospede hospede) throws Exception{
+		if(hospede == null){
+			throw new Exception("Hospede não pode ser nulo.");
+		}
+	}
 	
 }
