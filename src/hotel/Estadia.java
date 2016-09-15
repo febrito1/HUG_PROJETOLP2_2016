@@ -1,39 +1,22 @@
-package hotel;
-
-<<<<<<< HEAD
-import excecoes.Excecoes;
-import quarto.Quarto;
-import quarto.QuartosFactory;
-import java.util.HashSet;
-
-
 public class Estadia {
 	
-	private QuartosFactory novoQuarto;
-	private Hospede novoHospede;
-	private HashSet<Quarto> quartosHospede;
-	private String nomeHospede, emailHospede, idQuarto;
-	private QuartosFactory quartos;
-	private int qtdDias, anoNascimento;
-	
-	/*public Estadia(String nomeHospede, String emailHospede, String idQuarto,int qtdDias, int anoNascimento, HashSet<Quarto> quartosHospedes) throws Exception{
-		
-		Excecoes.StringException(idQuarto);
-		Excecoes.StringException(emailHospede);
-		Excecoes.StringException(nomeHospede);
-		Excecoes.inteiroException(qtdDias);
-		Excecoes.inteiroException(anoNascimento);
-=======
-import quarto.Quarto;
-
-public class Estadia {
 	private int quantidadeDias;
 	private double total = 0;
 	private Quarto quarto;
-
-	public Estadia() {
+	private Hospede hospede; 
+	
+	private ArrayList<Restaurante> gastosRestaurante;
+	
+	public Estadia(Hospede hospede, Quarto quarto, int qtdDias, String email){
+		if(hospede.getEmailHospede().equalsIgnoreCase(email)){
+			this.hospede = hospede;
+			this.quarto = quarto;
+			this.quantidadeDias = qtdDias;
+			gastosRestaurante = new ArrayList<Restaurante>();
+		}
+		
 	}
-
+	
 	public double calculaGastoTotal() {
 		return total += quantidadeDias * quarto.getValorDiaria();
 	}
@@ -53,33 +36,28 @@ public class Estadia {
 	public void setTotal(double total) {
 		this.total = total;
 	}
->>>>>>> af06d4a59bb3a76755f82ab332ce7478aabbfd2d
 
-		
-		this.nomeHospede = nomeHospede;
-		this.emailHospede = emailHospede;
-		this.anoNascimento = anoNascimento;
-		this.novoHospede = new Hospede(nomeHospede, emailHospede, anoNascimento);
-		this.idQuarto = idQuarto;
-		this.qtdDias = qtdDias;
-		
-		
-		
-	} */
-	
-	public Estadia (String idQuarto, int qtdDias) throws Exception{
-		
-		Excecoes.StringException(idQuarto);
-		Excecoes.inteiroException(qtdDias);
-		
-		
+
+	public Quarto getQuarto() {
+		return quarto;
+	}
+
+
+	public void setQuarto(Quarto quarto) {
+		this.quarto = quarto;
 	}
 	
-	public boolean cadastraHospedeQuarto(String id, String tipoQuarto){
-		novoQuarto.criaQuarto(id, tipoQuarto);
-		
-		
-		
+
+	public Hospede getHospede() {
+		return hospede;
 	}
+
+
+	public void setHospede(Hospede hospede) {
+		this.hospede = hospede;
+	}
+	
+}
+
 	
 }
