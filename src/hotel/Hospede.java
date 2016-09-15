@@ -2,8 +2,8 @@ package hotel;
 
 import excecoes.*;
 
+
 public class Hospede {
-	
 	
 	private String nomeHospede;
 	private String emailHospede;
@@ -21,7 +21,9 @@ public class Hospede {
 		this.nomeHospede = nomeHospede;
 		this.emailHospede = emailHospede;
 		this.anoNascimento = anoNascimento;
+		
 	}
+
 
 	
 
