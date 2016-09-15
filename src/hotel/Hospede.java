@@ -2,26 +2,24 @@ package hotel;
 
 import excecoes.*;
 
-
 public class Hospede {
+	
 	
 	private String nomeHospede;
 	private String emailHospede;
-	private int anoNascimento;
+	private String anoNascimento;
 	
 	
-	public Hospede(String nomeHospede, String emailHospede, int anoNascimento) throws Exception {
+	public Hospede(String nomeHospede, String emailHospede, String anoNascimento) throws Exception {
 		
 		Excecoes.StringException(nomeHospede);
 		Excecoes.StringException(emailHospede);
-		Excecoes.inteiroException(anoNascimento);
+		//Excecoes.inteiroException(anoNascimento);
 		
 		this.nomeHospede = nomeHospede;
 		this.emailHospede = emailHospede;
 		this.anoNascimento = anoNascimento;
-		
 	}
-
 
 	
 
@@ -35,7 +33,7 @@ public class Hospede {
 	}
 
 
-	public int getAnoNascimento() {
+	public String getAnoNascimento() {
 		return anoNascimento;
 	}
 
@@ -52,9 +50,9 @@ public class Hospede {
 	}
 
 
-	public void setAnoNascimento(int anoNascimento) throws Exception {
-		Excecoes.inteiroException(anoNascimento);
-		this.anoNascimento = anoNascimento;
+	public void setAnoNascimento(String anoNascimento2) throws Exception {
+		//Excecoes.inteiroException(anoNascimento2);
+		this.anoNascimento = anoNascimento2;
 	}
 	
 	
