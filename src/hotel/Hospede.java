@@ -9,15 +9,15 @@ public class Hospede {
 	
 	private String nomeHospede;
 	private String emailHospede;
-	private int anoNascimento;
+	private String anoNascimento;
 	private HashSet<Estadia> estadias;
 	
 	
-	public Hospede(String nomeHospede, String emailHospede, int anoNascimento) throws Exception {
+	public Hospede(String nomeHospede, String emailHospede, String anoNascimento) throws Exception {
 		
 		Excecoes.StringException(nomeHospede);
 		Excecoes.StringException(emailHospede);
-		Excecoes.inteiroException(anoNascimento);
+		
 		
 		this.nomeHospede = nomeHospede;
 		this.emailHospede = emailHospede;
@@ -40,7 +40,7 @@ public class Hospede {
 	}
 
 
-	public int getAnoNascimento() {
+	public String getAnoNascimento() {
 		return anoNascimento;
 	}
 
@@ -57,8 +57,8 @@ public class Hospede {
 	}
 
 
-	public void setAnoNascimento(int anoNascimento) throws Exception {
-		Excecoes.inteiroException(anoNascimento);
+	public void setAnoNascimento(String anoNascimento) throws Exception {
+		Excecoes.StringException(anoNascimento);
 		this.anoNascimento = anoNascimento;
 	}
 	
