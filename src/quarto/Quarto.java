@@ -1,29 +1,28 @@
 package quarto;
 
-import excecoes.*;
-import hotel.Estadia;
 
-public abstract class Quarto{
+
+public class Quarto{
 	
-	private String ID;
-	/* CORRIGIR*/
-	public Quarto(String ID) throws Exception {
+	private double valorQuarto;
+	
+
+	public Quarto() throws Exception {
 		
-		Excecoes.StringException(ID);
-		this.ID = ID;
 	}
 	
-	
-	public String getID() {
-		return ID;
+	public void getTipo(String tipoQuarto){
+		switch(tipoQuarto.toLowerCase()){
+		case("luxo"):
+			valorQuarto = TiposQuartos.Luxo.getValorQuarto();
+		case("Simples"):
+			valorQuarto = TiposQuartos.Simples.getValorQuarto();
+		case("Presidencial"):
+			valorQuarto = TiposQuartos.Presencial.getValorQuarto();
+		}
 	}
 
-
-	public void setID(String ID) throws Exception {
-		Excecoes.StringException(ID);
-		this.ID = ID;
+	public double getValorQuarto() {
+		return valorQuarto;
 	}
-
-	public abstract double getValorDiaria();
-
 }
