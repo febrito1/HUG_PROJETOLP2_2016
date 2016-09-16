@@ -3,7 +3,7 @@ package quarto;
 import excecoes.*;
 import hotel.Estadia;
 
-public abstract class Quarto extends Estadia {
+public abstract class Quarto{
 	
 	private String ID;
 	/* CORRIGIR*/

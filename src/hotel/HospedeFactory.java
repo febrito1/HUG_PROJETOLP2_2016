@@ -14,7 +14,7 @@ public HospedeFactory(String nomeHospede, String emailHospede, int anoNascimento
 		this.anoNascimento = anoNascimento;
 	}
 
-	public Hospede criaHospede(String nomeHospede, String emailHospede, String anoNascimento) throws Exception{
+	public Hospede criaHospede(String nomeHospede, String emailHospede, int anoNascimento) throws Exception{
 		return new Hospede(nomeHospede, emailHospede, anoNascimento);
 	}
 }

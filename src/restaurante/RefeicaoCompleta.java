@@ -1,14 +1,11 @@
 package restaurante;
-<<<<<<< HEAD
 
 import java.util.HashSet;
 import excecoes.*;
-=======
 import java.util.ArrayList;
 import java.util.List;
 
 import excecoes.Excecoes;
->>>>>>> af06d4a59bb3a76755f82ab332ce7478aabbfd2d
 
 public class RefeicaoCompleta {
 	
