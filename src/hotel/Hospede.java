@@ -1,25 +1,32 @@
 package hotel;
 
+import java.util.HashSet;
+
 import excecoes.*;
+
 
 public class Hospede {
 	
-	
 	private String nomeHospede;
 	private String emailHospede;
-	private String anoNascimento;
+	private int anoNascimento;
+	private HashSet<Estadia> estadias;
 	
 	
-	public Hospede(String nomeHospede, String emailHospede, String anoNascimento) throws Exception {
+	public Hospede(String nomeHospede, String emailHospede, int anoNascimento) throws Exception {
 		
 		Excecoes.StringException(nomeHospede);
 		Excecoes.StringException(emailHospede);
-		//Excecoes.inteiroException(anoNascimento);
+		Excecoes.inteiroException(anoNascimento);
 		
 		this.nomeHospede = nomeHospede;
 		this.emailHospede = emailHospede;
 		this.anoNascimento = anoNascimento;
+		
+		estadias = new HashSet<Estadia>();
+		
 	}
+
 
 	
 
@@ -33,7 +40,7 @@ public class Hospede {
 	}
 
 
-	public String getAnoNascimento() {
+	public int getAnoNascimento() {
 		return anoNascimento;
 	}
 
@@ -50,9 +57,9 @@ public class Hospede {
 	}
 
 
-	public void setAnoNascimento(String anoNascimento2) throws Exception {
-		//Excecoes.inteiroException(anoNascimento2);
-		this.anoNascimento = anoNascimento2;
+	public void setAnoNascimento(int anoNascimento) throws Exception {
+		Excecoes.inteiroException(anoNascimento);
+		this.anoNascimento = anoNascimento;
 	}
 	
 	

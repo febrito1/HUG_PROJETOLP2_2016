@@ -1,3 +1,10 @@
+package hotel;
+
+import java.util.ArrayList;
+
+import quarto.Quarto;
+import restaurante.Restaurante;
+
 public class Estadia {
 	
 	private int quantidadeDias;
@@ -56,8 +63,5 @@ public class Estadia {
 	public void setHospede(Hospede hospede) {
 		this.hospede = hospede;
 	}
-	
-}
-
 	
 }

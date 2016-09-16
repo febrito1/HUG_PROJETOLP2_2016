@@ -13,8 +13,6 @@ public class Teste {
 			System.out.println(novoHospede.getAnoNascimento());
 			System.out.println(novoHospede.getNomeHospede());		
 			System.out.println(novoHospede.getEmailHospede());
-			Entrada Restaurant = new Entrada("Nome",22.5, "S");
-			System.out.println(Restaurant.getClass());
 			
 			
 			Quarto novoQuardo = new QuartoPresidencial("");
