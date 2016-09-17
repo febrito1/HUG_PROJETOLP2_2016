@@ -1,32 +1,27 @@
 package hotel;
 
-import java.util.HashSet;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
-import excecoes.*;
-
+import excecoes.Excecoes;
 
 public class Hospede {
 	
-	private String nomeHospede;
-	private String emailHospede;
-	private String anoNascimento;
-	private HashSet<Estadia> estadias;
+	LocalDate anoNascimento;
+	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+	private String nomeHospede, emailHospede;
 	
 	
 	public Hospede(String nomeHospede, String emailHospede, String anoNascimento) throws Exception {
 		
 		Excecoes.StringException(nomeHospede);
 		Excecoes.StringException(emailHospede);
-		
+		Excecoes.StringException(anoNascimento);
 		
 		this.nomeHospede = nomeHospede;
 		this.emailHospede = emailHospede;
-		this.anoNascimento = anoNascimento;
-		
-		estadias = new HashSet<Estadia>();
-		
+		this.setAnoNascimento(anoNascimento);
 	}
-
 
 	
 
@@ -41,11 +36,13 @@ public class Hospede {
 
 
 	public String getAnoNascimento() {
+		String anoNascimento = formatter.format(this.anoNascimento);
 		return anoNascimento;
 	}
 
 
 	public void setNomeHospede(String nomeHospede) throws Exception {
+		
 		Excecoes.StringException(nomeHospede);
 		this.nomeHospede = nomeHospede;
 	}
@@ -59,7 +56,8 @@ public class Hospede {
 
 	public void setAnoNascimento(String anoNascimento) throws Exception {
 		Excecoes.StringException(anoNascimento);
-		this.anoNascimento = anoNascimento;
+		LocalDate data = LocalDate.parse(anoNascimento, formatter);
+		this.anoNascimento = data;
 	}
 	
 	
