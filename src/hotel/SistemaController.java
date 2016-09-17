@@ -1,21 +1,25 @@
 package hotel;
 
-import java.util.HashMap;
 
-import excecoes.Excecoes;
+import java.util.HashMap;
+import java.util.Map;
+import quarto.Quarto;
+import quarto.QuartosFactory;
 
 public class SistemaController {
 	
 	
 	private FactoryDeHospede factoryHospedes;
-	private HashMap<String, Hospede> clientesCadastrados;
-	private HashMap<String, Hospede> clientesHospedados;
-
+	private Map<String, Hospede> clientesCadastrados;
+	private Map<String, Quarto> catalogoQuartos;
+	
 	public SistemaController() {
 
 		clientesCadastrados = new HashMap<String, Hospede>();
+		factoryHospedes = new FactoryDeHospede();
 
 	}
+	
 	public String cadastraHospede(String nome, String email, String dataNascimento) throws Exception{
 		clientesCadastrados.put(email, factoryHospedes.criaHospede(nome, email, dataNascimento));
 		return email;
@@ -52,5 +56,39 @@ public class SistemaController {
 			clienteatualizado.setAnoNascimento(valor);
 			break;
 		} 
+		
 	}
+	
+	public String getInfo(String Info, String atributo) throws Exception{
+		if(!(clientesCadastrados.containsKey(Info))){
+			throw new Exception("Erro na consulta de hospede. Hospede de email " + Info + " nao foi cadastrado(a).");
+		}
+		String informacao = "";
+		Hospede hospedeInfo = clientesCadastrados.get(Info);
+		
+		switch(atributo.toLowerCase()){
+		case("nome"):
+			informacao = hospedeInfo.getNomeHospede();
+			break;
+		case("email"):
+			informacao = hospedeInfo.getEmailHospede();
+			break;
+		case("data de nascimento"):
+			informacao = hospedeInfo.getAnoNascimento();
+			break;
+		}
+		return informacao;
+	}
+	
+
+	public String criaQuarto(String ID, String tipoQuarto) throws Exception{
+		if(catalogoQuartos.containsKey(ID)){
+			throw new Exception("O quarto de ID" + ID + " já existe.");
+		}
+		QuartosFactory novoQuarto = new QuartosFactory();
+		novoQuarto.criaQuarto(ID, tipoQuarto);
+		
+		return ID;
+	}
+
 }

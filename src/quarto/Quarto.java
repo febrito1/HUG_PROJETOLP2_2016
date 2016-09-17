@@ -4,25 +4,20 @@ package quarto;
 
 public class Quarto{
 	
-	private double valorQuarto;
-	
+	private String ID;
+	private TipoQuarto tipo;
 
-	public Quarto() throws Exception {
-		
+	public Quarto(String ID, TipoQuarto tipo) throws Exception {
+		this.ID = ID;
+		this.tipo = tipo;
 	}
 	
-	public void getTipo(String tipoQuarto){
-		switch(tipoQuarto.toLowerCase()){
-		case("luxo"):
-			valorQuarto = TiposQuartos.Luxo.getValorQuarto();
-		case("Simples"):
-			valorQuarto = TiposQuartos.Simples.getValorQuarto();
-		case("Presidencial"):
-			valorQuarto = TiposQuartos.Presencial.getValorQuarto();
-		}
+	public String getID(){
+		return this.ID;
+	}
+	
+	public double getPreco(){
+		return this.getPreco();
 	}
 
-	public double getValorQuarto() {
-		return valorQuarto;
-	}
 }
