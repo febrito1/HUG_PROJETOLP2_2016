@@ -10,6 +10,7 @@ public class SistemaController {
 	
 	
 	private FactoryDeHospede factoryHospedes;
+	QuartosFactory novoQuarto;
 	private Map<String, Hospede> clientesCadastrados;
 	private Map<String, Quarto> catalogoQuartos;
 	
@@ -17,6 +18,7 @@ public class SistemaController {
 
 		clientesCadastrados = new HashMap<String, Hospede>();
 		factoryHospedes = new FactoryDeHospede();
+		novoQuarto = new QuartosFactory();
 
 	}
 	
@@ -85,10 +87,17 @@ public class SistemaController {
 		if(catalogoQuartos.containsKey(ID)){
 			throw new Exception("O quarto de ID" + ID + " já existe.");
 		}
-		QuartosFactory novoQuarto = new QuartosFactory();
 		novoQuarto.criaQuarto(ID, tipoQuarto);
-		
 		return ID;
+	}
+	
+	
+	public void checkIn(String ID, String tipoQuarto) throws Exception{
+		if(!(clientesCadastrados.containsKey(ID))){
+			throw new Exception("Erro na consulta de hospede. Hospede de email " + ID + " nao foi cadastrado(a).");
+		}
+		catalogoQuartos.keySet();	
+		
 	}
 
 }

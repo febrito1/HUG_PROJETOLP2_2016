@@ -5,6 +5,7 @@ package quarto;
 public class Quarto{
 	
 	private String ID;
+	private boolean estadoQuarto = false;
 	private TipoQuarto tipo;
 
 	public Quarto(String ID, TipoQuarto tipo) throws Exception {
@@ -17,7 +18,18 @@ public class Quarto{
 	}
 	
 	public double getPreco(){
-		return this.getPreco();
+		return tipo.getPreco();
 	}
 
+	public boolean isEstadoQuarto() {
+		return estadoQuarto;
+	}
+
+	public void setEstadoQuarto(boolean estadoQuarto) {
+		if(estadoQuarto = true){
+			estadoQuarto = false;
+		}else{
+			estadoQuarto = true;
+		}	
+	}
 }
