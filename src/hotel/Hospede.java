@@ -59,6 +59,33 @@ public class Hospede {
 		LocalDate data = LocalDate.parse(anoNascimento, formatter);
 		this.anoNascimento = data;
 	}
+
+
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((anoNascimento == null) ? 0 : anoNascimento.hashCode());
+		result = prime * result + ((emailHospede == null) ? 0 : emailHospede.hashCode());
+		result = prime * result + ((formatter == null) ? 0 : formatter.hashCode());
+		result = prime * result + ((nomeHospede == null) ? 0 : nomeHospede.hashCode());
+		return result;
+	}
+
+
+
+	@Override
+	public boolean equals(Object novoHospede) {
+		if(novoHospede instanceof Hospede){
+			Hospede outro = (Hospede) novoHospede;
+			if(outro.getEmailHospede().equalsIgnoreCase(emailHospede)){
+				return true;
+			}
+		}
+		return true;
+	}
+	
 	
 	
 
