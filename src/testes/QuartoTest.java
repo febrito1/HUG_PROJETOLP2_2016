@@ -8,67 +8,52 @@ import org.junit.Test;
 
 import junit.framework.Assert;
 import quarto.Quarto;
-import quarto.QuartoLuxo;
-import quarto.QuartoPresidencial;
-import quarto.QuartoSimples;
+
+import quarto.TipoQuarto;
 
 public class QuartoTest {
 
-	@Before
-	public void setUp() throws Exception {
-		Quarto quartoLuxo = new QuartoLuxo("120B");
-		Quarto quartoPresidencial = new QuartoPresidencial("201C");
-		Quarto quartoSimples = new QuartoSimples("30A");
-		Assert.assertEquals("120B", quartoLuxo.getID());
-		Assert.assertEquals("201C", quartoPresidencial.getID());
-		Assert.assertEquals("30A", quartoSimples.getID());
-
-	}
-
 	@Test
-	public void testeID() throws Exception {
-		Quarto quartoLuxo = new QuartoLuxo("120B");
-		Quarto quartoPresidencial = new QuartoPresidencial("201C");
-		Quarto quartoSimples = new QuartoSimples("30A");
-		quartoLuxo.setID("33A");
-		Assert.assertEquals("33A", quartoLuxo.getID());
-		quartoPresidencial.setID("44A");
-		Assert.assertEquals("44A", quartoPresidencial.getID());
-		quartoSimples.setID("55A");
-		Assert.assertEquals("55A", quartoSimples.getID());
-
+	public void criaQuartoteste() throws Exception {
+		Quarto quartoLuxo = new Quarto("201D", TipoQuarto.LUXO);
+		Quarto quartoPresidencial = new Quarto("201C", TipoQuarto.PRESIDENCIAL);
+		Quarto quartoSimples = new Quarto("2D2", TipoQuarto.SIMPLES);
+		assertEquals("201D", quartoLuxo.getID());
+		assertEquals("201C", quartoPresidencial.getID());
+		assertEquals("2D2", quartoSimples.getID());
+		assertEquals(250, quartoLuxo.getPreco(),250);
 	}
 
 	@Test
 	public void testeIDComException() throws Exception {
 		
 		try {
-			new QuartoLuxo(null);
+			new Quarto(null, null);
 		} catch (Exception e) {
 			assertEquals("Mensagem de excecao capturada.", "String nao pode ser nula ou vazia", e.getMessage());
 		}
 		try {
-			new QuartoLuxo("");
+			new Quarto("", TipoQuarto.SIMPLES);
 		} catch (Exception e) {
 			assertEquals("Mensagem de excecao capturada.", "String nao pode ser nula ou vazia", e.getMessage());
 		}
 		try {
-			new QuartoPresidencial(null);
+			 new Quarto(null, null);
 		} catch (Exception e) {
 			assertEquals("Mensagem de excecao capturada.", "String nao pode ser nula ou vazia", e.getMessage());
 		}
 		try {
-			new QuartoPresidencial("");
+			new Quarto("", TipoQuarto.SIMPLES);
 		} catch (Exception e) {
 			assertEquals("Mensagem de excecao capturada.", "String nao pode ser nula ou vazia", e.getMessage());
 		}
 		try {
-			new QuartoSimples(null);
+			new Quarto("", TipoQuarto.PRESIDENCIAL);
 		} catch (Exception e) {
 			assertEquals("Mensagem de excecao capturada.", "String nao pode ser nula ou vazia", e.getMessage());
 		}
 		try {
-			new QuartoLuxo("");
+			new Quarto("", TipoQuarto.LUXO);
 		} catch (Exception e) {
 			assertEquals("Mensagem de excecao capturada.", "String nao pode ser nula ou vazia", e.getMessage());
 		}
