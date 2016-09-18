@@ -9,8 +9,11 @@ public class Prato {
 	private String nomePrato, descricaoPrato;
 	private double precoPrato;
 	private HashSet<Prato> pratos;
+	private TipoPrato tipoPrato;
 	
-	public Prato(String nomePrato, double precoPrato, String descricaoPrato) throws Exception {
+	
+	public Prato(String nomePrato, double precoPrato, String descricaoPrato) throws Exception{
+		
 		Excecoes.StringException(nomePrato);
 		Excecoes.doubleException(precoPrato);
 		Excecoes.StringException(descricaoPrato);
@@ -18,6 +21,19 @@ public class Prato {
 		this.nomePrato = nomePrato;
 		this.precoPrato = precoPrato;
 		this.descricaoPrato = descricaoPrato;
+		
+	}
+	
+	public Prato(String nomePrato, double precoPrato, String descricaoPrato, TipoPrato tipoPrato) throws Exception {
+		
+		Excecoes.StringException(nomePrato);
+		Excecoes.doubleException(precoPrato);
+		Excecoes.StringException(descricaoPrato);
+		
+		this.nomePrato = nomePrato;
+		this.precoPrato = precoPrato;
+		this.descricaoPrato = descricaoPrato;
+		this.setTipoPrato(tipoPrato);
 		
 	}
 	
@@ -85,6 +101,14 @@ public class Prato {
 
 	public void setPratos(HashSet<Prato> pratos) {
 		this.pratos = pratos;
+	}
+
+	public TipoPrato getTipoPrato() {
+		return tipoPrato;
+	}
+
+	public void setTipoPrato(TipoPrato tipoPrato) {
+		this.tipoPrato = tipoPrato;
 	}
 	
 }
