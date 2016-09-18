@@ -1,42 +1,38 @@
 package restaurante;
 
-import java.util.HashSet;
-import excecoes.*;
 import java.util.ArrayList;
 import java.util.List;
 
 import excecoes.Excecoes;
 
 public class RefeicaoCompleta {
-	
+
 	private String nomeRefeicao, descricaoRefeicao;
 	private List<Prato> listaPrato;
-	
-	public RefeicaoCompleta(String nomeRefeicao, String descricaoRefeicao, ArrayList<Prato> listaPrato) throws Exception {
-		
+
+	public RefeicaoCompleta(String nomeRefeicao, String descricaoRefeicao, ArrayList<Prato> listaPrato)
+			throws Exception {
+
 		Excecoes.StringException(nomeRefeicao);
 		Excecoes.StringException(descricaoRefeicao);
 		Excecoes.verificaTamanhoArray(listaPrato);
-		
+
 		this.nomeRefeicao = nomeRefeicao;
 		this.descricaoRefeicao = descricaoRefeicao;
 		this.listaPrato = listaPrato;
-		
+
 	}
-	
-	public double calculaConta(){
+
+	public double calculaConta() {
 		double desconto = 0.1;
 		double contaAPagar = 0;
-		
+
 		for (Prato prato : listaPrato) {
 			contaAPagar += prato.getPrecoPrato();
 		}
 		return contaAPagar = contaAPagar * desconto;
 	}
-	
-	
-	
-	
+
 	public String getNomeRefeicao() {
 		return nomeRefeicao;
 	}
@@ -44,6 +40,7 @@ public class RefeicaoCompleta {
 	public String getDescricaoRefeicao() {
 		return descricaoRefeicao;
 	}
+
 	public List<Prato> getListaPrato() {
 		return listaPrato;
 	}
@@ -62,13 +59,14 @@ public class RefeicaoCompleta {
 		Excecoes.verificaTamanhoArray(listaPrato);
 		this.listaPrato = listaPrato;
 	}
-	public void adicionaPrato(Prato prato){
-		if(!(listaPrato.contains(prato))){
+
+	public void adicionaPrato(Prato prato) {
+		if (!(listaPrato.contains(prato))) {
 			listaPrato.add(prato);
 		}
 	}
-	
-	public void defineOrdemPrato(){
+
+	public void defineOrdemPrato() {
 		for (int i = 1; i < listaPrato.size(); i++) {
 			Prato entrada = listaPrato.get(1);
 			Prato pratoPrincipal = listaPrato.get(2);
@@ -76,20 +74,40 @@ public class RefeicaoCompleta {
 			Prato petitFour = listaPrato.get(4);
 		}
 	}
+
 	@Override
 	public String toString() {
-		
+
 		String listaConcatena = "";
 		Prato objprato = null;
 		for (Prato prato : listaPrato) {
 			objprato = prato;
 			listaConcatena += objprato.getNomePrato() + "/n";
 		}
-		
-		return "Refeicao Completa: " + nomeRefeicao + ",- Descricao: " + descricaoRefeicao
-				+ "Lista de Pratos: \n"
+
+		return "Refeicao Completa: " + nomeRefeicao + ",- Descricao: " + descricaoRefeicao + "Lista de Pratos: \n"
 				+ listaConcatena;
 	}
 
+	@Override
+	public boolean equals(Object refeicao) {
+		if (refeicao instanceof RefeicaoCompleta) {
+			RefeicaoCompleta novaRefeicao = (RefeicaoCompleta) refeicao;
+			if (novaRefeicao.getNomeRefeicao().equalsIgnoreCase(nomeRefeicao)) {
+				return true;
+			}
+		}
+		return false;
+	}
 	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((descricaoRefeicao == null) ? 0 : descricaoRefeicao.hashCode());
+		result = prime * result + ((listaPrato == null) ? 0 : listaPrato.hashCode());
+		result = prime * result + ((nomeRefeicao == null) ? 0 : nomeRefeicao.hashCode());
+		return result;
+	}
+
 }
