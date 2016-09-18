@@ -22,6 +22,8 @@ public class SistemaController {
 
 	}
 	
+	public void iniciaSistema() {}
+	
 	public String cadastraHospede(String nome, String email, String dataNascimento) throws Exception{
 		clientesCadastrados.put(email, factoryHospedes.criaHospede(nome, email, dataNascimento));
 		return email;
@@ -50,11 +52,13 @@ public class SistemaController {
 		switch (atributo.toLowerCase()){
 		case("nome"):
 			clienteatualizado.setNomeHospede(valor);
+			break;
 		case("email"):
 			clienteatualizado.setEmailHospede(valor);
 			clientesCadastrados.remove(id);
 			clientesCadastrados.put(valor, clienteatualizado);
-		case("ano"):
+			break;
+		case("data de nascimento"):
 			clienteatualizado.setAnoNascimento(valor);
 			break;
 		} 
@@ -62,9 +66,11 @@ public class SistemaController {
 	}
 	
 	public String getInfo(String Info, String atributo) throws Exception{
+		
 		if(!(clientesCadastrados.containsKey(Info))){
 			throw new Exception("Erro na consulta de hospede. Hospede de email " + Info + " nao foi cadastrado(a).");
 		}
+		
 		String informacao = "";
 		Hospede hospedeInfo = clientesCadastrados.get(Info);
 		
@@ -99,5 +105,7 @@ public class SistemaController {
 		catalogoQuartos.keySet();	
 		
 	}
+
+	public void fechaSistema(){}
 
 }
