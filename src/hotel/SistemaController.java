@@ -98,11 +98,17 @@ public class SistemaController {
 	}
 	
 	
-	public void checkIn(String ID, String tipoQuarto) throws Exception{
+	public void checkIn(String email, String dias, String ID, String tipoQuarto) throws Exception{
+		
 		if(!(clientesCadastrados.containsKey(ID))){
 			throw new Exception("Erro na consulta de hospede. Hospede de email " + ID + " nao foi cadastrado(a).");
 		}
-		catalogoQuartos.keySet();	
+	
+		Hospede cliente = clientesCadastrados.get(ID);
+		
+		if(catalogoQuartos.containsKey(key)){
+			
+		}
 		
 	}
 
