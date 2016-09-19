@@ -1,7 +1,7 @@
 package hotel;
 
 import easyaccept.EasyAccept;
-import excecoes.Excecoes;
+import excecoes.*;
 
 public class Facade {
 	

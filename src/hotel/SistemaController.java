@@ -87,7 +87,7 @@ public class SistemaController {
 		
 	}
 	
-	public String getInfo(String Info, String atributo) throws Exception{
+	public String getInfoHospede(String Info, String atributo) throws Exception {
 		if(!(clientesCadastrados.containsKey(Info))){
 			throw new Exception("Erro na consulta de hospede. Hospede de email " + Info + " nao foi cadastrado(a).");
 		}
@@ -119,7 +119,7 @@ public class SistemaController {
 		return ID;
 	}
 	
-	public void checkIn(String email, int dias, String ID, String tipoQuarto) throws Exception {
+	public void realizaCheckin(String email, int dias, String ID, String tipoQuarto) throws Exception {
 		/* tratar excecoes de email, ID nulos ou vazios */
 		Excecoes.tipoInvalido(tipoQuarto);
 		
@@ -129,9 +129,10 @@ public class SistemaController {
 	
 		Hospede cliente = clientesCadastrados.get(email);
 		
-		if((catalogoQuartos.containsKey(ID) && catalogoQuartos.get(ID).getTipo().equalsIgnoreCase(tipoQuarto))){
-			Quarto quarto = catalogoQuartos.get(ID);
+		if((catalogoQuartos.containsKey(ID) && catalogoQuartos.get(ID).
+				getTipo().equalsIgnoreCase(tipoQuarto))){
 			
+			Quarto quarto = catalogoQuartos.get(ID);
 			for (Estadia estadia : estadias) {
 				if(estadia.getQuarto().equals(quarto)){
 					throw new Exception("Erro ao realizar checkin. Quarto " + ID + " ja esta ocupado.");
@@ -236,7 +237,61 @@ public class SistemaController {
 		return resultado;
 	}
 	
+	public String consultaTransacoes(String operacao) {
+		
+		String resultado = "";
+		
+		switch(operacao.toLowerCase()) {
+		
+		case "quantidade":
+			
+			resultado = Integer.toString(checkouts.size());
+			break;
+		
+		case "total":	
+			double valorTotal = 0.0;
+			
+			for (Checkout checkout : checkouts) {
+				valorTotal += checkout.getTotalGasto();
+				
+			}
+			resultado = String.format("R$%.2f", valorTotal);
+			break;
+		
+		case "nome":
+			for (Checkout checkout : checkouts) {
+				resultado += checkout.getNomeCliente()+";";
+			}
+			if(resultado != "" && resultado.charAt(resultado.length() -1)==';'){
+				resultado = resultado.substring(0, resultado.length() -1);
+			}
+			break;
+		
+		default:
+			break;
+			}
+		return resultado;
+	}
 	
+	public String consultaTransacoes(String operacao, int indice) throws Exception {
+		
+		String resultado = "";
+		if(indice > checkouts.size()){
+			throw new ConsultaHospedagemException("Indice invalido.");
+		}
+		switch(operacao.toLowerCase()){
+		
+		case "total":
+			resultado = String.format("R$ %2f",checkouts.get(indice).getTotalGasto());
+			break;
+		case "nome":
+			resultado = checkouts.get(indice).getNomeCliente();
+			break;
+		default:
+			break;
+		}
+		return resultado;
+	}
 	
 
 }
