@@ -5,8 +5,7 @@ public class Quarto{
 
 	private String ID;
 	private TipoQuarto tipo;
-
-	public Quarto(String ID, TipoQuarto tipo) throws Exception {
+	public Quarto(String ID, TipoQuarto tipo) {
 		this.ID = ID;
 		this.tipo = tipo;
 	}
@@ -16,7 +15,11 @@ public class Quarto{
 	}
 
 	public double getPreco() {
-		return this.getPreco();
+		return tipo.getPreco();
+	}
+	
+	public String getTipo(){
+		return tipo.name().toLowerCase();
 	}
 
 	@Override
