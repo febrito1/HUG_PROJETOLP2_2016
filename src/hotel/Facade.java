@@ -16,8 +16,9 @@ public class Facade {
 	}
 
 	public String cadastraHospede(String nome, String email, String dataNascimento) throws Exception {
-		
-		Excecoes.CadastroInvalidoException(nome);
+		Excecoes.CadastroInvalidoException(nome);	
+		Excecoes.EmailInvalidoException(email);
+		Excecoes.DatadeNascimentoVazia(dataNascimento);
 		
 		return controler.cadastraHospede(nome, email, dataNascimento);
 	}
@@ -47,7 +48,7 @@ public class Facade {
 	}
 
 	public static void main(String[] args) {
-		args = new String[] {"hotel.Facade", "acceptance_test/teste_caso1"};
+		args = new String[] {"hotel.Facade", "acceptance_test/teste_caso1_exp"};
 		EasyAccept.main(args);
 	}
 }
