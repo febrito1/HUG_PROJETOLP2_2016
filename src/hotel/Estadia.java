@@ -10,8 +10,7 @@ public class Estadia {
 	private int quantidadeDias;
 	private double total = 0;
 	private Quarto quarto;
-	private Hospede hospede; 
-	
+	private Hospede hospede; 	
 	private ArrayList<Restaurante> gastosRestaurante;
 	
 	public Estadia(Hospede hospede, Quarto quarto, int qtdDias){	

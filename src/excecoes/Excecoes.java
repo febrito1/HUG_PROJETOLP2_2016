@@ -40,7 +40,7 @@ public class Excecoes {
 		}
 	}
 	
-	public static void verificaPrato(Prato prato) throws Exception{
+	public static void verificaPrato(Prato prato) throws Exception {
 		
 		if(prato == null){
 			throw new Exception("Prato não pode ser nulo.");
@@ -48,9 +48,15 @@ public class Excecoes {
 	
 		
 	}
-	public static void verificaCadastro(Hospede hospede) throws Exception{
+	public static void verificaCadastro(Hospede hospede) throws Exception {
 		if(hospede == null){
 			throw new Exception("Hospede não pode ser nulo.");
+		}
+	}
+	
+	public static void tipoInvalido(String tipoQuarto) throws Exception {
+		if(!(tipoQuarto.equalsIgnoreCase("luxo") || tipoQuarto.equalsIgnoreCase("simples") || tipoQuarto.equalsIgnoreCase("presidencial"))){
+			throw new Exception("Erro ao realizar checkin. Tipo de quarto invalido.");
 		}
 	}
 	
