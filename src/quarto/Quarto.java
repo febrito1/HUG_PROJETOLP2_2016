@@ -1,6 +1,5 @@
 package quarto;
 
-import hotel.Estadia;
 
 public class Quarto{
 
@@ -20,12 +19,6 @@ public class Quarto{
 		return this.getPreco();
 	}
 
-<<<<<<< HEAD
-	public String getTipo(){
-		return tipo.name().toLowerCase();
-	}
-	
-=======
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -46,5 +39,5 @@ public class Quarto{
 		return false;
 	}
 
->>>>>>> 1b4971e4e0bd5469c4e1b08f301f6191eebf5f94
 }
+
