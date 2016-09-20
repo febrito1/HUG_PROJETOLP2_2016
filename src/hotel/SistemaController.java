@@ -127,7 +127,7 @@ public class SistemaController {
 	}
 	public String criaQuarto(String ID, String tipoQuarto) throws Exception {
 		if (catalogoQuartos.containsKey(ID)) {
-			throw new Exception("O quarto de ID" + ID + " j· existe.");
+			throw new Exception("O quarto de ID" + ID + " j√° existe.");
 		}
 		factoryQuartos.criaQuarto(ID, tipoQuarto);
 		return ID;
@@ -135,7 +135,6 @@ public class SistemaController {
 
 	
 	public void realizaCheckin(String email, int dias, String ID, String tipoQuarto) throws Exception {
-		/* tratar excecoes de email, ID nulos ou vazios */
 		Excecoes.tipoInvalido(tipoQuarto);
 
 		if (!(clientesCadastrados.containsKey(email))) {
