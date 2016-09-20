@@ -21,16 +21,6 @@ public class Excecoes {
 		}
 	}
 
-<<<<<<< HEAD
-	public static void CadastroInvalidoException(String nome) throws Exception {
-		if (nome == null || nome.trim().equals("")) {
-			throw new Exception("Erro no cadastro de Hospede. Nome do(a) hospede nao pode ser vazio.");
-		}
-		if (nome.contains("@")) {
-			throw new Exception("Erro no cadastro de Hospede. Nome do(a) hospede esta invalido.");
-		}
-	}
-
 
 	public static void EmailInvalidoException(String email) throws Exception {
 		if (email == null || email.trim().isEmpty()) {
@@ -43,20 +33,6 @@ public class Excecoes {
 		
 	}
 
-	public static void DatadeNascimentoVazia(String data) throws Exception {
-		if (data == null || data.trim().isEmpty()) {
-			throw new Exception("Erro no cadastro de Hospede. Data de Nascimento do(a) hospede nao pode ser vazio.");
-		}
-		if (!(data.contains("/")) || data.length() != 10) {
-			throw new Exception("Erro no cadastro de Hospede. Formato de data invalido.");
-		}
-
-	}
-
-	
-	
-=======
->>>>>>> b14a09942f9d22f6b60d4568c65279688b7c89b2
 	public static void doubleException(double numDouble) throws Exception {
 		if (numDouble < 0) {
 			throw new Exception("Numero nao pode ser negativo.");
@@ -92,15 +68,6 @@ public class Excecoes {
 		}
 		if (nome.contains("@")) {
 			throw new Exception("Erro no cadastro de Hospede. Nome do(a) hospede esta invalido.");
-		}
-	}
-
-	public static void EmailInvalidoException(String email) throws Exception {
-		if (email == null || email.trim().isEmpty()) {
-			throw new Exception("Erro no cadastro de Hospede. Email do(a) hospede nao pode ser vazio.");
-		}
-		if (!(email.contains("@")) || !(email.contains("."))) {
-			throw new Exception("Erro no cadastro de Hospede. Email do(a) hospede esta invalido.");
 		}
 	}
 
@@ -160,9 +127,7 @@ public class Excecoes {
 		
 	}
 	
-<<<<<<< HEAD
-	
-=======
+
 	public static void checkoutEmailException(String email) throws Exception{
 		if((email == null || email.trim().isEmpty())){
 			throw new Exception("Erro ao realizar checkout. Email do(a) hospede nao pode ser vazio.");
@@ -172,5 +137,5 @@ public class Excecoes {
 		}
 	}
 
->>>>>>> b14a09942f9d22f6b60d4568c65279688b7c89b2
+
 }
