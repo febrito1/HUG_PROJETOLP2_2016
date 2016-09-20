@@ -1,67 +1,77 @@
-package hotel;
+package sistema;
 
-import java.util.List;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
+import cliente.Estadia;
+import cliente.FactoryDeHospede;
+import cliente.Hospede;
 import excecoes.ConsultaHospedagemException;
 import excecoes.Excecoes;
 import quarto.Quarto;
 import quarto.QuartosFactory;
 
 public class SistemaController {
-
-	private FactoryDeHospede factoryHospedes;
+	
 	private QuartosFactory factoryQuartos;
+	private FactoryDeHospede factoryHospedes;
+	
 	private Map<String, Hospede> clientesCadastrados;
-	private Map<String, Quarto> catalogoQuartos;
+	private Map<String, Quarto> catalogoQuartos;	
 	private List<Estadia> estadias;
 	private List<Checkout> checkouts;
-
+	
 	LocalDate dataNascimento;
 	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+	
 	public SistemaController() {
-
-		clientesCadastrados = new HashMap<String, Hospede>();
-		factoryHospedes = new FactoryDeHospede();
-		factoryQuartos = new QuartosFactory();
+		
+		
 		estadias = new ArrayList<>();
 		checkouts = new ArrayList<>();
+		catalogoQuartos= new HashMap<>();
+		clientesCadastrados = new HashMap<>();
+		factoryHospedes = new FactoryDeHospede();
+		factoryQuartos = new QuartosFactory();
 
 	}
-
-	public void iniciaSistema() {
-	}
-
-	public String cadastraHospede(String nome, String email, String dataNascimento) throws Exception {
+	public void iniciaSistema(){
+		
+		}
 	
-
+	public String cadastraHospede(String nome, String email, String dataNascimento) throws Exception{
+		
 		Excecoes.CadastroInvalidoException(nome);
 		Excecoes.EmailInvalidoException(email);
 		Excecoes.DatadeNascimentoVazia(dataNascimento);
 	
-		clientesCadastrados.put(email, factoryHospedes.criaHospede(nome, email, dataNascimento));
+		Hospede novoHospede = factoryHospedes.criaHospede(nome, email, dataNascimento);
+		if(novoHospede.getIdade() < 18){
+			throw new Exception("Idade do hospede nao pode ser menor que 18.");
+		}
+		clientesCadastrados.put(email, novoHospede);
 		return email;
 	}
-
+	
 	public String buscaHospede(String email) throws Exception {
 		if (!clientesCadastrados.containsKey(email)) {
 			throw new Exception("Erro na consulta de hospede. Hospede de email " + email + " nao foi cadastrado(a).");
 		}
 		return email;
 	}
-
+	
 	public void removeHospede(String email) throws Exception {
 		if (!clientesCadastrados.containsKey(email)) {
 			throw new Exception("Erro na remocao do Hospede. Formato de email invalido.");
 		}
 		clientesCadastrados.remove(email);
 	}
-
+	
 	public void atualizaCadastro(String id, String atributo, String valor) throws Exception {
 		if (!clientesCadastrados.containsKey(id)) {
 			throw new Exception("Erro na consulta de hospede. Hospede de email " + id + " nao foi cadastrado(a).");
@@ -93,7 +103,6 @@ public class SistemaController {
 		}
 
 	}
-
 	public String getInfo(String Info, String atributo) throws Exception {
 
 		if (!(clientesCadastrados.containsKey(Info))) {
@@ -116,15 +125,15 @@ public class SistemaController {
 		}
 		return informacao;
 	}
-
 	public String criaQuarto(String ID, String tipoQuarto) throws Exception {
 		if (catalogoQuartos.containsKey(ID)) {
-			throw new Exception("O quarto de ID" + ID + " jÃ¡ existe.");
+			throw new Exception("O quarto de ID" + ID + " já existe.");
 		}
 		factoryQuartos.criaQuarto(ID, tipoQuarto);
 		return ID;
 	}
 
+	
 	public void realizaCheckin(String email, int dias, String ID, String tipoQuarto) throws Exception {
 		/* tratar excecoes de email, ID nulos ou vazios */
 		Excecoes.tipoInvalido(tipoQuarto);
@@ -221,7 +230,8 @@ public class SistemaController {
 		}
 		return resultado;
 	}
-
+	
+	
 	public String realizaCheckout(String email, String quarto) throws Exception {
 		String resultado = "";
 		if (!clientesCadastrados.containsKey(email)) {
@@ -244,6 +254,7 @@ public class SistemaController {
 		return resultado;
 	}
 
+	
 	public String consultaTransacoes(String operacao) {
 
 		String resultado = "";
@@ -302,5 +313,6 @@ public class SistemaController {
 
 	public void fechaSistema() {
 	}
+
 
 }
