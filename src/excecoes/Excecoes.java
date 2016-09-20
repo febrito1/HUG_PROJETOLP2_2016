@@ -7,9 +7,7 @@ import restaurante.Prato;
 
 public class Excecoes {
 
-	public Excecoes() {
-
-	}
+	public Excecoes(){}
 
 	public static void StringException(String excecao) throws Exception {
 		if (excecao == null || excecao.trim().isEmpty()) {
@@ -41,14 +39,14 @@ public class Excecoes {
 	public static void verificaPrato(Prato prato) throws Exception {
 
 		if (prato == null) {
-			throw new Exception("Prato não pode ser nulo.");
+			throw new Exception("Prato nÃ£o pode ser nulo.");
 		}
 
 	}
 
 	public static void verificaCadastro(Hospede hospede) throws Exception {
 		if (hospede == null) {
-			throw new Exception("Hospede não pode ser nulo.");
+			throw new Exception("Hospede nÃ£o pode ser nulo.");
 		}
 	}
 
@@ -77,7 +75,6 @@ public class Excecoes {
 		if (!(data.contains("/")) || data.length() != 10) {
 			throw new Exception("Erro no cadastro de Hospede. Formato de data invalido.");
 		}
-
 	}
 
 	public static void atualizaCadastroException(String valor) throws Exception {
@@ -106,6 +103,17 @@ public class Excecoes {
 		if (!(data.contains("/")) || data.length() != 10) {
 			throw new Exception("Erro na atualizacao do cadastro de Hospede. Formato de data invalido.");
 		}
+		
+		String[] datas = data.split("/");
+		int dias = Integer.parseInt(datas[0]);
+		int mes = Integer.parseInt(datas[1]);
+		int ano = Integer.parseInt(datas[2]);
+		if(dias > 31){
+			throw new Exception("Erro na atualizacao do cadastro de Hospede. Formato de data invalido."); 
+		}
+		if(mes > 12){
+			throw new Exception("Erro na atualizacao do cadastro de Hospede. Formato de data invalido.");
+		}
 	}
 
 	public static void tipoInvalido(String tipoQuarto) throws Exception {
@@ -116,6 +124,13 @@ public class Excecoes {
 		
 	}
 	
-
+	public static void checkoutEmailException(String email) throws Exception{
+		if((email == null || email.trim().isEmpty())){
+			throw new Exception("Erro ao realizar checkout. Email do(a) hospede nao pode ser vazio.");
+		}
+		if(!(email.contains("@") || email.contains("."))){
+			throw new Exception("Erro ao realizar checkout. Email do(a) hospede esta invalido.");
+		}
+	}
 
 }
