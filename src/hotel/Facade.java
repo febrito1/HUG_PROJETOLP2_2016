@@ -24,7 +24,7 @@ public class Facade {
 	}
 
 	public String getInfoHospede(String id, String atributo) throws Exception {
-		return controler.getInfo(id, atributo);
+		return controler.getInfoHospede(id, atributo);
 	}
 
 	public void atualizaCadastro(String id, String atributo, String valor) throws Exception {
@@ -39,7 +39,7 @@ public class Facade {
 	
 	public String getInfoHospedagem(String email, String atributo) throws Exception{
 		
-		return controler.getInfo(email, atributo);
+		return controler.getInfoHospedagem(email, atributo);
 	}
 	
 	

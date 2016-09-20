@@ -10,7 +10,6 @@ import java.util.Map;
 
 import hotel.Estadia;
 import hotel.Hospede;
-import excecoes.ConsultaHospedagemException;
 import hotel.Checkout;
 import excecoes.*;
 import quarto.Quarto;
@@ -23,8 +22,10 @@ public class SistemaController {
 	
 	private Map<String, Hospede> clientesCadastrados;
 	private Map<String, Quarto> catalogoQuartos;	
+	private Map<String, Quarto> quartosOcupados;
 	private List<Estadia> estadias;
 	private List<Checkout> checkouts;
+
 	
 	LocalDate dataNascimento;
 	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -34,6 +35,7 @@ public class SistemaController {
 		
 		estadias = new ArrayList<>();
 		checkouts = new ArrayList<>();
+		quartosOcupados = new HashMap<>();
 		catalogoQuartos= new HashMap<>();
 		clientesCadastrados = new HashMap<>();
 		factoryHospedes = new FactoryDeHospede();
@@ -41,7 +43,11 @@ public class SistemaController {
 
 	}
 	
+	public void iniciaSistema(){}
+	
+	
 	public String cadastraHospede(String nome, String email, String dataNascimento) throws Exception{
+		
 		
 		String novoAnoNascimento = formatter.format(this.dataNascimento);
 		LocalDate data = LocalDate.parse(novoAnoNascimento, formatter);
@@ -120,7 +126,11 @@ public class SistemaController {
 	}
 	
 	public void realizaCheckin(String email, int dias, String ID, String tipoQuarto) throws Exception {
-		/* tratar excecoes de email, ID nulos ou vazios */
+		
+		if(email.isEmpty()){
+			throw new CheckinException("Email do(a) hospede nao pode ser vazio.");
+		}
+		
 		Excecoes.tipoInvalido(tipoQuarto);
 		
 		if(!(clientesCadastrados.containsKey(email))){
@@ -130,22 +140,21 @@ public class SistemaController {
 		Hospede cliente = clientesCadastrados.get(email);
 		
 		if((catalogoQuartos.containsKey(ID) && catalogoQuartos.get(ID).
-				getTipo().equalsIgnoreCase(tipoQuarto))){
+				getTipo().equalsIgnoreCase(tipoQuarto))) {
 			
-			Quarto quarto = catalogoQuartos.get(ID);
-			for (Estadia estadia : estadias) {
-				if(estadia.getQuarto().equals(quarto)){
-					throw new Exception("Erro ao realizar checkin. Quarto " + ID + " ja esta ocupado.");
-				}
+			
+			if(quartosOcupados.containsKey(ID)){
+				throw new CheckinException("Erro ao realizar checkin. Quarto " + ID + " ja esta ocupado.");
 			}
-		
-			Estadia novaEstadia = new Estadia(cliente, quarto, dias);
-			estadias.add(novaEstadia);
+			Quarto quarto = catalogoQuartos.get(ID);
+			quartosOcupados.put(ID, quarto);
+			cliente.adicionaQuarto(ID);
+			
 		}else{
 			Quarto quarto = factoryQuartos.criaQuarto(ID, tipoQuarto);
 			catalogoQuartos.put(ID, quarto);
-			Estadia estadia = new Estadia(cliente, quarto , dias);
-			estadias.add(estadia);
+			quartosOcupados.put(ID, quarto);
+			cliente.adicionaQuarto(ID);		
 		}
 		
 	}
@@ -193,11 +202,7 @@ public class SistemaController {
 			break;
 			
 		case "quarto":	
-			for (Estadia estadia : estadias) {
-				if(estadia.getHospede().equals(hospede));
-				Quarto quarto = estadia.getQuarto();
-				resultado += quarto.getID() + ",";
-			}
+			resultado = hospede.getQuartos();
 			
 			if(resultado.isEmpty()){
 				throw new ConsultaHospedagemException("Hospede " + hospede.getNomeHospede()+
@@ -293,5 +298,5 @@ public class SistemaController {
 		return resultado;
 	}
 	
-
+	public void fechaSistema(){}
 }

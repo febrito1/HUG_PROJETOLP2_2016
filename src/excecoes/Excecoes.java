@@ -24,6 +24,38 @@ public class Excecoes {
 		}
 	}
 
+	public static void CadastroInvalidoException(String nome) throws Exception {
+		if (nome == null || nome.trim().equals("")) {
+			throw new Exception("Erro no cadastro de Hospede. Nome do(a) hospede nao pode ser vazio.");
+		}
+		if (nome.contains("@")) {
+			throw new Exception("Erro no cadastro de Hospede. Nome do(a) hospede esta invalido.");
+		}
+	}
+
+
+	public static void EmailInvalidoException(String email) throws Exception {
+		if (email == null || email.trim().isEmpty()) {
+			throw new Exception("Erro no cadastro de Hospede. Email do(a) hospede nao pode ser vazio.");
+		}
+		if (!(email.contains("@")) || !(email.contains("."))) {
+			throw new Exception("Erro no cadastro de Hospede. Email do(a) hospede esta invalido.");
+		}
+		
+		
+	}
+
+	public static void DatadeNascimentoVazia(String data) throws Exception {
+		if (data == null || data.trim().isEmpty()) {
+			throw new Exception("Erro no cadastro de Hospede. Data de Nascimento do(a) hospede nao pode ser vazio.");
+		}
+		if (!(data.contains("/")) || data.length() != 10) {
+			throw new Exception("Erro no cadastro de Hospede. Formato de data invalido.");
+		}
+
+	}
+
+	
 	
 	public static void doubleException(double numDouble) throws Exception {
 		if(numDouble < 0){
@@ -59,5 +91,6 @@ public class Excecoes {
 			throw new Exception("Erro ao realizar checkin. Tipo de quarto invalido.");
 		}
 	}
+	
 	
 }

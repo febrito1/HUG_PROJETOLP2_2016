@@ -3,15 +3,18 @@ package hotel;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.HashSet;
+import java.util.Set;
 
 import excecoes.Excecoes;
+import quarto.Quarto;
 
 public class Hospede {
 	
 	LocalDate anoNascimento, data;
 	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 	private String nomeHospede, emailHospede;
-	
+	private Set<String> quartos;
 	
 	
 	public Hospede(String nomeHospede, String emailHospede, String anoNascimento) throws Exception {
@@ -23,10 +26,29 @@ public class Hospede {
 		this.nomeHospede = nomeHospede;
 		this.emailHospede = emailHospede;
 		this.setAnoNascimento(anoNascimento);
+		
+		quartos = new HashSet<>();
 	}
 
 	
+	public boolean adicionaQuarto(String ID){
+		return quartos.add(ID);
+	}
+	
 
+	public boolean removeQuarto(String ID){
+		return quartos.remove(ID);
+	}
+	
+	
+	public String getQuartos(){
+		String resultado = "";
+		for (String quarto : quartos){
+			resultado += quarto + ",";
+		}
+		return resultado;
+	}
+	
 	public String getNomeHospede() {
 		return nomeHospede;
 	}
