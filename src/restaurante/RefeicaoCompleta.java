@@ -10,15 +10,14 @@ public class RefeicaoCompleta {
 	private String nomeRefeicao, descricaoRefeicao;
 	private List<Prato> listaPrato;
 
-	public RefeicaoCompleta(String nomeRefeicao, String descricaoRefeicao, ArrayList<Prato> listaPrato)
-			throws Exception {
+	public RefeicaoCompleta(String nomeRefeicao, String descricaoRefeicao) throws Exception {
 
 		Excecoes.StringException(nomeRefeicao);
 		Excecoes.StringException(descricaoRefeicao);
-		Excecoes.verificaTamanhoArray(listaPrato);
 
 		this.nomeRefeicao = nomeRefeicao;
 		this.descricaoRefeicao = descricaoRefeicao;
+		// this.componentes = componentes;
 		this.listaPrato = listaPrato;
 
 	}
@@ -61,18 +60,15 @@ public class RefeicaoCompleta {
 	}
 
 	public void adicionaPrato(Prato prato) {
-		if (!(listaPrato.contains(prato))) {
-			listaPrato.add(prato);
-		}
+		listaPrato.add(prato);
 	}
 
-	public void defineOrdemPrato() {
-		for (int i = 1; i < listaPrato.size(); i++) {
-			Prato entrada = listaPrato.get(1);
-			Prato pratoPrincipal = listaPrato.get(2);
-			Prato sobremesa = listaPrato.get(3);
-			Prato petitFour = listaPrato.get(4);
+	public double calculaPrecoTotal() {
+		double total = 0;
+		for (Prato prato : listaPrato) {
+			total += prato.getPrecoPrato();
 		}
+		return total;
 	}
 
 	@Override
@@ -99,7 +95,7 @@ public class RefeicaoCompleta {
 		}
 		return false;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
