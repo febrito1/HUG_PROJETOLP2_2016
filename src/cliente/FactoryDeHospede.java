@@ -1,4 +1,4 @@
-package hotel;
+package cliente;
 
 public class FactoryDeHospede {
 	

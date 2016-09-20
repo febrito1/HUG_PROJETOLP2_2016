@@ -5,7 +5,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 
-import hotel.Hospede;
+import cliente.Hospede;
 import junit.framework.Assert;
 import quarto.Quarto;
 

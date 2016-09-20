@@ -1,5 +1,6 @@
 package hotel;
 
+import cliente.Hospede;
 import excecoes.*;
 import quarto.*;
 import restaurante.*;
