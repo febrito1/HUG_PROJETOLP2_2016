@@ -13,6 +13,7 @@ public class Facade {
 
 	public Facade() {
 		controler = new SistemaController();
+		controlerRestaurante =  new RestauranteController();
 
 	}
 
