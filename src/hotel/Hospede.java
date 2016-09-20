@@ -1,4 +1,4 @@
-package hotel;
+package cliente;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -15,10 +15,11 @@ public class Hospede {
 	
 	
 	public Hospede(String nomeHospede, String emailHospede, String anoNascimento) throws Exception {
-		
+	
 		Excecoes.StringException(nomeHospede);
 		Excecoes.StringException(emailHospede);
 		Excecoes.StringException(anoNascimento);
+		
 		
 		this.nomeHospede = nomeHospede;
 		this.emailHospede = emailHospede;
@@ -39,14 +40,14 @@ public class Hospede {
 
 	public String getAnoNascimento() {
 		String novoAnoNascimento = formatter.format(this.anoNascimento);
-		LocalDate data = LocalDate.parse(novoAnoNascimento, formatter);
 		return novoAnoNascimento;
 	}
 
-	public int getIdade(){
-		int dataNascimento = (int)ChronoUnit.YEARS.between(data, LocalDate.now());
-		return dataNascimento;
+	public int getIdade() throws Exception{
+		int idade = (int)ChronoUnit.YEARS.between(anoNascimento, LocalDate.now());
+		return idade;
 	}
+	
 	public void setNomeHospede(String nomeHospede) throws Exception {
 		
 		Excecoes.StringException(nomeHospede);
