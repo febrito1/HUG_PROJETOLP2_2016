@@ -1,4 +1,4 @@
-package hotel;
+package sistema;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -8,17 +8,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
-import hotel.Checkout;
-import excecoes.*;
 import cliente.Estadia;
 import cliente.FactoryDeHospede;
 import cliente.Hospede;
 import excecoes.ConsultaHospedagemException;
 import excecoes.Excecoes;
-
 import quarto.Quarto;
 import quarto.QuartosFactory;
+import restaurante.Prato;
+import restaurante.RefeicaoCompleta;
+import restaurante.RestauranteController;
 
 public class SistemaController {
 	
@@ -27,11 +26,10 @@ public class SistemaController {
 	
 	private Map<String, Hospede> clientesCadastrados;
 	private Map<String, Quarto> catalogoQuartos;	
-	private Map<String, Quarto> quartosOcupados;
 	private List<Estadia> estadias;
 	private List<Checkout> checkouts;
+	private RestauranteController controlerRestaurante;
 
-	
 	LocalDate dataNascimento;
 	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 	
@@ -40,36 +38,26 @@ public class SistemaController {
 		
 		estadias = new ArrayList<>();
 		checkouts = new ArrayList<>();
-		quartosOcupados = new HashMap<>();
 		catalogoQuartos= new HashMap<>();
 		clientesCadastrados = new HashMap<>();
 		factoryHospedes = new FactoryDeHospede();
 		factoryQuartos = new QuartosFactory();
 
 	}
-	
-	public void iniciaSistema(){}
-	
+	public void iniciaSistema(){
+		
+		}
 	
 	public String cadastraHospede(String nome, String email, String dataNascimento) throws Exception{
 		
 		Excecoes.CadastroInvalidoException(nome);
 		Excecoes.EmailInvalidoException(email);
 		Excecoes.DatadeNascimentoVazia(dataNascimento);
-
-		
-		String novoAnoNascimento = formatter.format(this.dataNascimento);
-		LocalDate data = LocalDate.parse(novoAnoNascimento, formatter);
-		int idade = (int)ChronoUnit.YEARS.between(data, LocalDate.now());
-		if((idade < 18)){
-			throw new Exception("Erro no cadastro de Hospede. A idade do(a) hospede deve ser maior que 18 anos.");
-
-		}
 	
 		Hospede novoHospede = factoryHospedes.criaHospede(nome, email, dataNascimento);
 		if(novoHospede.getIdade() < 18){
 			throw new Exception("Idade do hospede nao pode ser menor que 18.");
-		}	
+		}
 		clientesCadastrados.put(email, novoHospede);
 		return email;
 	}
@@ -141,9 +129,10 @@ public class SistemaController {
 		}
 		return informacao;
 	}
+	
 	public String criaQuarto(String ID, String tipoQuarto) throws Exception {
 		if (catalogoQuartos.containsKey(ID)) {
-			throw new Exception("O quarto de ID" + ID + " jÃ¡ existe.");
+			throw new Exception("O quarto de ID" + ID + " já existe.");
 		}
 		factoryQuartos.criaQuarto(ID, tipoQuarto);
 		return ID;
@@ -151,13 +140,6 @@ public class SistemaController {
 
 	
 	public void realizaCheckin(String email, int dias, String ID, String tipoQuarto) throws Exception {
-
-		
-		if(email.isEmpty()){
-			throw new CheckinException("Email do(a) hospede nao pode ser vazio.");
-		}
-		
-
 		Excecoes.tipoInvalido(tipoQuarto);
 
 		if (!(clientesCadastrados.containsKey(email))) {
@@ -166,22 +148,23 @@ public class SistemaController {
 
 		Hospede cliente = clientesCadastrados.get(email);
 
-		if((catalogoQuartos.containsKey(ID) && catalogoQuartos.get(ID).
-				getTipo().equalsIgnoreCase(tipoQuarto))) {
-			
-			
-			if(quartosOcupados.containsKey(ID)){
-				throw new CheckinException("Erro ao realizar checkin. Quarto " + ID + " ja esta ocupado.");
-			}
+		if ((catalogoQuartos.containsKey(ID) && catalogoQuartos.get(ID).getTipo().equalsIgnoreCase(tipoQuarto))) {
+
 			Quarto quarto = catalogoQuartos.get(ID);
-			quartosOcupados.put(ID, quarto);
-			cliente.adicionaQuarto(ID);
-			
-		}else{
+			for (Estadia estadia : estadias) {
+				if (estadia.getQuarto().equals(quarto)) {
+					throw new Exception("Erro ao realizar checkin. Quarto " + ID + " ja esta ocupado.");
+				}
+			}
+
+			Estadia novaEstadia = new Estadia(cliente, quarto, dias);
+			estadias.add(novaEstadia);
+		} else {
+
 			Quarto quarto = factoryQuartos.criaQuarto(ID, tipoQuarto);
 			catalogoQuartos.put(ID, quarto);
-			quartosOcupados.put(ID, quarto);
-			cliente.adicionaQuarto(ID);		
+			Estadia estadia = new Estadia(cliente, quarto, dias);
+			estadias.add(estadia);
 		}
 
 	}
@@ -228,17 +211,20 @@ public class SistemaController {
 			resultado = String.format("R$%.2f", dinheiroTotal);
 			break;
 
-			
-		case "quarto":	
-			resultado = hospede.getQuartos();
-			
-			if(resultado.isEmpty()){
-				throw new ConsultaHospedagemException("Hospede " + hospede.getNomeHospede()+
-						" nao esta hospedado(a).");
-				
-			} else if(resultado.charAt(resultado.length() -1)==','){
-					resultado = resultado.substring(0, resultado.length()-1);
+		case "quarto":
+			for (Estadia estadia : estadias) {
+				if (estadia.getHospede().equals(hospede))
+					;
+				Quarto quarto = estadia.getQuarto();
+				resultado += quarto.getID() + ",";
+			}
 
+			if (resultado.isEmpty()) {
+				throw new ConsultaHospedagemException(
+						"Hospede " + hospede.getNomeHospede() + " nao esta hospedado(a).");
+
+			} else if (resultado.charAt(resultado.length() - 1) == ',') {
+				resultado = resultado.substring(0, resultado.length() - 1);
 			}
 			break;
 
@@ -328,9 +314,33 @@ public class SistemaController {
 		}
 		return resultado;
 	}
+	public String consultaRestaurante(String nome, String atributo) throws Exception {
+		return controlerRestaurante.consultaRestaurante(nome, atributo);
+	}
 
+	public void cadastraRefeicao(String nome, String descricao, String componentes) throws Exception {
+		controlerRestaurante.cadastraRefeicao(nome, descricao, componentes);
+	}
+
+	public RefeicaoCompleta buscaRefeicao(String nome) {
+		return controlerRestaurante.buscaRefeicao(nome);
+	}
+
+	public Prato buscaCardapio(String nome) {
+		return controlerRestaurante.buscaCardapio(nome);
+	}
+	public boolean removeCardapio(Prato prato) {
+		return controlerRestaurante.removeCardapio(prato);
+	}
+	public boolean cadastraPrato(String nome,  double preco ,String descricao) throws Exception {
+		return controlerRestaurante.cadastraPrato(nome, preco, descricao);
+	}
+	public double compraPrato(Prato prato) throws Exception {
+		return controlerRestaurante.compraPrato(prato);
+	}
 	
-	public void fechaSistema(){}
+	public void fechaSistema() {
+	}
+
+
 }
-
-
