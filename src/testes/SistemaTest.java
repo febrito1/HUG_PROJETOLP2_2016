@@ -74,6 +74,11 @@ public class SistemaTest {
 			sistema.realizaCheckin("daniyel@gm.cin", 7, "14", "presidencial");
 		}catch(Exception e){
 			assertEquals("Mensagem de excecao capturada.", "Erro na consulta de hospede. Hospede de email " + hospede.getEmailHospede() + " nao foi cadastrado(a).", e.getMessage());
+		}try{
+			sistema.cadastraHospede("Rebeca", "rebeca.e@gm.com", "29/04/1996");
+			sistema.realizaCheckin("rebeca.e@gm.com", 7, "14", "presidencial");
+		}catch(Exception e){
+			assertEquals("Mensagem de excecao capturada.", "Erro ao realizar checkin. Quarto " + quarto.getID()+ " ja esta ocupado.", e.getMessage());
 		}
 	}
 	public void testeInfoHospede(){
