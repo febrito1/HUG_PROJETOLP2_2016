@@ -1,13 +1,17 @@
 package restaurante;
 
-import java.io.LineNumberInputStream;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import excecoes.BuscaPratoException;
+import excecoes.CadastraPratoInvalidoException;
+import excecoes.ComponenteVazioException;
 import excecoes.ConsultaHospedagemException;
 import excecoes.Excecoes;
+import excecoes.QuantidadeInvalidaPratosException;
 
 public class RestauranteController {
 
@@ -15,9 +19,13 @@ public class RestauranteController {
 	private List<RefeicaoCompleta> refeicoes;
 	private RefeicaoFactory factoryRefeicao;
 	private PratosFactory factoryPratos;
+
 	public RestauranteController() {
 
 		this.cardapio = new HashSet<Prato>();
+		this.refeicoes = new ArrayList<RefeicaoCompleta>();
+		this.factoryPratos = new PratosFactory();
+		this.factoryRefeicao = new RefeicaoFactory();
 
 	}
 
@@ -25,10 +33,11 @@ public class RestauranteController {
 
 	}
 
-	public boolean cadastraPrato(String nome,  double preco ,String descricao) throws Exception {
-		ExcecaoRestaurante.CadastroInvalidoPrato(nome, descricao, preco);
+	public boolean cadastraPrato(String nome, double preco, String descricao) throws Exception {
+		
+		Excecoes.CadastroInvalidoPrato(nome, descricao, preco);
 		Prato prato = factoryPratos.criaPrato(nome, preco, descricao);
-		Excecoes.verificaPrato(prato);
+		
 		return cardapio.add(prato);
 	}
 
@@ -45,7 +54,7 @@ public class RestauranteController {
 	public double compraPrato(Prato prato) throws Exception {
 		Excecoes.verificaPrato(prato);
 		if (!(buscaPrato(prato))) {
-			throw new Exception("Não existe esse prato no cardapio.");
+			throw new BuscaPratoException();
 		}
 		return prato.getPrecoPrato() - (prato.getPrecoPrato() * 0.1);
 	}
@@ -63,26 +72,19 @@ public class RestauranteController {
 		return null;
 	}
 
-	public RefeicaoCompleta buscaRefeicao(String nome) {
-		for (RefeicaoCompleta refeicao : refeicoes) {
-			if (nome.equalsIgnoreCase(refeicao.getNomeRefeicao())) {
-				return refeicao;
-			}
-		}
-		return null;
-	}
 
 	public void cadastraRefeicao(String nome, String descricao, String componentes) throws Exception {
-		ExcecaoRestaurante.CadastroInvalidoRefeicao(nome, descricao, componentes);
-		
+		Excecoes.CadastroInvalidoRefeicao(nome, descricao, componentes);
 		String[] pratos = componentes.split(";");
-		if (pratos.length < 3 || pratos.length > 4) {
-			throw new Exception("Erro no cadastro de refeicao completa. Uma refeicao completa deve possuir no minimo 3 e no maximo 4 pratos.");
+		if(componentes == null || componentes.trim().isEmpty()){
+			throw new ComponenteVazioException();
 		}
+		if (pratos.length < 3 || pratos.length > 4) {
+			throw new QuantidadeInvalidaPratosException();
+			}
 		for (String prato : pratos) {
 			if (buscaCardapio(prato) == null) {
-				throw new Exception("Erro no cadastro de refeicao. So eh possivel cadastrar refeicoes com pratos ja cadastrados.");
-			}
+				throw new CadastraPratoInvalidoException();			}
 
 		}
 
@@ -93,38 +95,42 @@ public class RestauranteController {
 			refeicao.adicionaPrato(buscaCardapio(outroPrato));
 		}
 	}
-
+	
+	public RefeicaoCompleta buscaRefeicao(String nome) {
+		for (RefeicaoCompleta refeicao : refeicoes) {
+			if (nome.equalsIgnoreCase(refeicao.getNomeRefeicao())) {
+				return refeicao;
+			}
+		}
+		return null;
+	}
+			
 	public String consultaRestaurante(String nome, String atributo) throws Exception {
-		ExcecaoRestaurante.ConsultaRestauranteException(nome, atributo);
-		String resultado = "";
+		Excecoes.ConsultaRestauranteException(nome, atributo);
+		String informacaoConsulta = "";
 		if (buscaCardapio(nome) != null) {
 			Prato prato = buscaCardapio(nome);
 			if (atributo.equalsIgnoreCase("preco")) {
-				resultado += "R$ " + prato.getPrecoPrato();
+				double tado = prato.getPrecoPrato();
+				informacaoConsulta = String.format("R$%.2f", tado);
+				
 			}
 			if (atributo.equalsIgnoreCase("descricao")) {
-				resultado += prato.getDescricaoPrato();
+				informacaoConsulta += prato.getDescricaoPrato();
 			}
 		}
 
 		if (buscaRefeicao(nome) != null) {
 			RefeicaoCompleta refeicao = buscaRefeicao(nome);
 			if (atributo.equalsIgnoreCase("preco")) {
-				resultado += "R$" + refeicao.calculaPrecoTotal();
+				double i = refeicao.calculaPrecoTotal();
+				informacaoConsulta = String.format("R$%.2f", i);
 			}
 			if (atributo.equalsIgnoreCase("descricao")) {
-				resultado += refeicao.getDescricaoRefeicao() + "Serao servidos: ";
-				for (int i = 0; i < refeicoes.size(); i++) {
-					if (i == refeicoes.size() - 1) {
-						resultado += "(" + (i + 1) + ")" + refeicoes.get(i).getNomeRefeicao() + ".";
-					} else {
-						resultado += "(" + (i + 1) + ")" + refeicoes.get(i).getNomeRefeicao() + ", ";
-					}
-				}
-
+				return refeicao.informacaoRefeicao();
 			}
 		}
-		return resultado;
+		return informacaoConsulta;
 	}
 
 	public void fechaSistema() {
