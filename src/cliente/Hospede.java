@@ -1,95 +1,107 @@
 package cliente;
 
+import java.util.List;
+import java.util.ArrayList;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
-import java.util.HashSet;
-import java.util.Set;
 
-import excecoes.Excecoes;
+import excecoes.excecoes;
 import quarto.Quarto;
 
 public class Hospede {
-	
+
 	LocalDate anoNascimento, data;
 	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 	private String nomeHospede, emailHospede;
-	private Set<String> quartos;
-	
-	
+	private List<Estadia> estadias;
+	private excecoes excecoes = new excecoes();
+
 	public Hospede(String nomeHospede, String emailHospede, String anoNascimento) throws Exception {
-	
-		Excecoes.StringException(nomeHospede);
-		Excecoes.StringException(emailHospede);
-		Excecoes.StringException(anoNascimento);
-		
-		
+
+		excecoes.StringException(nomeHospede);
+		excecoes.StringException(emailHospede);
+		excecoes.StringException(anoNascimento);
+
 		this.nomeHospede = nomeHospede;
 		this.emailHospede = emailHospede;
 		this.setAnoNascimento(anoNascimento);
-		
-		quartos = new HashSet<>();
+
+		estadias = new ArrayList<>();
 	}
 
-	
-	public boolean adicionaQuarto(String ID){
-		return quartos.add(ID);
+	public void adicionaEstadia(Estadia estadia) throws Exception {
+		estadias.add(estadia);
 	}
-	
 
-	public boolean removeQuarto(String ID){
-		return quartos.remove(ID);
-	}
-	
-	
-	public String getQuartos(){
+	public String getQuartos() {
 		String resultado = "";
-		for (String quarto : quartos){
-			resultado += quarto + ",";
+		for (Estadia estadia : estadias) {
+			Quarto quarto = estadia.getQuarto();
+			resultado += quarto.getID();
+			resultado += ",";
 		}
 		return resultado;
 	}
-	
+
+	public double getPrecoQuartos() {
+		double precoTotal = 0;
+		for (Estadia estadia : estadias) {
+			precoTotal += estadia.getQuarto().getPreco() * estadia.getQuantidadeDias();
+		}
+		return precoTotal;
+	}
+
+	public List<Estadia> getEstadias() {
+		return estadias;
+	}
+
+	public int qtdEstadias() {
+		return estadias.size();
+	}
+
 	public String getNomeHospede() {
 		return nomeHospede;
 	}
 
+	public void removeEstadia(String ID) {
+		for (int i = 0; i < estadias.size(); i++) {
+			if (estadias.get(i).getID().equals(ID)) {
+				estadias.remove(i);
+			}
+		}
+	}
 
 	public String getEmailHospede() {
 		return emailHospede;
 	}
-
 
 	public String getAnoNascimento() {
 		String novoAnoNascimento = formatter.format(this.anoNascimento);
 		return novoAnoNascimento;
 	}
 
-	public int getIdade() throws Exception{
-		int idade = (int)ChronoUnit.YEARS.between(anoNascimento, LocalDate.now());
+	public int getIdade() throws Exception {
+		int idade = (int) ChronoUnit.YEARS.between(anoNascimento, LocalDate.now());
 		return idade;
 	}
-	
+
 	public void setNomeHospede(String nomeHospede) throws Exception {
-		
-		Excecoes.StringException(nomeHospede);
+
+		excecoes.StringException(nomeHospede);
 		this.nomeHospede = nomeHospede;
 	}
 
-
 	public void setEmailHospede(String emailHospede) throws Exception {
-		Excecoes.StringException(emailHospede);
+		excecoes.StringException(emailHospede);
 		this.emailHospede = emailHospede;
 	}
 
-
 	public void setAnoNascimento(String anoNascimento) throws Exception {
-		Excecoes.StringException(anoNascimento);
+		excecoes.StringException(anoNascimento);
 		LocalDate data = LocalDate.parse(anoNascimento, formatter);
 		this.anoNascimento = data;
 	}
-
-
 
 	@Override
 	public int hashCode() {
@@ -102,20 +114,15 @@ public class Hospede {
 		return result;
 	}
 
-
-
 	@Override
 	public boolean equals(Object novoHospede) {
-		if(novoHospede instanceof Hospede){
+		if (novoHospede instanceof Hospede) {
 			Hospede outro = (Hospede) novoHospede;
-			if(outro.getEmailHospede().equalsIgnoreCase(emailHospede)){
+			if (outro.getEmailHospede().equalsIgnoreCase(emailHospede)) {
 				return true;
 			}
 		}
 		return true;
 	}
-	
-	
-	
 
 }
