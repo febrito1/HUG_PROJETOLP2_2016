@@ -3,17 +3,20 @@ package restaurante;
 import java.util.ArrayList;
 import java.util.List;
 
-import excecoes.Excecoes;
+import excecoes.excecoes;
 
 public class RefeicaoCompleta {
 
 	private String nomeRefeicao, descricaoRefeicao;
 	private List<Prato> listaPrato;
+	private excecoes excecoes;
 
 	public RefeicaoCompleta(String nomeRefeicao, String descricaoRefeicao) throws Exception {
 
-		Excecoes.StringException(nomeRefeicao);
-		Excecoes.StringException(descricaoRefeicao);
+		
+		excecoes = new excecoes();
+		excecoes.StringException(nomeRefeicao);
+		excecoes.StringException(descricaoRefeicao);
 
 		this.nomeRefeicao = nomeRefeicao;
 		this.descricaoRefeicao = descricaoRefeicao;
@@ -45,17 +48,17 @@ public class RefeicaoCompleta {
 	}
 
 	public void setNomeRefeicao(String nomeRefeicao) throws Exception {
-		Excecoes.StringException(nomeRefeicao);
+		excecoes.StringException(nomeRefeicao);
 		this.nomeRefeicao = nomeRefeicao;
 	}
 
 	public void setDescricaoRefeicao(String descricaoRefeicao) throws Exception {
-		Excecoes.StringException(descricaoRefeicao);
+		excecoes.StringException(descricaoRefeicao);
 		this.descricaoRefeicao = descricaoRefeicao;
 	}
 
 	public void setListaPrato(ArrayList<Prato> listaPrato) throws Exception {
-		Excecoes.verificaTamanhoArray(listaPrato);
+		excecoes.verificaTamanhoArray(listaPrato);
 		this.listaPrato = listaPrato;
 	}
 

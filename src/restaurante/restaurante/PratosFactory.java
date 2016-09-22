@@ -1,7 +1,4 @@
-
 package restaurante;
-
-import excecoes.Excecoes;
 
 public class PratosFactory {
 
