@@ -1,22 +1,24 @@
 package quarto;
 
-public enum TipoQuarto implements PrecoQuarto{
-	
-	LUXO{
+public enum TipoQuarto implements PrecoQuarto {
+
+	LUXO {
 		@Override
-		public double getPreco(){
+		public double getPreco() {
 			return 250.0;
 		}
 	},
-	SIMPLES{
+	
+	SIMPLES {
 		@Override
-		public double getPreco(){
+		public double getPreco() {
 			return 100.0;
 		}
 	},
-	PRESIDENCIAL{
+	
+	PRESIDENCIAL {
 		@Override
-		public double getPreco(){
+		public double getPreco() {
 			return 450.0;
 		}
 	}

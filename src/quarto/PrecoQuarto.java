@@ -1,8 +1,7 @@
 package quarto;
 
 public interface PrecoQuarto {
-
-	public double getPreco();
 	
+	public double getPreco();
 	
 }

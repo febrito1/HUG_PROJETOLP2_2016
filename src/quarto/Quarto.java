@@ -1,10 +1,10 @@
 package quarto;
 
-
-public class Quarto{
+public class Quarto {
 
 	private String ID;
 	private TipoQuarto tipo;
+
 	public Quarto(String ID, TipoQuarto tipo) {
 		this.ID = ID;
 		this.tipo = tipo;
@@ -17,8 +17,8 @@ public class Quarto{
 	public double getPreco() {
 		return tipo.getPreco();
 	}
-	
-	public String getTipo(){
+
+	public String getTipo() {
 		return tipo.name().toLowerCase();
 	}
 
@@ -33,9 +33,9 @@ public class Quarto{
 
 	@Override
 	public boolean equals(Object outroQuarto) {
-		if(outroQuarto instanceof Quarto){
+		if (outroQuarto instanceof Quarto) {
 			Quarto novo = (Quarto) outroQuarto;
-			if(novo.getID().equalsIgnoreCase(ID)){
+			if (novo.getID().equalsIgnoreCase(ID)) {
 				return true;
 			}
 		}
@@ -43,4 +43,3 @@ public class Quarto{
 	}
 
 }
-
