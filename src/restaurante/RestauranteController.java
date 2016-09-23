@@ -5,7 +5,6 @@ import java.util.HashSet;
 import java.util.List;
 
 import excecoes.ExcecaoRestaurante;
-import excecoes.Excecoes;
 
 public class RestauranteController {
 
@@ -13,7 +12,7 @@ public class RestauranteController {
 	private List<RefeicaoCompleta> refeicoes;
 	private RefeicaoFactory factoryRefeicao;
 	private PratosFactory factoryPratos;
-	private Excecoes excecoes = new Excecoes();
+	private ExcecaoRestaurante excecoes = new ExcecaoRestaurante();
 
 	public RestauranteController() {
 
@@ -21,7 +20,7 @@ public class RestauranteController {
 		this.refeicoes = new ArrayList<RefeicaoCompleta>();
 		this.factoryPratos = new PratosFactory();
 		this.factoryRefeicao = new RefeicaoFactory();
-
+		this.excecoes = new ExcecaoRestaurante();
 	}
 
 	public void iniciaSistema(){
@@ -29,7 +28,7 @@ public class RestauranteController {
 
 	public boolean cadastraPrato(String nome, double preco, String descricao) throws Exception {
 		
-		ExcecaoRestaurante.CadastroInvalidoPrato(nome, descricao, preco);
+		excecoes.CadastroInvalidoPrato(nome, descricao, preco);
 		Prato prato = factoryPratos.criaPrato(nome, preco, descricao);
 		excecoes.verificaPrato(prato);
 		return cardapio.add(prato);
@@ -76,7 +75,7 @@ public class RestauranteController {
 	}
 
 	public void cadastraRefeicao(String nome, String descricao, String componentes) throws Exception {
-		ExcecaoRestaurante.CadastroInvalidoRefeicao(nome, descricao, componentes);
+		excecoes.CadastroInvalidoRefeicao(nome, descricao, componentes);
 		String[] pratos = componentes.split(";");
 		if(componentes == null || componentes.trim().isEmpty()){
 			throw new Exception("Erro no cadastro de refeicao. Componente(s) esta(o) vazio(s).");
@@ -102,7 +101,7 @@ public class RestauranteController {
 	}
 			
 	public String consultaRestaurante(String nome, String atributo) throws Exception {
-		ExcecaoRestaurante.ConsultaRestauranteException(nome, atributo);
+		excecoes.ConsultaRestauranteException(nome, atributo);
 		String informacaoConsulta = "";
 		if (buscaCardapio(nome) != null) {
 			Prato prato = buscaCardapio(nome);

@@ -49,7 +49,7 @@ public class Excecoes {
 	public void verificaPrato(Prato prato) throws Exception {
 
 		if (prato == null) {
-			throw new Exception("Prato nÃ£o pode ser nulo.");
+			throw new Exception("Prato nao pode ser nulo.");
 		}
 
 	}
