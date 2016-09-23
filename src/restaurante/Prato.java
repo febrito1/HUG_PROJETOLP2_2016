@@ -2,7 +2,7 @@ package restaurante;
 
 import java.util.HashSet;
 
-import excecoes.excecoes;
+import excecoes.Excecoes;
 
 public class Prato {
 
@@ -10,7 +10,7 @@ public class Prato {
 	private String nomePrato, descricaoPrato;
 	private double precoPrato;
 	private HashSet<Prato> pratos;
-	private excecoes excecoes = new excecoes();
+	private Excecoes excecoes = new Excecoes();
 	
 	
 	public Prato(String nomePrato, double precoPrato, String descricaoPrato) throws Exception {

@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 
 import excecoes.ExcecaoRestaurante;
-import excecoes.excecoes;
+import excecoes.Excecoes;
 
 public class RestauranteController {
 
@@ -13,7 +13,7 @@ public class RestauranteController {
 	private List<RefeicaoCompleta> refeicoes;
 	private RefeicaoFactory factoryRefeicao;
 	private PratosFactory factoryPratos;
-	private excecoes excecoes = new excecoes();
+	private Excecoes excecoes = new Excecoes();
 
 	public RestauranteController() {
 

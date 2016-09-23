@@ -22,7 +22,7 @@ public class SistemaController {
 	private Map<String, Hospede> clientesCadastrados;
 	private Map<String, Quarto> catalogoQuartos;
 	private Map<String, Quarto> quartosOcupados;
-	private excecoes excecoes = new excecoes();;
+	private Excecoes excecoes = new Excecoes();;
 	private List<Checkout> checkout;
 
 	private double totalArrecadado = 0.0;

@@ -3,18 +3,18 @@ package restaurante;
 import java.util.ArrayList;
 import java.util.List;
 
-import excecoes.excecoes;
+import excecoes.Excecoes;
 
 public class RefeicaoCompleta {
 
 	private String nomeRefeicao, descricaoRefeicao;
 	private List<Prato> listaPrato;
-	private excecoes excecoes;
+	private Excecoes excecoes;
 
 	public RefeicaoCompleta(String nomeRefeicao, String descricaoRefeicao) throws Exception {
 
 		
-		excecoes = new excecoes();
+		excecoes = new Excecoes();
 		excecoes.StringException(nomeRefeicao);
 		excecoes.StringException(descricaoRefeicao);
 

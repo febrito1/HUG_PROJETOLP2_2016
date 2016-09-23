@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
-import excecoes.excecoes;
+import excecoes.Excecoes;
 import quarto.Quarto;
 
 public class Hospede {
@@ -15,7 +15,7 @@ public class Hospede {
 	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 	private String nomeHospede, emailHospede;
 	private List<Estadia> estadias;
-	private excecoes excecoes = new excecoes();
+	private Excecoes excecoes = new Excecoes();
 
 	public Hospede(String nomeHospede, String emailHospede, String anoNascimento) throws Exception {
 
