@@ -1,39 +1,29 @@
 package restaurante;
 
-import excecoes.*;
-import java.util.Set;
 import java.util.HashSet;
 
+import excecoes.excecoes;
+
 public class Prato {
+
 
 	private String nomePrato, descricaoPrato;
 	private double precoPrato;
 	private HashSet<Prato> pratos;
-	private TipoPrato tipoPrato;
+	private excecoes excecoes = new excecoes();
 	
 	
-	public Prato(String nomePrato, double precoPrato, String descricaoPrato) throws Exception{
+	public Prato(String nomePrato, double precoPrato, String descricaoPrato) throws Exception {
 		
-		Excecoes.StringException(nomePrato);
-		Excecoes.doubleException(precoPrato);
-		Excecoes.StringException(descricaoPrato);
+		
+		excecoes.StringException(nomePrato);
+		excecoes.doubleException(precoPrato);
+		excecoes.StringException(descricaoPrato);
 		
 		this.nomePrato = nomePrato;
 		this.precoPrato = precoPrato;
 		this.descricaoPrato = descricaoPrato;
-		
-	}
-	
-	public Prato(String nomePrato, double precoPrato, String descricaoPrato, TipoPrato tipoPrato) throws Exception {
-		
-		Excecoes.StringException(nomePrato);
-		Excecoes.doubleException(precoPrato);
-		Excecoes.StringException(descricaoPrato);
-		
-		this.nomePrato = nomePrato;
-		this.precoPrato = precoPrato;
-		this.descricaoPrato = descricaoPrato;
-		this.setTipoPrato(tipoPrato);
+		this.pratos = new HashSet<>();
 		
 	}
 	
@@ -103,12 +93,6 @@ public class Prato {
 		this.pratos = pratos;
 	}
 
-	public TipoPrato getTipoPrato() {
-		return tipoPrato;
-	}
-
-	public void setTipoPrato(TipoPrato tipoPrato) {
-		this.tipoPrato = tipoPrato;
-	}
+	
 	
 }

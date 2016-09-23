@@ -1,5 +1,7 @@
 package restaurante;
 
+import restaurante.RefeicaoCompleta;
+
 public class ExcecaoRestaurante {
 	private RefeicaoCompleta refeicao;
 	

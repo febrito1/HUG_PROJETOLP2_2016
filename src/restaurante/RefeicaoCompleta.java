@@ -3,22 +3,25 @@ package restaurante;
 import java.util.ArrayList;
 import java.util.List;
 
-import excecoes.Excecoes;
+import excecoes.excecoes;
 
 public class RefeicaoCompleta {
 
 	private String nomeRefeicao, descricaoRefeicao;
 	private List<Prato> listaPrato;
+	private excecoes excecoes;
 
 	public RefeicaoCompleta(String nomeRefeicao, String descricaoRefeicao) throws Exception {
 
-		Excecoes.StringException(nomeRefeicao);
-		Excecoes.StringException(descricaoRefeicao);
+		
+		excecoes = new excecoes();
+		excecoes.StringException(nomeRefeicao);
+		excecoes.StringException(descricaoRefeicao);
 
 		this.nomeRefeicao = nomeRefeicao;
 		this.descricaoRefeicao = descricaoRefeicao;
-		// this.componentes = componentes;
-		this.listaPrato = listaPrato;
+		
+		this.listaPrato = new ArrayList<>();
 
 	}
 
@@ -45,17 +48,17 @@ public class RefeicaoCompleta {
 	}
 
 	public void setNomeRefeicao(String nomeRefeicao) throws Exception {
-		Excecoes.StringException(nomeRefeicao);
+		excecoes.StringException(nomeRefeicao);
 		this.nomeRefeicao = nomeRefeicao;
 	}
 
 	public void setDescricaoRefeicao(String descricaoRefeicao) throws Exception {
-		Excecoes.StringException(descricaoRefeicao);
+		excecoes.StringException(descricaoRefeicao);
 		this.descricaoRefeicao = descricaoRefeicao;
 	}
 
 	public void setListaPrato(ArrayList<Prato> listaPrato) throws Exception {
-		Excecoes.verificaTamanhoArray(listaPrato);
+		excecoes.verificaTamanhoArray(listaPrato);
 		this.listaPrato = listaPrato;
 	}
 
@@ -68,9 +71,13 @@ public class RefeicaoCompleta {
 		for (Prato prato : listaPrato) {
 			total += prato.getPrecoPrato();
 		}
-		return total;
+		return total * 0.9 ;
 	}
-
+	public String getNomePratos(){
+		for (Prato prato : listaPrato) {
+			return prato.getNomePrato();
+		}return null;
+	}
 	@Override
 	public String toString() {
 
@@ -95,7 +102,19 @@ public class RefeicaoCompleta {
 		}
 		return false;
 	}
+	public String informacaoRefeicao() {
+		String info = "";
+		info = this.descricaoRefeicao.substring(0, this.descricaoRefeicao.length() - 1);
+		info += "." + " Serao servidos: ";
+		for (int i = 0; i < listaPrato.size(); i++)
+			if (!(i == listaPrato.size() - 1)) {
+				info += "(" + (i + 1) + ") " + listaPrato.get(i).getNomePrato() + ", ";
+			} else {
+				info += "(" + (i + 1) + ") " + listaPrato.get(i).getNomePrato() + ".";
+			}
 
+		return info;
+	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;

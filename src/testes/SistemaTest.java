@@ -9,7 +9,7 @@ import org.junit.Test;
 import cliente.Hospede;
 import quarto.Quarto;
 import quarto.TipoQuarto;
-import sistema.SistemaController;
+import hotel.SistemaController;
 
 public class SistemaTest {
 	private Hospede hospede;
