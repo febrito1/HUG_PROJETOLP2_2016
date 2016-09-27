@@ -5,37 +5,39 @@ import java.util.HashSet;
 import java.util.List;
 
 import excecoes.ExcecaoRestaurante;
+import excecoes.excecoes;
 
-public class RestauranteController {
+public class RestauranteController implements Comparable<Alimentacao>{
 
-	private HashSet<Prato> cardapio;
+	private HashSet<Alimentacao> cardapio;
 	private List<RefeicaoCompleta> refeicoes;
 	private RefeicaoFactory factoryRefeicao;
 	private PratosFactory factoryPratos;
-	private ExcecaoRestaurante excecoes = new ExcecaoRestaurante();
+	private excecoes excecoes = new excecoes();
 
 	public RestauranteController() {
 
-		this.cardapio = new HashSet<Prato>();
+		this.cardapio = new HashSet<Alimentacao>();
 		this.refeicoes = new ArrayList<RefeicaoCompleta>();
 		this.factoryPratos = new PratosFactory();
 		this.factoryRefeicao = new RefeicaoFactory();
-		this.excecoes = new ExcecaoRestaurante();
+
 	}
 
-	public void iniciaSistema(){
+	public void iniciaSistema() {
+
 	}
 
 	public boolean cadastraPrato(String nome, double preco, String descricao) throws Exception {
-		
-		excecoes.CadastroInvalidoPrato(nome, descricao, preco);
-		Prato prato = factoryPratos.criaPrato(nome, preco, descricao);
+
+		ExcecaoRestaurante.CadastroInvalidoPrato(nome, descricao, preco);
+		Alimentacao prato = factoryPratos.criaPrato(nome, preco, descricao);
 		excecoes.verificaPrato(prato);
 		return cardapio.add(prato);
 	}
 
-	public boolean removeCardapio(Prato prato) {
-		for (Prato removeprato : cardapio) {
+	public boolean removeCardapio(Alimentacao prato) {
+		for (Alimentacao removeprato : cardapio) {
 			if (removeprato.equals(prato)) {
 				removeprato.equals(removeprato);
 				return true;
@@ -44,21 +46,13 @@ public class RestauranteController {
 		return false;
 	}
 
-	public double compraPrato(Prato prato) throws Exception {
-		excecoes.verificaPrato(prato);
-		if (!(buscaPrato(prato))) {
-			throw new Exception("Não existe esse prato no cardapio.");
-		}
-		return prato.getPrecoPrato() - (prato.getPrecoPrato() * 0.1);
-	}
-
-	public boolean buscaPrato(Prato prato) {
+	public boolean buscaPrato(Alimentacao prato) {
 		return cardapio.contains(prato);
 	}
 
-	public Prato buscaCardapio(String nome) {
-		for (Prato prato : cardapio) {
-			if (nome.equalsIgnoreCase(prato.getNomePrato())) {
+	public Alimentacao buscaCardapio(String nome) {
+		for (Alimentacao prato : cardapio) {
+			if (nome.equalsIgnoreCase(prato.getNome())) {
 				return prato;
 			}
 		}
@@ -67,7 +61,7 @@ public class RestauranteController {
 
 	public RefeicaoCompleta buscaRefeicao(String nome) {
 		for (RefeicaoCompleta refeicao : refeicoes) {
-			if (nome.equalsIgnoreCase(refeicao.getNomeRefeicao())) {
+			if (nome.equalsIgnoreCase(refeicao.getNome())) {
 				return refeicao;
 			}
 		}
@@ -75,51 +69,54 @@ public class RestauranteController {
 	}
 
 	public void cadastraRefeicao(String nome, String descricao, String componentes) throws Exception {
-		excecoes.CadastroInvalidoRefeicao(nome, descricao, componentes);
+		ExcecaoRestaurante.CadastroInvalidoRefeicao(nome, descricao, componentes);
+		double totalPreco = 0.0;
 		String[] pratos = componentes.split(";");
-		if(componentes == null || componentes.trim().isEmpty()){
+		if (componentes == null || componentes.trim().isEmpty()) {
 			throw new Exception("Erro no cadastro de refeicao. Componente(s) esta(o) vazio(s).");
 		}
 		if (pratos.length < 3 || pratos.length > 4) {
 			throw new Exception(
 					"Erro no cadastro de refeicao completa. Uma refeicao completa deve possuir no minimo 3 e no maximo 4 pratos.");
 		}
+
+		RefeicaoCompleta refeicao = factoryRefeicao.criaRefeicao(nome, descricao);
 		for (String prato : pratos) {
 			if (buscaCardapio(prato) == null) {
 				throw new Exception(
 						"Erro no cadastro de refeicao. So eh possivel cadastrar refeicoes com pratos ja cadastrados.");
+
 			}
 
-		}
+			Alimentacao novoPrato = buscaCardapio(nome);
+			totalPreco += novoPrato.getPreco();
+			refeicao.adicionaPrato(prato);
 
-		RefeicaoCompleta refeicao = factoryRefeicao.criaRefeicao(nome, descricao);
-
-		refeicoes.add(refeicao);
-		for (String outroPrato : pratos) {
-			refeicao.adicionaPrato(buscaCardapio(outroPrato));
 		}
+		
+		refeicao.setPreco(totalPreco);
+		cardapio.add(refeicao);
 	}
-			
+
 	public String consultaRestaurante(String nome, String atributo) throws Exception {
-		excecoes.ConsultaRestauranteException(nome, atributo);
+		ExcecaoRestaurante.ConsultaRestauranteException(nome, atributo);
 		String informacaoConsulta = "";
 		if (buscaCardapio(nome) != null) {
-			Prato prato = buscaCardapio(nome);
+			Alimentacao prato = buscaCardapio(nome);
 			if (atributo.equalsIgnoreCase("preco")) {
-				double tado = prato.getPrecoPrato();
+				double tado = prato.getPreco();
 				informacaoConsulta = String.format("R$%.2f", tado);
-				
-				
+
 			}
 			if (atributo.equalsIgnoreCase("descricao")) {
-				informacaoConsulta += prato.getDescricaoPrato();
+				informacaoConsulta += prato.getDescricao();
 			}
 		}
 
 		if (buscaRefeicao(nome) != null) {
 			RefeicaoCompleta refeicao = buscaRefeicao(nome);
 			if (atributo.equalsIgnoreCase("preco")) {
-				double i = refeicao.calculaPrecoTotal();
+				double i = refeicao.getPreco();
 				informacaoConsulta = String.format("R$%.2f", i);
 			}
 			if (atributo.equalsIgnoreCase("descricao")) {
@@ -127,6 +124,9 @@ public class RestauranteController {
 			}
 		}
 		return informacaoConsulta;
+	}
+	public int compareTo(Alimentacao){
+		
 	}
 
 	public void fechaSistema() {

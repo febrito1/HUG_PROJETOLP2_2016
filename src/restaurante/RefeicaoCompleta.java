@@ -3,92 +3,55 @@ package restaurante;
 import java.util.ArrayList;
 import java.util.List;
 
-import excecoes.Excecoes;
+import excecoes.excecoes;
 
-public class RefeicaoCompleta {
+public class RefeicaoCompleta extends Alimentacao {
 
-	private String nomeRefeicao, descricaoRefeicao;
-	private List<Prato> listaPrato;
-	private Excecoes excecoes;
+	private List<String> listaPrato;
+	private excecoes excecoes;
+	private double totalPrecoPratos;
 
-	public RefeicaoCompleta(String nomeRefeicao, String descricaoRefeicao) throws Exception {
+	public RefeicaoCompleta(String nome, String descricao) throws Exception {
+		super(nome, descricao);
 
-		
-		excecoes = new Excecoes();
-		excecoes.StringException(nomeRefeicao);
-		excecoes.StringException(descricaoRefeicao);
-
-		this.nomeRefeicao = nomeRefeicao;
-		this.descricaoRefeicao = descricaoRefeicao;
-		
+		excecoes = new excecoes();
+		excecoes.StringException(nome);
+		excecoes.StringException(descricao);
+		this.totalPrecoPratos = 0;
 		this.listaPrato = new ArrayList<>();
 
 	}
 
 	public double calculaConta() {
-		double desconto = 0.1;
-		double contaAPagar = 0;
+		double desconto = 0.9;
 
-		for (Prato prato : listaPrato) {
-			contaAPagar += prato.getPrecoPrato();
-		}
-		return contaAPagar = contaAPagar * desconto;
+		return totalPrecoPratos * desconto;
 	}
 
-	public String getNomeRefeicao() {
-		return nomeRefeicao;
-	}
-
-	public String getDescricaoRefeicao() {
-		return descricaoRefeicao;
-	}
-
-	public List<Prato> getListaPrato() {
+	public List<String> getListaPrato() {
 		return listaPrato;
 	}
 
-	public void setNomeRefeicao(String nomeRefeicao) throws Exception {
-		excecoes.StringException(nomeRefeicao);
-		this.nomeRefeicao = nomeRefeicao;
-	}
-
-	public void setDescricaoRefeicao(String descricaoRefeicao) throws Exception {
-		excecoes.StringException(descricaoRefeicao);
-		this.descricaoRefeicao = descricaoRefeicao;
-	}
-
-	public void setListaPrato(ArrayList<Prato> listaPrato) throws Exception {
+	public void setListaPrato(ArrayList<String> listaPrato) throws Exception {
 		excecoes.verificaTamanhoArray(listaPrato);
 		this.listaPrato = listaPrato;
 	}
 
-	public void adicionaPrato(Prato prato) {
+	public void adicionaPrato(String prato) {
 		listaPrato.add(prato);
 	}
 
-	public double calculaPrecoTotal() {
-		double total = 0;
-		for (Prato prato : listaPrato) {
-			total += prato.getPrecoPrato();
-		}
-		return total * 0.9 ;
-	}
-	public String getNomePratos(){
-		for (Prato prato : listaPrato) {
-			return prato.getNomePrato();
-		}return null;
-	}
 	@Override
 	public String toString() {
 
 		String listaConcatena = "";
-		Prato objprato = null;
-		for (Prato prato : listaPrato) {
+		String objprato = null;
+		for (String prato : listaPrato) {
 			objprato = prato;
-			listaConcatena += objprato.getNomePrato() + "/n";
+			listaConcatena += getNome() + "/n";
 		}
 
-		return "Refeicao Completa: " + nomeRefeicao + ",- Descricao: " + descricaoRefeicao + "Lista de Pratos: \n"
+		return "Refeicao Completa: " + this.getNome() + ",- Descricao: " + this.getDescricao() + "Lista de Pratos: \n"
 				+ listaConcatena;
 	}
 
@@ -96,33 +59,44 @@ public class RefeicaoCompleta {
 	public boolean equals(Object refeicao) {
 		if (refeicao instanceof RefeicaoCompleta) {
 			RefeicaoCompleta novaRefeicao = (RefeicaoCompleta) refeicao;
-			if (novaRefeicao.getNomeRefeicao().equalsIgnoreCase(nomeRefeicao)) {
+			if (novaRefeicao.getNome().equalsIgnoreCase(getNome())) {
 				return true;
 			}
 		}
 		return false;
 	}
+
 	public String informacaoRefeicao() {
 		String info = "";
-		info = this.descricaoRefeicao.substring(0, this.descricaoRefeicao.length() - 1);
+		info = this.getDescricao().substring(0, this.getDescricao().length() - 1);
 		info += "." + " Serao servidos: ";
 		for (int i = 0; i < listaPrato.size(); i++)
 			if (!(i == listaPrato.size() - 1)) {
-				info += "(" + (i + 1) + ") " + listaPrato.get(i).getNomePrato() + ", ";
+				info += "(" + (i + 1) + ") " + listaPrato.get(i) + ", ";
 			} else {
-				info += "(" + (i + 1) + ") " + listaPrato.get(i).getNomePrato() + ".";
+				info += "(" + (i + 1) + ") " + listaPrato.get(i) + ".";
 			}
 
 		return info;
 	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((descricaoRefeicao == null) ? 0 : descricaoRefeicao.hashCode());
+		result = prime * result + ((getDescricao() == null) ? 0 : getDescricao().hashCode());
 		result = prime * result + ((listaPrato == null) ? 0 : listaPrato.hashCode());
-		result = prime * result + ((nomeRefeicao == null) ? 0 : nomeRefeicao.hashCode());
+		result = prime * result + ((getNome() == null) ? 0 : getNome().hashCode());
 		return result;
+	}
+
+	@Override
+	public double getPreco() {
+		return totalPrecoPratos;
+	}
+
+	public void setPreco(double preco) {
+		this.totalPrecoPratos = preco;
 	}
 
 }
