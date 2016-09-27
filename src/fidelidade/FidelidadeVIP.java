@@ -1,9 +1,8 @@
 package fidelidade;
 
-public class FidelidadePadrao implements CartaoFidelidade {
+public class FidelidadeVIP implements CartaoFidelidade {
 
 	private int pontos = 0;
-
 	
 	@Override
 	public int getPontos() {
@@ -12,19 +11,22 @@ public class FidelidadePadrao implements CartaoFidelidade {
 
 	@Override
 	public void addPontos(double preco) {
-		this.pontos += (int) (preco * 0.9);
+		pontos += (int) preco * 0.5;
 	}
-	
+
 	@Override
-	public double convertePontos(int pontos) throws Exception{
+	public double convertePontos(int pontos) throws Exception {	
 		if(pontos < 0) {
 			throw new Exception("mensagem do exception.");
 		}
 		if(getPontos() < pontos){
 			throw new Exception("mensagem do exception.");
 		}	
+		double convertePontos = pontos * 0.7;
 		
-		return pontos * 0.1;
+		convertePontos += ((int)(pontos/10)) * 0.5;
+		
+		return convertePontos;
 	}
 
 }

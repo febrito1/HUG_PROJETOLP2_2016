@@ -7,7 +7,7 @@ public interface CartaoFidelidade {
 	
 	public void addPontos(double preco);
 	
-	public double convertePontos(int pontos);
+	public double convertePontos(int pontos) throws Exception;
 
 	
 }
