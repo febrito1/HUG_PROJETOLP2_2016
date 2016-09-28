@@ -5,17 +5,16 @@ import java.util.List;
 
 import excecoes.Excecoes;
 
-
 public class RefeicaoCompleta extends Alimentacao {
 
 	private List<String> listaPrato;
-	private Excecoes excecoes = new Excecoes();
+	private Excecoes excecoes;
 	private double totalPrecoPratos;
 
 	public RefeicaoCompleta(String nome, String descricao) throws Exception {
 		super(nome, descricao);
 
-		excecoes = new excecoes();
+		excecoes = new Excecoes();
 		excecoes.StringException(nome);
 		excecoes.StringException(descricao);
 		this.totalPrecoPratos = 0;

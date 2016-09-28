@@ -1,7 +1,6 @@
 package restaurante;
 
 import java.util.HashSet;
-
 import excecoes.Excecoes;
 
 public class Prato extends Alimentacao{
@@ -40,6 +39,7 @@ public class Prato extends Alimentacao{
 	}
 
 
+	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;

@@ -3,6 +3,7 @@ package excecoes;
 import java.util.ArrayList;
 
 import cliente.Hospede;
+import restaurante.Alimentacao;
 import restaurante.Prato;
 
 public class Excecoes {
@@ -37,7 +38,7 @@ public class Excecoes {
 		}
 	}
 
-	public void verificaTamanhoArray(ArrayList<Prato> listaPrato) throws Exception {
+	public void verificaTamanhoArray(ArrayList<String> listaPrato) throws Exception {
 		if (listaPrato.size() < 3) {
 			throw new Exception("A lista de pratos nao pode ser menor que 3");
 		}
@@ -46,7 +47,7 @@ public class Excecoes {
 		}
 	}
 
-	public void verificaPrato(Prato prato) throws Exception {
+	public void verificaPrato(Alimentacao prato) throws Exception {
 
 		if (prato == null) {
 			throw new Exception("Prato nao pode ser nulo.");

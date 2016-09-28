@@ -15,6 +15,7 @@ public class RestauranteController {
 	private RefeicaoFactory factoryRefeicao;
 	private PratosFactory factoryPratos;
 	private Excecoes excecoes = new Excecoes();
+	private ExcecaoRestaurante exRestaurante = new ExcecaoRestaurante();
 
 	public RestauranteController() {
 
@@ -30,7 +31,7 @@ public class RestauranteController {
 
 	public boolean cadastraPrato(String nome, double preco, String descricao) throws Exception {
 
-		ExcecaoRestaurante.CadastroInvalidoPrato(nome, descricao, preco);
+		exRestaurante.CadastroInvalidoPrato(nome, descricao, preco);
 		Alimentacao prato = factoryPratos.criaPrato(nome, preco, descricao);
 		excecoes.verificaPrato(prato);
 		cardapio.add(prato);
@@ -78,7 +79,7 @@ public class RestauranteController {
 	}
 
 	public void cadastraRefeicao(String nome, String descricao, String componentes) throws Exception {
-		ExcecaoRestaurante.CadastroInvalidoRefeicao(nome, descricao, componentes);
+		exRestaurante.CadastroInvalidoRefeicao(nome, descricao, componentes);
 		double totalPreco = 0.0;
 		String[] pratos = componentes.split(";");
 
@@ -109,7 +110,7 @@ public class RestauranteController {
 	}
 
 	public String consultaRestaurante(String nome, String atributo) throws Exception {
-		ExcecaoRestaurante.ConsultaRestauranteException(nome, atributo);
+		exRestaurante.ConsultaRestauranteException(nome, atributo);
 		String informacaoConsulta = "";
 		if (buscaCardapio(nome) != null) {
 			Alimentacao novoAlimento = buscaCardapio(nome);

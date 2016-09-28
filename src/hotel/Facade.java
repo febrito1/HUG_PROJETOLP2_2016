@@ -3,7 +3,7 @@ package hotel;
 import java.util.List;
 
 import easyaccept.EasyAccept;
-import excecoes.excecoes;
+import excecoes.Excecoes;
 import restaurante.Alimentacao;
 import restaurante.Prato;
 import restaurante.RefeicaoCompleta;
@@ -100,7 +100,7 @@ public class Facade {
 		controler.fechaSistema();
 	}
 	public static void main(String[] args) {
-		args = new String[] { "hotel.Facade", "acceptance_hotel/test_uc1","acceptance_hotel/test_uc2","acceptance_hotel/teste_uc3", "acceptance_hotel/teste_uc4", "acceptance_hotel/teste_uc4_exception", "acceptance_hotel/testes_uc5.txt"};
+		args = new String[] { "hotel.Facade", "acceptance_hotel/test_uc1","acceptance_hotel/test_uc2","acceptance_hotel/teste_uc2_exception","acceptance_hotel/teste_uc3","acceptance_hotel/teste_uc3_exception", "acceptance_hotel/teste_uc4", "acceptance_hotel/teste_uc4_exception", "acceptance_hotel/testes_uc5.txt"};
 		EasyAccept.main(args);
 	}
 
