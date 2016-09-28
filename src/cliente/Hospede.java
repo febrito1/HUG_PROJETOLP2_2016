@@ -13,9 +13,9 @@ public class Hospede {
 
 	LocalDate anoNascimento, data;
 	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+	private Excecoes excecoes = new Excecoes();
 	private String nomeHospede, emailHospede;
 	private List<Estadia> estadias;
-	private Excecoes excecoes = new Excecoes();
 
 	public Hospede(String nomeHospede, String emailHospede, String anoNascimento) throws Exception {
 

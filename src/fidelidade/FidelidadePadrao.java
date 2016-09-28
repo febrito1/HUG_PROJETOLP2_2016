@@ -1,9 +1,16 @@
 package fidelidade;
 
+
+import java.text.DecimalFormat;
+
 public class FidelidadePadrao implements CartaoFidelidade {
 
 	private int pontos = 0;
-
+	private DecimalFormat decimal;
+	
+	public FidelidadePadrao() {
+		decimal = new DecimalFormat(".##");
+	}
 	
 	@Override
 	public int getPontos() {
@@ -16,7 +23,7 @@ public class FidelidadePadrao implements CartaoFidelidade {
 	}
 	
 	@Override
-	public double convertePontos(int pontos) throws Exception{
+	public String convertePontos(int pontos) throws Exception{
 		if(pontos < 0) {
 			throw new Exception("mensagem do exception.");
 		}
@@ -24,7 +31,12 @@ public class FidelidadePadrao implements CartaoFidelidade {
 			throw new Exception("mensagem do exception.");
 		}	
 		
-		return pontos * 0.1;
+		double descontoPontos = pontos* 0.1;
+		
+		
+		String resultado = String.format("R$%.2f", descontoPontos );
+			
+		return resultado;
 	}
 
 }

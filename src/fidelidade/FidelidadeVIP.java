@@ -1,8 +1,19 @@
 package fidelidade;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 public class FidelidadeVIP implements CartaoFidelidade {
 
+	
+	
 	private int pontos = 0;
+	
+	public FidelidadeVIP(){
+		
+	
+	}
+	
 	
 	@Override
 	public int getPontos() {
@@ -14,19 +25,42 @@ public class FidelidadeVIP implements CartaoFidelidade {
 		pontos += (int) preco * 0.5;
 	}
 
+	
+	public double desconto(double preco) throws Exception {
+		
+		double pontos = preco * 0.85;	
+		pontos += ((int)(pontos/100)) * 10;
+		BigDecimal decimal = new BigDecimal(pontos).setScale(2, RoundingMode.CEILING);
+		return decimal.doubleValue();
+		
+	}
+	
+	
 	@Override
-	public double convertePontos(int pontos) throws Exception {	
+	public String convertePontos(int pontos) throws Exception {	
 		if(pontos < 0) {
 			throw new Exception("mensagem do exception.");
 		}
 		if(getPontos() < pontos){
 			throw new Exception("mensagem do exception.");
 		}	
-		double convertePontos = pontos * 0.7;
 		
-		convertePontos += ((int)(pontos/10)) * 0.5;
+		double convertePontos = pontos * 0.7;	
+		convertePontos += ((int)(pontos/10)) * 0.5;	
+
 		
-		return convertePontos;
+		String resultado = String.format("R$%.2f", convertePontos);
+			
+		 return resultado;
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 }
