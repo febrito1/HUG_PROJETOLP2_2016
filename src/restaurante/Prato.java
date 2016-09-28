@@ -2,13 +2,13 @@ package restaurante;
 
 import java.util.HashSet;
 
-import excecoes.excecoes;
+import excecoes.Excecoes;
 
 public class Prato extends Alimentacao{
 
 	private double precoPrato;
 	private HashSet<Prato> pratos;
-	private excecoes excecoes = new excecoes();
+	private Excecoes excecoes = new Excecoes();
 	
 	
 	public Prato(String nomePrato, double precoPrato, String descricaoPrato) throws Exception {
@@ -40,7 +40,6 @@ public class Prato extends Alimentacao{
 	}
 
 
-	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;

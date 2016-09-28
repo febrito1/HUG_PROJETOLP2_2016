@@ -9,5 +9,5 @@ public interface CartaoFidelidade {
 	
 	public String convertePontos(int pontos) throws Exception;
 
-	
+	public double desconto(double preco);
 }

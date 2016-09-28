@@ -23,10 +23,11 @@ public class FidelidadeVIP implements CartaoFidelidade {
 	@Override
 	public void addPontos(double preco) {
 		pontos += (int) preco * 0.5;
+		
 	}
 
 	
-	public double desconto(double preco) throws Exception {
+	public double desconto(double preco) {
 		
 		double pontos = preco * 0.85;	
 		pontos += ((int)(pontos/100)) * 10;
@@ -46,21 +47,9 @@ public class FidelidadeVIP implements CartaoFidelidade {
 		}	
 		
 		double convertePontos = pontos * 0.7;	
-		convertePontos += ((int)(pontos/10)) * 0.5;	
-
-		
-		String resultado = String.format("R$%.2f", convertePontos);
-			
+		convertePontos += ((int)(pontos/10)) * 0.5;		
+		String resultado = String.format("R$%.2f", convertePontos);	
 		 return resultado;
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-
 }

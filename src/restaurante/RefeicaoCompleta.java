@@ -3,12 +3,13 @@ package restaurante;
 import java.util.ArrayList;
 import java.util.List;
 
-import excecoes.excecoes;
+import excecoes.Excecoes;
+
 
 public class RefeicaoCompleta extends Alimentacao {
 
 	private List<String> listaPrato;
-	private excecoes excecoes;
+	private Excecoes excecoes = new Excecoes();
 	private double totalPrecoPratos;
 
 	public RefeicaoCompleta(String nome, String descricao) throws Exception {
