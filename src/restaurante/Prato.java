@@ -2,59 +2,41 @@ package restaurante;
 
 import java.util.HashSet;
 
-import excecoes.Excecoes;
+import excecoes.excecoes;
 
-public class Prato {
+public class Prato extends Alimentacao{
 
-
-	private String nomePrato, descricaoPrato;
 	private double precoPrato;
 	private HashSet<Prato> pratos;
-	private Excecoes excecoes = new Excecoes();
+	private excecoes excecoes = new excecoes();
 	
 	
 	public Prato(String nomePrato, double precoPrato, String descricaoPrato) throws Exception {
-		
+		super(nomePrato, descricaoPrato);
 		
 		excecoes.StringException(nomePrato);
 		excecoes.doubleException(precoPrato);
 		excecoes.StringException(descricaoPrato);
 		
-		this.nomePrato = nomePrato;
+		
 		this.precoPrato = precoPrato;
-		this.descricaoPrato = descricaoPrato;
 		this.pratos = new HashSet<>();
 		
 	}
 	
-	public String getNomePrato() {
-		return nomePrato;
-	}
 
-	public String getDescricaoPrato() {
-		return descricaoPrato;
-	}
-
-	public double getPrecoPrato() {
+	public double getPreco() {
 		return precoPrato;
 	}
 
-	public void setNomePrato(String nomePrato) {
-		this.nomePrato = nomePrato;
-	}
-
-	public void setDescricaoPrato(String descricaoPrato) {
-		this.descricaoPrato = descricaoPrato;
-	}
-
-	public void setPrecoPrato(double precoPrato) {
+	public void setPreco(double precoPrato) {
 		this.precoPrato = precoPrato;
 	}
 	
 	@Override
 	public String toString() {
-		return "Prato: " + nomePrato + ", custa: " + precoPrato +
-				"Descricao: " + descricaoPrato;
+		return "Prato: " + super.getNome() + ", custa: " + precoPrato +
+				"Descricao: " + super.getDescricao();
 	}
 
 
@@ -62,8 +44,8 @@ public class Prato {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((descricaoPrato == null) ? 0 : descricaoPrato.hashCode());
-		result = prime * result + ((nomePrato == null) ? 0 : nomePrato.hashCode());
+		result = prime * result + ((super.getDescricao() == null) ? 0 : super.getDescricao().hashCode());
+		result = prime * result + ((super.getNome() == null) ? 0 : super.getNome().hashCode());
 		long temp;
 		temp = Double.doubleToLongBits(precoPrato);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
@@ -78,9 +60,9 @@ public class Prato {
 		}
 		Prato outro = (Prato) obj;
 		
-		if(outro.getNomePrato().equalsIgnoreCase(getNomePrato()) 
-				&& outro.getPrecoPrato() == getPrecoPrato() 
-				&& outro.getDescricaoPrato().equalsIgnoreCase(descricaoPrato)){
+		if(outro.getNome().equalsIgnoreCase(getNome()) 
+				&& outro.getPreco() == getPreco() 
+				&& outro.getDescricao().equalsIgnoreCase(getDescricao())){
 			return true;
 		}return false;
 	}
