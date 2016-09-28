@@ -74,6 +74,12 @@ public class Prato extends Alimentacao{
 		this.pratos = pratos;
 	}
 
+
+	@Override
+	public String informacaoDescricao() {
+		return getDescricao();
+	}
+
 	
 	
 }

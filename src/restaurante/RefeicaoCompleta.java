@@ -25,8 +25,12 @@ public class RefeicaoCompleta extends Alimentacao {
 
 	public double calculaConta() {
 		double desconto = 0.9;
+		double contaAPagar = 0;
+		for (String string : listaPrato) {
+			contaAPagar += getPreco();
+		}
+		return contaAPagar = contaAPagar * desconto;
 
-		return totalPrecoPratos * desconto;
 	}
 
 	public List<String> getListaPrato() {
@@ -67,10 +71,9 @@ public class RefeicaoCompleta extends Alimentacao {
 		return false;
 	}
 
-	public String informacaoRefeicao() {
+	public String informacaoDescricao() {
 		String info = "";
-		info = this.getDescricao().substring(0, this.getDescricao().length() - 1);
-		info += "." + " Serao servidos: ";
+		info = this.getDescricao() + " Serao servidos: ";
 		for (int i = 0; i < listaPrato.size(); i++)
 			if (!(i == listaPrato.size() - 1)) {
 				info += "(" + (i + 1) + ") " + listaPrato.get(i) + ", ";
@@ -93,9 +96,16 @@ public class RefeicaoCompleta extends Alimentacao {
 
 	@Override
 	public double getPreco() {
-		return totalPrecoPratos;
+		return totalPrecoPratos * 0.9;
 	}
-
+	
+	public double calculaPrecoTotal() {
+		double total = 0;
+		for (String string : listaPrato) {
+			total += getPreco();
+		}
+		return total * 0.9 ;
+	}
 	public void setPreco(double preco) {
 		this.totalPrecoPratos = preco;
 	}
