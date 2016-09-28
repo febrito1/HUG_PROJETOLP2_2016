@@ -1,6 +1,10 @@
 package hotel;
 
+import java.util.List;
+
 import easyaccept.EasyAccept;
+import excecoes.excecoes;
+import restaurante.Alimentacao;
 import restaurante.Prato;
 import restaurante.RefeicaoCompleta;
 import restaurante.RestauranteController;
@@ -39,8 +43,7 @@ public class Facade {
 	public void realizaCheckin(String email, int dias, String idQuarto, String tipoQuarto) throws Exception {
 		controler.realizaCheckin(email, dias, idQuarto, tipoQuarto);
 	}
-
-	public String getInfoHospedagem(String email, String atributo) throws Exception {
+	public String getInfoHospedagem(String email, String atributo) throws Exception{
 		return controler.getInfoHospedagem(email, atributo);
 	}
 
@@ -56,6 +59,7 @@ public class Facade {
 		return controler.consultaTransacoes(atributo, indice);
 	}
 
+	
 	public String consultaRestaurante(String nome, String atributo) throws Exception {
 		return controlerRestaurante.consultaRestaurante(nome, atributo);
 	}
@@ -68,31 +72,35 @@ public class Facade {
 		return controlerRestaurante.buscaRefeicao(nome);
 	}
 
-	public Prato buscaCardapio(String nome) {
+	public Alimentacao buscaCardapio(String nome) {
 		return controlerRestaurante.buscaCardapio(nome);
 	}
-
 	public boolean removeCardapio(Prato prato) {
 		return controlerRestaurante.removeCardapio(prato);
 	}
-
-	public boolean cadastraPrato(String nome, double preco, String descricao) throws Exception {
+	public boolean cadastraPrato(String nome,  double preco ,String descricao) throws Exception {
 		return controlerRestaurante.cadastraPrato(nome, preco, descricao);
 	}
-
-	public double compraPrato(Prato prato) throws Exception {
+	public double compraPrato(Alimentacao prato) throws Exception {
 		return controlerRestaurante.compraPrato(prato);
 	}
-
+	public void ordenaMenu(String tipoOrdenacao){
+		controlerRestaurante.ordenaMenu(tipoOrdenacao);
+	}
+	
+	public String consultaMenuRestaurante(){
+		return controlerRestaurante.consultaMenuRestaurante();
+	}
+	
+	public String realizaPedido(String id, String itemMenu){
+		return controler.realizaPedido(id, itemMenu);
+	}
+	
 	public void fechaSistema() {
 		controler.fechaSistema();
 	}
-
 	public static void main(String[] args) {
-		args = new String[] { "hotel.Facade", "acceptance_teste/test_uc1", "acceptance_teste/test_uc1",
-				"acceptance_teste/test_uc2", "acceptance_teste/teste_uc2_exception", "acceptance_teste/teste_uc3",
-				"acceptance_teste/teste_uc3_exception", "acceptance_teste/teste_uc4",
-				"acceptance_teste/teste_uc4_exception" };
+		args = new String[] { "hotel.Facade", "acceptance_hotel/test_uc1","acceptance_hotel/test_uc2","acceptance_hotel/teste_uc3", "acceptance_hotel/teste_uc4", "acceptance_hotel/teste_uc4_exception", "acceptance_hotel/testes_uc5.txt"};
 		EasyAccept.main(args);
 	}
 
