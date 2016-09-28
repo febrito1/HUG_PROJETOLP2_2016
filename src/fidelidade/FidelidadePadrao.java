@@ -21,10 +21,12 @@ public class FidelidadePadrao implements CartaoFidelidade {
 		this.pontos += (int) (preco * 0.9);
 	}
 	
+	@Override
 	public double desconto(double preco) {
 		return preco;
 	}
 	
+
 	@Override
 	public String convertePontos(int pontos) throws Exception{
 		if(pontos < 0) {

@@ -23,6 +23,8 @@ public class FidelidadePremium implements CartaoFidelidade {
 
 	}
 
+	
+	@Override
 	public double desconto(double preco) {
 		double pontos = preco * 0.90;
 		BigDecimal decimal = new BigDecimal(pontos).setScale(2, RoundingMode.CEILING);

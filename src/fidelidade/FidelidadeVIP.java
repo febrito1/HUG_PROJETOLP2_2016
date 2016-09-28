@@ -26,7 +26,7 @@ public class FidelidadeVIP implements CartaoFidelidade {
 		
 	}
 
-	
+	@Override
 	public double desconto(double preco) {
 		
 		double pontos = preco * 0.85;	
