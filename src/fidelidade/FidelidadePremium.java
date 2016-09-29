@@ -5,7 +5,11 @@ import java.math.RoundingMode;
 
 public class FidelidadePremium implements CartaoFidelidade {
 
-	private int pontos = 0;
+	private int pontos;
+
+	public FidelidadePremium(int pontos) {
+		this.pontos = pontos;
+	}
 
 	@Override
 	public int getPontos() {
@@ -26,8 +30,8 @@ public class FidelidadePremium implements CartaoFidelidade {
 	
 	@Override
 	public double desconto(double preco) {
-		double pontos = preco * 0.90;
-		BigDecimal decimal = new BigDecimal(pontos).setScale(2, RoundingMode.CEILING);
+		double desconto = preco * 0.90;
+		BigDecimal decimal = new BigDecimal(desconto).setScale(2, RoundingMode.CEILING);
 		return decimal.doubleValue();
 
 	}

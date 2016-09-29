@@ -113,17 +113,16 @@ public class SistemaController {
 	}
 
 	public String getInfo(String Info, String atributo) throws Exception {
-
-		if (!(clientesCadastrados.containsKey(Info))) {
+				if (!(clientesCadastrados.containsKey(Info))) {
 			throw new Exception("Erro na consulta de hospede. Hospede de email " + Info + " nao foi cadastrado(a).");
 		}
 
 		String informacao = "";
-
 		Hospede hospedeInfo = clientesCadastrados.get(Info);
-
+		
+		
 		switch (atributo.toLowerCase()) {
-
+		
 		case ("nome"):
 			informacao += hospedeInfo.getNomeHospede();
 			break;
@@ -135,6 +134,15 @@ public class SistemaController {
 		case ("data de nascimento"):
 			informacao += hospedeInfo.getAnoNascimento();
 			break;
+		case ("pontos"):
+			
+			informacao += hospedeInfo.getPontos();
+			break;	
+			
+		default:
+			System.out.println("inválido");
+			break;
+			
 		}
 		return informacao;
 	}
@@ -269,13 +277,18 @@ public String realizaCheckout(String email, String quarto) throws Exception {
 		for (Estadia estadia : estadias) {
 			if(estadia.getQuarto().getID().equals(quarto)){
 				
-				Checkout novoCheckout = new Checkout(clienteOperacao.getNomeHospede(), quarto,estadia.getQuarto().getPreco()*estadia.getQuantidadeDias(),
-						LocalDate.now());
+				double precoBruto = estadia.getQuarto().getPreco()*estadia.getQuantidadeDias();
+				
+				clienteOperacao.adicionaPontos(precoBruto);
+				double preco = clienteOperacao.precoDesconto(precoBruto);
+				Checkout novoCheckout = new Checkout(clienteOperacao.getNomeHospede(), quarto,preco,LocalDate.now());
 				checkouts.add(novoCheckout);
-				resultado = String.format("R$%.2f",estadia.getQuarto().getPreco() * estadia.getQuantidadeDias());
+				
+				resultado = String.format("R$%.2f",preco);
 				clienteOperacao.removeEstadia(quarto);
-				Totaltotal += estadia.getQuarto().getPreco() * estadia.getQuantidadeDias();
+				Totaltotal += preco;
 				quartosOcupados.remove(quarto);
+				clienteOperacao.mudaFidelidade();
 				break;
 			}
 		

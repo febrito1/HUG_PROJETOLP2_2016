@@ -6,7 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import cliente.Hospede;
-import junit.framework.Assert;
+
 import quarto.Quarto;
 
 public class HospedeTest {

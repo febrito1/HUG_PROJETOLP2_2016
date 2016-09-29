@@ -7,6 +7,10 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
 import excecoes.Excecoes;
+import fidelidade.CartaoFidelidade;
+import fidelidade.FidelidadePadrao;
+import fidelidade.FidelidadePremium;
+import fidelidade.FidelidadeVIP;
 import quarto.Quarto;
 
 public class Hospede {
@@ -16,6 +20,7 @@ public class Hospede {
 	private Excecoes excecoes = new Excecoes();
 	private String nomeHospede, emailHospede;
 	private List<Estadia> estadias;
+	private CartaoFidelidade fidelidade;
 
 	public Hospede(String nomeHospede, String emailHospede, String anoNascimento) throws Exception {
 
@@ -26,7 +31,8 @@ public class Hospede {
 		this.nomeHospede = nomeHospede;
 		this.emailHospede = emailHospede;
 		this.setAnoNascimento(anoNascimento);
-
+		
+		fidelidade = new FidelidadePadrao(0);
 		estadias = new ArrayList<>();
 	}
 
@@ -52,6 +58,33 @@ public class Hospede {
 		return precoTotal;
 	}
 
+	
+	
+	public void adicionaPontos(double preco){
+		fidelidade.addPontos(preco);
+	}
+	
+	public int getPontos(){
+		return fidelidade.getPontos();
+	}
+	
+	
+	public void mudaFidelidade(){
+			
+		if((getPontos() >= 350 && fidelidade.getPontos() <= 1000)){
+			fidelidade = new FidelidadePremium(fidelidade.getPontos());
+		}else if(getPontos() > 1000){
+			fidelidade = new FidelidadeVIP(fidelidade.getPontos());
+		}
+	}
+	
+	
+	public double precoDesconto(double preco) {
+		return fidelidade.desconto(preco);
+		
+	}
+	
+	
 	public List<Estadia> getEstadias() {
 		return estadias;
 	}

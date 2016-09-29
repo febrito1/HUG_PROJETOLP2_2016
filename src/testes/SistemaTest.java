@@ -3,12 +3,10 @@ package testes;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
 import cliente.Hospede;
 import quarto.Quarto;
-import quarto.TipoQuarto;
 import hotel.SistemaController;
 
 public class SistemaTest {

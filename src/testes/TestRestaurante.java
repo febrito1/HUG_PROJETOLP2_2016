@@ -6,7 +6,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import restaurante.Prato;
-import restaurante.RefeicaoCompleta;
 import restaurante.RestauranteController;
 
 public class TestRestaurante {

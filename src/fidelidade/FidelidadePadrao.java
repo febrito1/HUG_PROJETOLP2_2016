@@ -4,13 +4,13 @@ package fidelidade;
 
 public class FidelidadePadrao implements CartaoFidelidade {
 
-	private int pontos = 0;
+	private int pontos;
+
 	
-	
-	public FidelidadePadrao() {
-		
+	public FidelidadePadrao(int pontos) {
+		this.pontos = pontos;
 	}
-	
+
 	@Override
 	public int getPontos() {
 		return pontos;
@@ -18,7 +18,7 @@ public class FidelidadePadrao implements CartaoFidelidade {
 
 	@Override
 	public void addPontos(double preco) {
-		this.pontos += (int) (preco * 0.9);
+		this.pontos += (int) (preco * 0.1);
 	}
 	
 	@Override
