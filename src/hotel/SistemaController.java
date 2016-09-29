@@ -16,6 +16,8 @@ import cliente.Hospede;
 import quarto.Quarto;
 import quarto.QuartosFactory;
 import restaurante.Alimentacao;
+import restaurante.Prato;
+import restaurante.RefeicaoCompleta;
 import restaurante.RestauranteController;
 
 public class SistemaController {
@@ -26,7 +28,7 @@ public class SistemaController {
 	private Map<String, Hospede> clientesCadastrados;
 	private Map<String, Quarto> catalogoQuartos;
 	private Map<String, Quarto> quartosOcupados;
-	private Excecoes excecoes = new Excecoes();;
+	private excecoes excecoes = new excecoes();;
 	private List<Checkout> checkouts;
 
 	private double Totaltotal = 0.0;
@@ -342,6 +344,37 @@ public String realizaCheckout(String email, String quarto) throws Exception {
 		return resultado;
 	}
 	
+	public String consultaRestaurante(String nome, String atributo) throws Exception {
+		return controllerRestaurante.consultaRestaurante(nome, atributo);
+	}
+
+	public void cadastraRefeicao(String nome, String descricao, String componentes) throws Exception {
+		controllerRestaurante.cadastraRefeicao(nome, descricao, componentes);
+	}
+
+	public RefeicaoCompleta buscaRefeicao(String nome) {
+		return controllerRestaurante.buscaRefeicao(nome);
+	}
+
+	public Alimentacao buscaCardapio(String nome) {
+		return controllerRestaurante.buscaCardapio(nome);
+	}
+	public boolean removeCardapio(Prato prato) {
+		return controllerRestaurante.removeCardapio(prato);
+	}
+	public boolean cadastraPrato(String nome,  double preco ,String descricao) throws Exception {
+		return controllerRestaurante.cadastraPrato(nome, preco, descricao);
+	}
+	public double compraPrato(Alimentacao prato) throws Exception {
+		return controllerRestaurante.compraPrato(prato);
+	}
+	public void ordenaMenu(String tipoOrdenacao){
+		controllerRestaurante.ordenaMenu(tipoOrdenacao);
+	}
+	
+	public String consultaMenuRestaurante(){
+		return controllerRestaurante.consultaMenuRestaurante();
+	}
 	public String realizaPedido(String id, String itemMenu){
 		String resultado = "";
 		if(clientesCadastrados.containsKey(id)){
