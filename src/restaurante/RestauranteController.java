@@ -153,9 +153,7 @@ public class RestauranteController {
 		for (Alimentacao alimento : cardapio) {
 			if (itemMenu.equalsIgnoreCase(alimento.getNome())) {
 				totalPreco += alimento.getPreco();
-				System.out.println(totalPreco);
 			}
-			System.out.println(totalPreco);
 		}
 		return totalPreco;
 

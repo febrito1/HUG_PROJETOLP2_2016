@@ -20,7 +20,7 @@ expect "Algkot com vegetais;Artsoppa com panquecas;Bresaola com rucula e parmesa
 
 ordenaMenu tipoOrdenacao="Preco"
 
-"Rapadura;Espresso;Tapioca;Pudim de Leite;Bruschetta;Bresaola com rucula e parmesao;Tiramisu;Kanelbullar;Galeto com farofa;Artsoppa com panquecas;Penne ao pesto;Kotbullar com lingon;Delicia da serra;Carne de sol com fritas;Pasto italiano;Algkot com vegetais;Svensk mat" consultaMenuRestaurante
+expect "Rapadura;Espresso;Tapioca;Pudim de leite;Bruschetta;Bresaola com rucula e parmesao;Tiramisu;Kanelbullar;Galeto com farofa;Artsoppa com panquecas;Penne ao pesto;Kotbullar com lingon;Delicia da serra;Carne de sol com fritas;Pasto italiano;Algkot com vegetais;Svensk mat" consultaMenuRestaurante
 
 ##################################
 # Registro de pedido de hospedes #
@@ -50,13 +50,13 @@ expect "1A" consultaTransacoes atributo="Detalhes" indice=3
 
 expect "R$50,85" consultaTransacoes atributo="Total" indice=4
 expect "Alfred Nobel" consultaTransacoes atributo="Nome" indice=4
-expect "Delicia da Serra" consultaTransacoes atributo="Detalhes" indice=4
+expect "Delicia da serra" consultaTransacoes atributo="Detalhes" indice=4
 
 expect "R$3,00" consultaTransacoes atributo="Total" indice=5
 expect "Alfred Nobel" consultaTransacoes atributo="Nome" indice=5
 expect "Tapioca" consultaTransacoes atributo="Detalhes" indice=5
 
-"R$3,00" realizaPedido hospede="ines@brasil.com.br" itemMenu="Tapioca"
+expect "R$3,00" realizaPedido hospede="ines@brasil.com.br" itemMenu="Tapioca"
 expect "7" consultaTransacoes atributo="Quantidade"
 expect "R$3256,85" consultaTransacoes atributo="Total"
 expect "Sven Gudmar Svenson;Ines Brasil;Agnetha Faltskog;Alfred Nobel;Alfred Nobel;Alfred Nobel;Ines Brasil" consultaTransacoes atributo="Nome"

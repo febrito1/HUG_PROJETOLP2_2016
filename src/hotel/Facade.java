@@ -1,13 +1,9 @@
 package hotel;
 
-import java.util.List;
-
 import easyaccept.EasyAccept;
-import excecoes.Excecoes;
 import restaurante.Alimentacao;
 import restaurante.Prato;
 import restaurante.RefeicaoCompleta;
-import restaurante.RestauranteController;
 
 public class Facade {
 
@@ -98,7 +94,7 @@ public class Facade {
 		controller.fechaSistema();
 	}
 	public static void main(String[] args) {
-		args = new String[] { "hotel.Facade", "acceptance_hotel/test_uc1","acceptance_hotel/test_uc2","acceptance_hotel/testes_uc3.txt", "acceptance_hotel/teste_uc4", "acceptance_hotel/teste_uc4_exception", "acceptance_hotel/testes_uc5.txt","acceptance_hotel/teste_uc3_exception","acceptance_hotel/test_uc1_exception","acceptance_hotel/teste_uc2_exception"};
+		args = new String[] { "hotel.Facade", "acceptance_hotel/test_uc1","acceptance_hotel/test_uc2","acceptance_hotel/teste_uc3", "acceptance_hotel/teste_uc4", "acceptance_hotel/teste_uc4_exception", "acceptance_hotel/testes_uc5.txt","acceptance_hotel/teste_uc3_exception","acceptance_hotel/test_uc1_exception","acceptance_hotel/teste_uc2_exception"};
 		EasyAccept.main(args);
 	}
 

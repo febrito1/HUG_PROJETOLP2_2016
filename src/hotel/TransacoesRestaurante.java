@@ -3,25 +3,24 @@ package hotel;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-public class Checkout implements ControleDeGastos {
+public class TransacoesRestaurante implements ControleDeGastos {
+
 	
-	LocalDate dataCheckout;
+	private String nomeCliente, itemMenu;
+	private double totalGasto;
+	private LocalDate data;
 	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-	String nomeCliente;
-	String transacao;
-	double totalGasto;
 	
-
-	public Checkout(String nomeCliente, String transacao, double totalGasto, LocalDate dataCheckout){
+	public TransacoesRestaurante(String nomeCliente, String itemMenu, double totalGasto, LocalDate data) {
 		this.nomeCliente = nomeCliente;
-		this.transacao = transacao;
+		this.itemMenu = itemMenu;
 		this.totalGasto = totalGasto;
-		this.dataCheckout = dataCheckout;
-		
+		this.data = data;
 	}
-
+	
+	
 	public String getData() {
-		String dataCheckout = formatter.format(this.dataCheckout);
+		String dataCheckout = formatter.format(this.data);
 		return dataCheckout;
 	}
 
@@ -30,12 +29,11 @@ public class Checkout implements ControleDeGastos {
 	}
 
 	public String getTransacao() {
-		return transacao;
+		return itemMenu;
 	}
 	
 	public double getTotalGasto() {
 		return totalGasto;
 	}
-
 
 }

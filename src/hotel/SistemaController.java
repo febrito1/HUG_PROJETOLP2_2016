@@ -2,7 +2,6 @@ package hotel;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -28,16 +27,16 @@ public class SistemaController {
 	private Map<String, Hospede> clientesCadastrados;
 	private Map<String, Quarto> catalogoQuartos;
 	private Map<String, Quarto> quartosOcupados;
-	private excecoes excecoes = new excecoes();;
-	private List<Checkout> checkouts;
+	private Excecoes excecoes = new Excecoes();;
+	private List<ControleDeGastos> transacaoes;
 
-	private double Totaltotal = 0.0;
+	private double totalTransacao = 0.0;
 	private LocalDate dataNascimento;
 	private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
 	public SistemaController() {
 		controllerRestaurante = new RestauranteController();
-		checkouts = new ArrayList<>();
+		transacaoes = new ArrayList<>();
 		quartosOcupados = new HashMap<>();
 		catalogoQuartos = new HashMap<>();
 		clientesCadastrados = new HashMap<>();
@@ -173,11 +172,9 @@ public class SistemaController {
 		Hospede hospede = clientesCadastrados.get(email);
 
 		if (catalogoQuartos.containsKey(ID)) {
-			if (catalogoQuartos.get(ID).getTipo().equals(tipoQuarto)) {
-			}
-
+			
 			if (quartosOcupados.containsKey(ID)) {
-				throw new Exception("Erro ao realizar checkin. Quarto " + ID + " ja esta ocupado.");
+				throw new CheckinException("Quarto " + ID + " ja esta ocupado.");
 			}
 
 			Quarto quarto = catalogoQuartos.get(ID);
@@ -283,12 +280,13 @@ public String realizaCheckout(String email, String quarto) throws Exception {
 				
 				clienteOperacao.adicionaPontos(precoBruto);
 				double preco = clienteOperacao.precoDesconto(precoBruto);
-				Checkout novoCheckout = new Checkout(clienteOperacao.getNomeHospede(), quarto,preco,LocalDate.now());
-				checkouts.add(novoCheckout);
+				
+				ControleDeGastos novoCheckout = new Checkout(clienteOperacao.getNomeHospede(), quarto,preco,LocalDate.now());	
+				transacaoes.add(novoCheckout);
 				
 				resultado = String.format("R$%.2f",preco);
 				clienteOperacao.removeEstadia(quarto);
-				Totaltotal += preco;
+				totalTransacao += precoBruto;
 				quartosOcupados.remove(quarto);
 				clienteOperacao.mudaFidelidade();
 				break;
@@ -308,21 +306,20 @@ public String realizaCheckout(String email, String quarto) throws Exception {
 
 		case "quantidade":
 
-			resultado = Integer.toString(checkouts.size());
+			resultado = Integer.toString(transacaoes.size());
 			break;
 
 		case "total":
-			double valorTotal = 0.0;
 			
-				valorTotal = Totaltotal;
+				double valorTotal = totalTransacao;
 			
 			
 			resultado = String.format("R$%.2f", valorTotal);
 			break;
 
 		case "nome":
-			for (Checkout checkout : checkouts) {
-				resultado += checkout.getNomeCliente() + ";";
+			for (ControleDeGastos transacoes : transacaoes) {
+				resultado += transacoes.getNomeCliente() + ";";
 			}
 			if (resultado != "" && resultado.charAt(resultado.length() - 1) == ';') {
 				resultado = resultado.substring(0, resultado.length() - 1);
@@ -339,17 +336,20 @@ public String realizaCheckout(String email, String quarto) throws Exception {
 	public String consultaTransacoes(String operacao, int indice) throws Exception {
 
 		String resultado = "";
-		if (indice > checkouts.size() || indice < 0) {
+		if (indice > transacaoes.size() || indice < 0) {
 			throw new Exception("Erro na consulta de transacoes. Indice invalido.");
 		}
 		switch (operacao.toLowerCase()) {
 
 		case "total":
-			resultado = String.format("R$%.2f", checkouts.get(indice).getTotalGasto());
+			resultado = String.format("R$%.2f", transacaoes.get(indice).getTotalGasto());
 			break;
 		case "nome":
-			resultado = checkouts.get(indice).getNomeCliente();
+			resultado = transacaoes.get(indice).getNomeCliente();	
+			break;
 			
+		case("detalhes"):
+			resultado = transacaoes.get(indice).getTransacao();
 			break;
 		default:
 			break;
@@ -389,12 +389,23 @@ public String realizaCheckout(String email, String quarto) throws Exception {
 		return controllerRestaurante.consultaMenuRestaurante();
 	}
 	public String realizaPedido(String id, String itemMenu){
-		String resultado = "";
-		if(clientesCadastrados.containsKey(id)){
-			resultado = String.format("R$%.2f", controllerRestaurante.totalPedido(itemMenu));
-		}
-		return resultado;
-	}
+		  String resultado = "";
+		  double valorPedido = 0.0;
+		  if(clientesCadastrados.containsKey(id)){
+		   
+		   Hospede hospedeOperacao = clientesCadastrados.get(id);
+		   resultado = String.format("R$%.2f", controllerRestaurante.totalPedido(itemMenu));
+		   valorPedido = controllerRestaurante.totalPedido(itemMenu);
+		   hospedeOperacao.adicionaPontos(valorPedido);
+		   hospedeOperacao.precoDesconto(valorPedido);
+		   totalTransacao += valorPedido;
+		   ControleDeGastos gastoRestaurante = new TransacoesRestaurante(hospedeOperacao.getNomeHospede(), itemMenu, valorPedido, 
+				   LocalDate.now());
+		   transacaoes.add(gastoRestaurante);
+		   hospedeOperacao.mudaFidelidade();
+		  }
+		  return resultado;
+		 }
 	public void fechaSistema() {
 	}
 }
