@@ -20,10 +20,9 @@ public class FidelidadePremium implements CartaoFidelidade {
 	@Override
 	public void addPontos(double preco) {
 
-		if (preco > 100) {
-			this.pontos += (int) (preco / 10);
-		}
+		double pontosExtras = ((int)(preco/100)) * 10;
 		this.pontos += (int) (preco * 0.3);
+		this.pontos += pontosExtras;
 
 	}
 

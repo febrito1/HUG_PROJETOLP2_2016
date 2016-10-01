@@ -282,7 +282,7 @@ public String realizaCheckout(String email, String quarto) throws Exception {
 				System.out.println("CHECKOUT " + clienteOperacao.getNomeHospede() + " " + clienteOperacao.getPontos() + " " + clienteOperacao.getEmailHospede());
 				double preco = clienteOperacao.precoDesconto(precoBruto);
 				
-				ControleDeGastos novoCheckout = new Checkout(clienteOperacao.getNomeHospede(), quarto,precoBruto,LocalDate.now());	
+				ControleDeGastos novoCheckout = new Checkout(clienteOperacao.getNomeHospede(), quarto,preco,LocalDate.now());	
 				transacaoes.add(novoCheckout);
 				
 				resultado = String.format("R$%.2f",preco);
@@ -394,7 +394,7 @@ public String realizaCheckout(String email, String quarto) throws Exception {
 		   hospedeOperacao.adicionaPontos(valorPedido);
 		   System.out.println("RESTAURANTE: " + hospedeOperacao.getNomeHospede() + " " + hospedeOperacao.getPontos() + " " + hospedeOperacao.getEmailHospede());
 		   resultado += String.format("R$%.2f", hospedeOperacao.precoDesconto(valorPedido));
-		   ControleDeGastos gastoRestaurante = new TransacoesRestaurante(hospedeOperacao.getNomeHospede(), itemMenu, valorPedido, 
+		   ControleDeGastos gastoRestaurante = new TransacoesRestaurante(hospedeOperacao.getNomeHospede(), itemMenu, hospedeOperacao.precoDesconto(valorPedido), 
 				   LocalDate.now());
 		   transacaoes.add(gastoRestaurante);
 		   hospedeOperacao.mudaFidelidade();

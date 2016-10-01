@@ -26,8 +26,10 @@ public class FidelidadeVIP implements CartaoFidelidade {
 	@Override
 	public double desconto(double preco) {
 		
-		double desconto = ((int)(preco/100)) * 10;
-		desconto += preco * 0.85;	
+		 double desconto = ((int)(preco/100)) * 10;	  
+		  preco = preco * 0.85;	  
+		  desconto = preco - desconto;
+		  
 		BigDecimal decimal = new BigDecimal(desconto).setScale(2, RoundingMode.CEILING);
 		return decimal.doubleValue();
 		
