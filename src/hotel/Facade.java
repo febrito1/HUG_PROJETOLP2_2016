@@ -30,8 +30,8 @@ public class Facade {
 
 	}
 	
-	public void convertePontos(String email, int pontos) throws Exception{
-		controller.convertePontos(email, pontos);
+	public String convertePontos(String email, int pontos) throws Exception{
+		return controller.convertePontos(email, pontos);
 	}
 
 	public void removeHospede(String email) throws Exception {
