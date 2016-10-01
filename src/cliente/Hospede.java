@@ -57,7 +57,10 @@ public class Hospede {
 		}
 		return precoTotal;
 	}
-
+	
+	public String convertePontos(int pontos) throws Exception{
+		return fidelidade.convertePontos(pontos);
+	}
 	
 	
 	public void adicionaPontos(double preco){

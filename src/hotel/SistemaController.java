@@ -411,6 +411,15 @@ public String realizaCheckout(String email, String quarto) throws Exception {
 		return valor;
 	}
 	
+	public String convertePontos(String email, int pontos) throws Exception {
+		
+		// excecao de ID
+		// excecao de pontos	
+		Hospede hospedeOperecao = clientesCadastrados.get(email);
+		return hospedeOperecao.convertePontos(pontos);
+	}
+	
+	
 	public void fechaSistema() {
 	}
 }

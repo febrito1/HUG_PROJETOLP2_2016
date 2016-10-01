@@ -34,23 +34,27 @@ public class FidelidadePremium implements CartaoFidelidade {
 		return decimal.doubleValue();
 
 	}
-
+	
 	@Override
 	public String convertePontos(int pontos) throws Exception {
 
-		if (getPontos() < pontos) {
-			throw new Exception("mensagme de exception");
-		}
-
-		if (pontos < 0) {
-			throw new Exception("mensagem de exception");
-		}
-
 		double convertePontos = pontos * 0.3;
 		convertePontos += ((int) (pontos / 10)) * 0.20;
+		
+		removePontos(pontos);
+		
 		String resultado = String.format("R$%.2f", convertePontos);
 		return resultado;
 		
+	}
+	
+	
+	private void removePontos(int pontos) throws Exception {
+		if(pontos > getPontos()) {
+			throw new Exception("FUNCIONA MERDA.");
+		}	
+		this.pontos = getPontos() - pontos;
+	
 	}
 
 }

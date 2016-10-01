@@ -38,17 +38,20 @@ public class FidelidadeVIP implements CartaoFidelidade {
 	
 	@Override
 	public String convertePontos(int pontos) throws Exception {	
-		if(pontos < 0) {
-			throw new Exception("mensagem do exception.");
-		}
-		if(getPontos() < pontos){
-			throw new Exception("mensagem do exception.");
-		}	
 		
 		double convertePontos = pontos * 0.7;	
-		convertePontos += ((int)(pontos/10)) * 0.5;		
+		convertePontos += ((int)(pontos/10)) * 0.5;	
+		removePontos(pontos);
 		String resultado = String.format("R$%.2f", convertePontos);	
 		 return resultado;
+	}
+	
+	private void removePontos(int pontos) throws Exception {
+		if(pontos > getPontos()) {
+			throw new Exception("FUNCIONA MERDA.");
+		}	
+		this.pontos = getPontos() - pontos;
+	
 	}
 	
 }

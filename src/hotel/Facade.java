@@ -29,6 +29,10 @@ public class Facade {
 		controller.atualizaCadastro(id, atributo, valor);
 
 	}
+	
+	public void convertePontos(String email, int pontos) throws Exception{
+		controller.convertePontos(email, pontos);
+	}
 
 	public void removeHospede(String email) throws Exception {
 		controller.removeHospede(email);
@@ -94,7 +98,7 @@ public class Facade {
 		controller.fechaSistema();
 	}
 	public static void main(String[] args) {
-		args = new String[] { "hotel.Facade", "acceptance_hotel/test_uc1","acceptance_hotel/test_uc2","acceptance_hotel/teste_uc2_exception","acceptance_hotel/teste_uc3","acceptance_hotel/teste_uc4","acceptance_hotel/teste_uc4_exception","acceptance_hotel/testes_uc5.txt","acceptance_hotel/testes_uc6.txt","acceptance_hotel/test_uc1_exception","acceptance_hotel/teste_uc3_exception"};
+		args = new String[] { "hotel.Facade", "acceptance_hotel/test_uc1","acceptance_hotel/test_uc2","acceptance_hotel/teste_uc2_exception","acceptance_hotel/teste_uc3","acceptance_hotel/teste_uc4","acceptance_hotel/teste_uc4_exception","acceptance_hotel/testes_uc5.txt","acceptance_hotel/testes_uc6.txt","acceptance_hotel/testes_uc7.txt","acceptance_hotel/test_uc1_exception","acceptance_hotel/teste_uc3_exception"};
 		EasyAccept.main(args);
 	}
 

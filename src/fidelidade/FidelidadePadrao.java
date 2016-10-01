@@ -32,18 +32,19 @@ public class FidelidadePadrao implements CartaoFidelidade {
 
 	@Override
 	public String convertePontos(int pontos) throws Exception{
-		if(pontos < 0) {
-			throw new Exception("mensagem do exception.");
-		}
-		if(getPontos() < pontos){
-			throw new Exception("mensagem do exception.");
-		}	
-		
+				
 		double descontoPontos = pontos* 0.1;	
-		String resultado = String.format("R$%.2f", descontoPontos );		
+		String resultado = String.format("R$%.2f", descontoPontos);	
+		removePontos(pontos);
 		return resultado;
 	}
 	
+	private void removePontos(int pontos) throws Exception {
+		if(pontos > getPontos()) {
+			throw new Exception("FUNCIONA MERDA.");
+		}	
+		this.pontos = getPontos() - pontos;
 	
+	}
 
 }
