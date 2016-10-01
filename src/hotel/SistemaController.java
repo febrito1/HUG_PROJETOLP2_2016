@@ -30,7 +30,6 @@ public class SistemaController {
 	private Excecoes excecoes = new Excecoes();;
 	private List<ControleDeGastos> transacaoes;
 
-	private double totalTransacao = 0.0;
 	private LocalDate dataNascimento;
 	private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
@@ -96,6 +95,7 @@ public class SistemaController {
 
 			clientesCadastrados.remove(id);
 			clientesCadastrados.put(valor, clienteatualizado);
+			
 			break;
 
 		case ("data de nascimento"):
@@ -188,8 +188,8 @@ public class SistemaController {
 			Quarto quarto = factoryQuartos.criaQuarto(ID, tipoQuarto);
 			Estadia estadia = new Estadia(quarto, dias);
 			hospede.adicionaEstadia(estadia);
-			quartosOcupados.put(ID, quarto);
 			catalogoQuartos.put(ID, quarto);
+			quartosOcupados.put(ID, quarto);
 		}
 	}
 
@@ -279,14 +279,14 @@ public String realizaCheckout(String email, String quarto) throws Exception {
 				double precoBruto = estadia.getQuarto().getPreco()*estadia.getQuantidadeDias();
 				
 				clienteOperacao.adicionaPontos(precoBruto);
+				System.out.println("CHECKOUT " + clienteOperacao.getNomeHospede() + " " + clienteOperacao.getPontos() + " " + clienteOperacao.getEmailHospede());
 				double preco = clienteOperacao.precoDesconto(precoBruto);
 				
-				ControleDeGastos novoCheckout = new Checkout(clienteOperacao.getNomeHospede(), quarto,preco,LocalDate.now());	
+				ControleDeGastos novoCheckout = new Checkout(clienteOperacao.getNomeHospede(), quarto,precoBruto,LocalDate.now());	
 				transacaoes.add(novoCheckout);
 				
 				resultado = String.format("R$%.2f",preco);
 				clienteOperacao.removeEstadia(quarto);
-				totalTransacao += precoBruto;
 				quartosOcupados.remove(quarto);
 				clienteOperacao.mudaFidelidade();
 				break;
@@ -309,12 +309,8 @@ public String realizaCheckout(String email, String quarto) throws Exception {
 			resultado = Integer.toString(transacaoes.size());
 			break;
 
-		case "total":
-			
-				double valorTotal = totalTransacao;
-			
-			
-			resultado = String.format("R$%.2f", valorTotal);
+		case "total":		
+			resultado = String.format("R$%.2f", precoTotalOperacoes());
 			break;
 
 		case "nome":
@@ -394,11 +390,10 @@ public String realizaCheckout(String email, String quarto) throws Exception {
 		  if(clientesCadastrados.containsKey(id)){
 		   
 		   Hospede hospedeOperacao = clientesCadastrados.get(id);
-		   resultado = String.format("R$%.2f", controllerRestaurante.totalPedido(itemMenu));
 		   valorPedido = controllerRestaurante.totalPedido(itemMenu);
 		   hospedeOperacao.adicionaPontos(valorPedido);
-		   hospedeOperacao.precoDesconto(valorPedido);
-		   totalTransacao += valorPedido;
+		   System.out.println("RESTAURANTE: " + hospedeOperacao.getNomeHospede() + " " + hospedeOperacao.getPontos() + " " + hospedeOperacao.getEmailHospede());
+		   resultado += String.format("R$%.2f", hospedeOperacao.precoDesconto(valorPedido));
 		   ControleDeGastos gastoRestaurante = new TransacoesRestaurante(hospedeOperacao.getNomeHospede(), itemMenu, valorPedido, 
 				   LocalDate.now());
 		   transacaoes.add(gastoRestaurante);
@@ -406,6 +401,16 @@ public String realizaCheckout(String email, String quarto) throws Exception {
 		  }
 		  return resultado;
 		 }
+	
+	
+	public double precoTotalOperacoes(){
+		double valor = 0;
+		for (ControleDeGastos controleDeGastos : transacaoes) {
+			 valor += controleDeGastos.getTotalGasto();
+		}
+		return valor;
+	}
+	
 	public void fechaSistema() {
 	}
 }

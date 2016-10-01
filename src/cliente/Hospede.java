@@ -32,7 +32,7 @@ public class Hospede {
 		this.emailHospede = emailHospede;
 		this.setAnoNascimento(anoNascimento);
 		
-		fidelidade = new FidelidadePadrao(0);
+		fidelidade = new FidelidadePadrao();
 		estadias = new ArrayList<>();
 	}
 
@@ -151,7 +151,7 @@ public class Hospede {
 	public boolean equals(Object novoHospede) {
 		if (novoHospede instanceof Hospede) {
 			Hospede outro = (Hospede) novoHospede;
-			if (outro.getEmailHospede().equalsIgnoreCase(emailHospede)) {
+			if (outro.getEmailHospede().equalsIgnoreCase(this.emailHospede)) {
 				return true;
 			}
 		}

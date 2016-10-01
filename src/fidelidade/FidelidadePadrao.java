@@ -11,6 +11,9 @@ public class FidelidadePadrao implements CartaoFidelidade {
 		this.pontos = pontos;
 	}
 
+	public FidelidadePadrao() {
+	}
+
 	@Override
 	public int getPontos() {
 		return pontos;

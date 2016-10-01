@@ -22,15 +22,6 @@ public class RefeicaoCompleta extends Alimentacao {
 
 	}
 
-	public double calculaConta() {
-		double desconto = 0.9;
-		double contaAPagar = 0;
-		for (String string : listaPrato) {
-			contaAPagar += getPreco();
-		}
-		return contaAPagar = contaAPagar * desconto;
-
-	}
 
 	public List<String> getListaPrato() {
 		return listaPrato;
@@ -98,13 +89,6 @@ public class RefeicaoCompleta extends Alimentacao {
 		return totalPrecoPratos * 0.9;
 	}
 	
-	public double calculaPrecoTotal() {
-		double total = 0;
-		for (String string : listaPrato) {
-			total += getPreco();
-		}
-		return total * 0.9 ;
-	}
 	public void setPreco(double preco) {
 		this.totalPrecoPratos = preco;
 	}

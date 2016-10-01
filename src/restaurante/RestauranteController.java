@@ -152,7 +152,7 @@ public class RestauranteController {
 		double totalPreco = 0;
 		for (Alimentacao alimento : cardapio) {
 			if (itemMenu.equalsIgnoreCase(alimento.getNome())) {
-				totalPreco += alimento.getPreco();
+				totalPreco = alimento.getPreco();
 			}
 		}
 		return totalPreco;
