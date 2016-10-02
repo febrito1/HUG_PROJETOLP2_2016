@@ -31,7 +31,7 @@ public class Hospede {
 		this.nomeHospede = nomeHospede;
 		this.emailHospede = emailHospede;
 		this.setAnoNascimento(anoNascimento);
-		
+
 		fidelidade = new FidelidadePadrao();
 		estadias = new ArrayList<>();
 	}
@@ -57,37 +57,35 @@ public class Hospede {
 		}
 		return precoTotal;
 	}
-	
-	public String convertePontos(int pontos) throws Exception{
+
+	public String convertePontos(int pontos) throws Exception {
 		return fidelidade.convertePontos(pontos);
 	}
-	
-	
-	public void adicionaPontos(double preco){
+
+	public void adicionaPontos(double preco) {
 		fidelidade.addPontos(preco);
 	}
-	
-	public int getPontos(){
+
+	public int getPontos() {
 		return fidelidade.getPontos();
 	}
-	
-	
+
 	public void mudaFidelidade(){
-			
-		if((getPontos() >= 350 && fidelidade.getPontos() <= 1000)){
+	
+		if(getPontos() < 350){
+			fidelidade = new FidelidadePadrao(fidelidade.getPontos());
+		}else if((getPontos() >= 350 && getPontos() <= 1000)){
 			fidelidade = new FidelidadePremium(fidelidade.getPontos());
 		}else if(getPontos() > 1000){
 			fidelidade = new FidelidadeVIP(fidelidade.getPontos());
 		}
 	}
-	
-	
+
 	public double precoDesconto(double preco) {
 		return fidelidade.desconto(preco);
-		
+
 	}
-	
-	
+
 	public List<Estadia> getEstadias() {
 		return estadias;
 	}

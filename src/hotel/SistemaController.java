@@ -413,10 +413,11 @@ public String realizaCheckout(String email, String quarto) throws Exception {
 	
 	public String convertePontos(String email, int pontos) throws Exception {
 		
-		// excecao de ID
-		// excecao de pontos	
 		Hospede hospedeOperecao = clientesCadastrados.get(email);
-		return hospedeOperecao.convertePontos(pontos);
+		String resultado = hospedeOperecao.convertePontos(pontos);
+		hospedeOperecao.mudaFidelidade();
+		return resultado;
+		
 	}
 	
 	
