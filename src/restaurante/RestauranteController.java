@@ -7,15 +7,21 @@ import java.util.List;
 import excecoes.ExcecaoRestaurante;
 import excecoes.Excecoes;
 
+/**
+ * Gerencia o restaurante usando das classes de Alimentacao.
+ *
+ */
 public class RestauranteController {
-	private String tipoOrdenação = ""; 
+	private String tipoOrdenacao = ""; 
 	private List<Alimentacao> cardapio;
 	private RefeicaoFactory factoryRefeicao;
 	private PratosFactory factoryPratos;
 	private Excecoes excecoes = new Excecoes();
 	private ExcecaoRestaurante exRestaurante = new ExcecaoRestaurante();
 
-
+	/**
+	 * Inicia o controller.
+	 */
 	public RestauranteController() {
 
 		this.cardapio = new ArrayList<Alimentacao>();
@@ -23,21 +29,36 @@ public class RestauranteController {
 		this.factoryRefeicao = new RefeicaoFactory();
 
 	}
-
+	
 	public void iniciaSistema() {
 
 	}
 
+	/**
+	 * Adiciona um novo prato no cardapio.
+	 * 
+	 * @param String - nome
+	 * @param Double - preco
+	 * @param String - descricao
+	 * @return boolean - se conseguiu cadastrar, retorna true
+	 * @throws CadastroInvalidoPrato, verificaPrato
+	 */
 	public boolean cadastraPrato(String nome, double preco, String descricao) throws Exception {
 
 		exRestaurante.CadastroInvalidoPrato(nome, descricao, preco);
 		Alimentacao prato = factoryPratos.criaPrato(nome, preco, descricao);
 		excecoes.verificaPrato(prato);
 		cardapio.add(prato);
-		ordenaMenu(tipoOrdenação);
+		ordenaMenu(tipoOrdenacao);
 		return true;
 	}
 
+	/**
+	 * Remove um alimento do cardapio.
+	 * 
+	 * @param Alimentacao - prato
+	 * @return boolean - true se remover e false caso contrario 
+	 */
 	public boolean removeCardapio(Alimentacao prato) {
 		for (Alimentacao removeprato : cardapio) {
 			if (removeprato.equals(prato)) {
@@ -48,18 +69,37 @@ public class RestauranteController {
 		return false;
 	}
 
+	/**
+	 * Retorna o valor de uma alimentacao com desconto.
+	 * 
+	 * @param Alimentacao - prato
+	 * @return Double - preco
+	 * @throws verificaPrato, Exception
+	 */
 	public double compraPrato(Alimentacao prato) throws Exception {
 		excecoes.verificaPrato(prato);
 		if (!(buscaPrato(prato))) {
-			throw new Exception("Não existe esse prato no cardapio.");
+			throw new Exception("Nï¿½o existe esse prato no cardapio.");
 		}
 		return prato.getPreco() - (prato.getPreco() * 0.1);
 	}
 
+	/**
+	 * Retorna true se o alimento existir no cardapio e false caso contrario.
+	 * 
+	 * @param Alimentacao - prato
+	 * @return boolean
+	 */
 	public boolean buscaPrato(Alimentacao prato) {
 		return cardapio.contains(prato);
 	}
 
+	/**
+	 * Retorna uma Alimentacao do cardapio.
+	 * 
+	 * @param String - nome
+	 * @return Alimentacao - alimento
+	 */
 	public Alimentacao buscaCardapio(String nome) {
 		for (Alimentacao alimento : cardapio) {
 			if (nome.equalsIgnoreCase(alimento.getNome())) {
@@ -70,6 +110,14 @@ public class RestauranteController {
 	}
 
 
+	/**
+	 * Adiciona uma nova refeicao ao cardapio.
+	 * 
+	 * @param String - nome
+	 * @param String - descricao
+	 * @param String - componentes
+	 * @throws CadastroInvalidoRefeicao, Exception
+	 */
 	public void cadastraRefeicao(String nome, String descricao, String componentes) throws Exception {
 		exRestaurante.CadastroInvalidoRefeicao(nome, descricao, componentes);
 		double totalPreco = 0.0;
@@ -99,9 +147,17 @@ public class RestauranteController {
 
 		refeicao.setPreco(totalPreco);
 		cardapio.add(refeicao);
-		ordenaMenu(tipoOrdenação);
+		ordenaMenu(tipoOrdenacao);
 	}
 
+	/**
+	 * Consulta o preco ou descricao de um alimento do cardapio.
+	 * 
+	 * @param String - nome
+	 * @param String - atributo 
+	 * @return String - informacao da consulta
+	 * @throws ConsultaRestauranteException
+	 */
 	public String consultaRestaurante(String nome, String atributo) throws Exception {
 		exRestaurante.ConsultaRestauranteException(nome, atributo);
 		String informacaoConsulta = "";
@@ -118,19 +174,29 @@ public class RestauranteController {
 		return informacaoConsulta;
 	}
 
+	/**
+	 * Ordena o cardapio atraves do nome ou do preco.
+	 *
+	 * @param String - tipoOrdenacao
+	 */
 	public void ordenaMenu(String tipoOrdenacao) {
 		switch (tipoOrdenacao.toLowerCase()) {
 		case ("nome"):
 			Collections.sort(this.cardapio, new OrdenaAlfabeto());
-			this.tipoOrdenação = "nome";
+			this.tipoOrdenacao = "nome";
 			break;
 		case ("preco"):
-			this.tipoOrdenação = "preco";
+			this.tipoOrdenacao = "preco";
 			Collections.sort(cardapio, new OrdenaValor());
 			break;
 		}
 	}
 
+	/**
+	 * Retorna uma String contendo todos os itens do cardapio.
+	 * 
+	 * @return String - itens
+	 */
 	public String consultaMenuRestaurante() {
 		String ordenacao = "";
 		for (int i = 0; i < this.cardapio.size(); i++) {
@@ -143,6 +209,13 @@ public class RestauranteController {
 		return ordenacao;
 	}
 
+	/**
+	 * Retorna o valor de um item do menu.
+	 * 
+	 * @param String itemMenu
+	 * @return Double - preco total
+	 * @throws Exception
+	 */
 	public double totalPedido(String itemMenu) throws Exception{
 		double totalPreco = 0;
 		

@@ -141,7 +141,7 @@ public class SistemaController {
 			break;	
 			
 		default:
-			System.out.println("inválido");
+			System.out.println("invï¿½lido");
 			break;
 			
 		}
@@ -251,7 +251,7 @@ public class SistemaController {
 		return resultado;
 	}
 
-public String realizaCheckout(String email, String quarto) throws Exception {
+	public String realizaCheckout(String email, String quarto) throws Exception {
 		
 		if(email == null  || email.trim().isEmpty()) {
 			throw new Exception("Erro ao realizar checkout. Email do(a) hospede nao pode ser vazio.");
