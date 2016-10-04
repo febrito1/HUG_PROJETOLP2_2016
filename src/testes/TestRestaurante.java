@@ -63,7 +63,7 @@ public class TestRestaurante {
 			new Prato("Panqueca", 5.00, "deliciosas panquecas");
 			restaurante.compraPrato(prato);
 		}catch(Exception e){
-			assertEquals("Mensagem de excecao capturada.", "Não existe esse prato no cardapio.", e.getMessage());
+			assertEquals("Mensagem de excecao capturada.", "Nao existe esse prato no cardapio.", e.getMessage());
 		}
 	}
 	@Test

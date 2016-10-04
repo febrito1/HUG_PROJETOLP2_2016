@@ -79,7 +79,7 @@ public class RestauranteController {
 	public double compraPrato(Alimentacao prato) throws Exception {
 		excecoes.verificaPrato(prato);
 		if (!(buscaPrato(prato))) {
-			throw new Exception("N�o existe esse prato no cardapio.");
+			throw new Exception("Nao existe esse prato no cardapio.");
 		}
 		return prato.getPreco() - (prato.getPreco() * 0.1);
 	}
