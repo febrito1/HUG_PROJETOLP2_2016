@@ -5,6 +5,10 @@ import restaurante.Alimentacao;
 import restaurante.Prato;
 import restaurante.RefeicaoCompleta;
 
+/**
+ * 
+ * Facade que delega todas as funcionalidades do sistema ao SistemaController
+ */
 public class Facade {
 
 	private SistemaController controller;
@@ -27,7 +31,6 @@ public class Facade {
 
 	public void atualizaCadastro(String id, String atributo, String valor) throws Exception {
 		controller.atualizaCadastro(id, atributo, valor);
-
 	}
 	
 	public String convertePontos(String email, int pontos) throws Exception{
@@ -41,6 +44,7 @@ public class Facade {
 	public void realizaCheckin(String email, int dias, String idQuarto, String tipoQuarto) throws Exception {
 		controller.realizaCheckin(email, dias, idQuarto, tipoQuarto);
 	}
+	
 	public String getInfoHospedagem(String email, String atributo) throws Exception{
 		return controller.getInfoHospedagem(email, atributo);
 	}
@@ -56,7 +60,6 @@ public class Facade {
 	public String consultaTransacoes(String atributo, int indice) throws Exception {
 		return controller.consultaTransacoes(atributo, indice);
 	}
-
 	
 	public String consultaRestaurante(String nome, String atributo) throws Exception {
 		return controller.consultaRestaurante(nome, atributo);
@@ -73,15 +76,19 @@ public class Facade {
 	public Alimentacao buscaCardapio(String nome) {
 		return controller.buscaCardapio(nome);
 	}
+	
 	public boolean removeCardapio(Prato prato) {
 		return controller.removeCardapio(prato);
 	}
+	
 	public boolean cadastraPrato(String nome,  double preco ,String descricao) throws Exception {
 		return controller.cadastraPrato(nome, preco, descricao);
 	}
+	
 	public double compraPrato(Alimentacao prato) throws Exception {
 		return controller.compraPrato(prato);
 	}
+	
 	public void ordenaMenu(String tipoOrdenacao){
 		controller.ordenaMenu(tipoOrdenacao);
 	}
@@ -97,6 +104,7 @@ public class Facade {
 	public void fechaSistema() {
 		controller.fechaSistema();
 	}
+	
 	public static void main(String[] args) {
 		args = new String[] { "hotel.Facade", "acceptance_hotel/test_uc1","acceptance_hotel/test_uc2","acceptance_hotel/teste_uc2_exception","acceptance_hotel/teste_uc3","acceptance_hotel/teste_uc4","acceptance_hotel/teste_uc4_exception","acceptance_hotel/testes_uc5.txt","acceptance_hotel/testes_uc6.txt","acceptance_hotel/testes_uc7.txt","acceptance_hotel/test_uc1_exception","acceptance_hotel/teste_uc3_exception"};
 		EasyAccept.main(args);

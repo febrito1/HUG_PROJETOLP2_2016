@@ -2,11 +2,19 @@ package fidelidade;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-
+/**
+ * Classe que implementa CartaoFidelidade
+ * 
+ */
 public class FidelidadeVIP implements CartaoFidelidade {
 
 	private int pontos;
 	
+	/**
+	 * Contrutor de FidelidadeVIP
+	 * 
+	 * @param Int - pontos
+	 */
 	public FidelidadeVIP(int pontos) {
 		this.pontos = pontos;
 	}
@@ -46,6 +54,12 @@ public class FidelidadeVIP implements CartaoFidelidade {
 		 return resultado;
 	}
 	
+	/**
+	 * Acessa os pontos atuais e remove a quantidade passada como parametro.
+	 * 
+	 * @param int - pontos
+	 * @throws Exception
+	 */
 	private void removePontos(int pontos) throws Exception {
 		if(pontos > getPontos()) {
 			throw new Exception("FUNCIONA MERDA.");

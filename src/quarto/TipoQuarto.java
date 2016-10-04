@@ -1,5 +1,10 @@
 package quarto;
 
+/**
+ * Enum que contem os tipos de quarto e implementa PrecoQuarto para retornar
+ * o valor de cada tipo de quarto.
+ * 
+ */
 public enum TipoQuarto implements PrecoQuarto {
 
 	LUXO {

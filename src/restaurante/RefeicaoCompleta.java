@@ -5,12 +5,23 @@ import java.util.List;
 
 import excecoes.Excecoes;
 
+/**
+ * Classe para objetos do tipo RefeicaoCompleta que estende Alimentacao.
+ *
+ */
 public class RefeicaoCompleta extends Alimentacao {
 
 	private List<String> listaPrato;
 	private Excecoes excecoes;
 	private double totalPrecoPratos;
 
+	/**
+	 * Construtor de RefeicaoCompleta.
+	 * 
+	 * @param String - nome
+	 * @param String - descricao
+	 * @throws StringException
+	 */
 	public RefeicaoCompleta(String nome, String descricao) throws Exception {
 		super(nome, descricao);
 
@@ -22,45 +33,36 @@ public class RefeicaoCompleta extends Alimentacao {
 
 	}
 
-
+	/**
+	 * Retorna a lista de pratos da refeicao.
+	 * 
+	 * @return List<String> listaPrato
+	 */
 	public List<String> getListaPrato() {
 		return listaPrato;
 	}
 
+	/**
+	 * Troca a lista de pratos da refeicao.
+	 * 
+	 * @param ArrayList<String> listaPrato
+	 * @throws verificaTamanhoArray
+	 */
 	public void setListaPrato(ArrayList<String> listaPrato) throws Exception {
 		excecoes.verificaTamanhoArray(listaPrato);
 		this.listaPrato = listaPrato;
 	}
 
+	/**
+	 * Adiciona um prato a lista de pratos de uma refeicao.
+	 * 
+	 * @param String prato
+	 */
 	public void adicionaPrato(String prato) {
 		listaPrato.add(prato);
 	}
 
 	@Override
-	public String toString() {
-
-		String listaConcatena = "";
-		String objprato = null;
-		for (String prato : listaPrato) {
-			objprato = prato;
-			listaConcatena += getNome() + "/n";
-		}
-
-		return "Refeicao Completa: " + this.getNome() + ",- Descricao: " + this.getDescricao() + "Lista de Pratos: \n"
-				+ listaConcatena;
-	}
-
-	@Override
-	public boolean equals(Object refeicao) {
-		if (refeicao instanceof RefeicaoCompleta) {
-			RefeicaoCompleta novaRefeicao = (RefeicaoCompleta) refeicao;
-			if (novaRefeicao.getNome().equalsIgnoreCase(getNome())) {
-				return true;
-			}
-		}
-		return false;
-	}
-
 	public String informacaoDescricao() {
 		String info = "";
 		info = this.getDescricao() + " Serao servidos: ";
@@ -73,7 +75,21 @@ public class RefeicaoCompleta extends Alimentacao {
 
 		return info;
 	}
-
+	
+	/**
+	 * Modifca o preco da refeicao.
+	 * 
+	 * @param Double - preco
+	 */
+	public void setPreco(double preco) {
+		this.totalPrecoPratos = preco;
+	}
+	
+	@Override
+	public double getPreco() {
+		return totalPrecoPratos * 0.9;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -85,12 +101,28 @@ public class RefeicaoCompleta extends Alimentacao {
 	}
 
 	@Override
-	public double getPreco() {
-		return totalPrecoPratos * 0.9;
+	public String toString() {
+		
+		String listaConcatena = "";
+		String objprato = null;
+		for (String prato : listaPrato) {
+			objprato = prato;
+			listaConcatena += getNome() + "/n";
+		}
+		
+		return "Refeicao Completa: " + this.getNome() + ",- Descricao: " + this.getDescricao() + "Lista de Pratos: \n"
+		+ listaConcatena;
 	}
 	
-	public void setPreco(double preco) {
-		this.totalPrecoPratos = preco;
+	@Override
+	public boolean equals(Object refeicao) {
+		if (refeicao instanceof RefeicaoCompleta) {
+			RefeicaoCompleta novaRefeicao = (RefeicaoCompleta) refeicao;
+			if (novaRefeicao.getNome().equalsIgnoreCase(getNome())) {
+				return true;
+			}
+		}
+		return false;
 	}
-
+	
 }
