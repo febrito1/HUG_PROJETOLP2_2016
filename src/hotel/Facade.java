@@ -90,7 +90,7 @@ public class Facade {
 		return controller.consultaMenuRestaurante();
 	}
 	
-	public String realizaPedido(String id, String itemMenu){
+	public String realizaPedido(String id, String itemMenu) throws Exception{
 		return controller.realizaPedido(id, itemMenu);
 	}
 	

@@ -276,18 +276,17 @@ public String realizaCheckout(String email, String quarto) throws Exception {
 		for (Estadia estadia : estadias) {
 			if(estadia.getQuarto().getID().equals(quarto)){
 				
-				double precoBruto = estadia.getQuarto().getPreco()*estadia.getQuantidadeDias();
+				double precoBruto = estadia.getQuarto().getPreco()*estadia.getQuantidadeDias();	
 				
 				clienteOperacao.adicionaPontos(precoBruto);
-				System.out.println("CHECKOUT " + clienteOperacao.getNomeHospede() + " " + clienteOperacao.getPontos() + " " + clienteOperacao.getEmailHospede());
 				double preco = clienteOperacao.precoDesconto(precoBruto);
-				
 				ControleDeGastos novoCheckout = new Checkout(clienteOperacao.getNomeHospede(), quarto,preco,LocalDate.now());	
 				transacaoes.add(novoCheckout);
 				
 				resultado = String.format("R$%.2f",preco);
 				clienteOperacao.removeEstadia(quarto);
 				quartosOcupados.remove(quarto);
+				
 				clienteOperacao.mudaFidelidade();
 				break;
 			}
@@ -384,21 +383,24 @@ public String realizaCheckout(String email, String quarto) throws Exception {
 	public String consultaMenuRestaurante(){
 		return controllerRestaurante.consultaMenuRestaurante();
 	}
-	public String realizaPedido(String id, String itemMenu){
+	public String realizaPedido(String id, String itemMenu) throws Exception{
 		  String resultado = "";
-		  double valorPedido = 0.0;
-		  if(clientesCadastrados.containsKey(id)){
-		   
-		   Hospede hospedeOperacao = clientesCadastrados.get(id);
-		   valorPedido = controllerRestaurante.totalPedido(itemMenu);
-		   hospedeOperacao.adicionaPontos(valorPedido);
-		   System.out.println("RESTAURANTE: " + hospedeOperacao.getNomeHospede() + " " + hospedeOperacao.getPontos() + " " + hospedeOperacao.getEmailHospede());
-		   resultado += String.format("R$%.2f", hospedeOperacao.precoDesconto(valorPedido));
-		   ControleDeGastos gastoRestaurante = new TransacoesRestaurante(hospedeOperacao.getNomeHospede(), itemMenu, hospedeOperacao.precoDesconto(valorPedido), 
+		  double precoBruto = 0.0;
+		  if(!(clientesCadastrados.containsKey(id))){
+			  throw new Exception("Erro no realiza pedido. Nao contem este ");
+		  }
+		 
+		  Hospede hospedeOperacao = clientesCadastrados.get(id);
+		   precoBruto = controllerRestaurante.totalPedido(itemMenu);
+		   hospedeOperacao.adicionaPontos(precoBruto);
+		   double precoDesconto = hospedeOperacao.precoDesconto(precoBruto);
+		   resultado += String.format("R$%.2f", hospedeOperacao.precoDesconto(precoBruto));
+		   ControleDeGastos gastoRestaurante = new TransacoesRestaurante(hospedeOperacao.getNomeHospede(), itemMenu, precoDesconto, 
 				   LocalDate.now());
 		   transacaoes.add(gastoRestaurante);
+		  
 		   hospedeOperacao.mudaFidelidade();
-		  }
+		  
 		  return resultado;
 		 }
 	

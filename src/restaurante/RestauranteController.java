@@ -148,13 +148,19 @@ public class RestauranteController {
 		return ordenacao;
 	}
 
-	public double totalPedido(String itemMenu) {
+	public double totalPedido(String itemMenu) throws Exception{
 		double totalPreco = 0;
+		
 		for (Alimentacao alimento : cardapio) {
 			if (itemMenu.equalsIgnoreCase(alimento.getNome())) {
 				totalPreco = alimento.getPreco();
 			}
 		}
+		
+		if(totalPreco == 0){
+			throw new Exception("Nao contem este item nesse cardapio.");
+		}
+		
 		return totalPreco;
 
 	}
