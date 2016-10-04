@@ -22,7 +22,7 @@ public interface CartaoFidelidade {
 	public void addPontos(double preco);
 	
 	/**
-	 * Converte pontos em um desconto.
+	 * Converte pontos em um dinheiro.
 	 * 
 	 * @param int - pontos
 	 * @return String - desconto 

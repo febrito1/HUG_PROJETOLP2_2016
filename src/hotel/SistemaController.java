@@ -19,6 +19,10 @@ import restaurante.Prato;
 import restaurante.RefeicaoCompleta;
 import restaurante.RestauranteController;
 
+/**
+ * Classe que controla o sistema do hotel com suas funcionalidades
+ * 
+ */
 public class SistemaController {
 
 	private QuartosFactory factoryQuartos;
@@ -33,6 +37,9 @@ public class SistemaController {
 	private LocalDate dataNascimento;
 	private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
+	/**
+	 * Inicia o SistemaController
+	 */
 	public SistemaController() {
 		controllerRestaurante = new RestauranteController();
 		transacaoes = new ArrayList<>();
@@ -47,6 +54,15 @@ public class SistemaController {
 	public void iniciaSistema() {
 	}
 
+	/**
+	 * Cadastra um novo hospede na lista de clientes cadastrados.
+	 * 
+	 * @param String - nome
+	 * @param String - email
+	 * @param String - dataNascimento
+	 * @return String - email
+	 * @throws Exception
+	 */
 	public String cadastraHospede(String nome, String email, String dataNascimento) throws Exception {
 
 		excecoes.CadastroInvalidoException(nome);
@@ -61,6 +77,13 @@ public class SistemaController {
 		return email;
 	}
 
+	/**
+	 * Procura por um hospede cadastrado atraves do email.
+	 * 
+	 * @param String - email
+	 * @return String - email
+	 * @throws Exception
+	 */
 	public String buscaHospede(String email) throws Exception {
 		if (!clientesCadastrados.containsKey(email)) {
 			throw new Exception("Erro na consulta de hospede. Hospede de email " + email + " nao foi cadastrado(a).");
@@ -68,6 +91,12 @@ public class SistemaController {
 		return email;
 	}
 
+	/**
+	 * Remove um hospede cadastrado atraves do email.
+	 * 
+	 * @param String - email
+	 * @throws Exception
+	 */
 	public void removeHospede(String email) throws Exception {
 		if (!clientesCadastrados.containsKey(email)) {
 			throw new Exception("Erro na remocao do Hospede. Formato de email invalido.");
@@ -75,6 +104,14 @@ public class SistemaController {
 		clientesCadastrados.remove(email);
 	}
 
+	/**
+	 * Atualiza um atributo do hospede, esse atributo pode ser o nome, email ou data de nascimento.
+	 * 
+	 * @param String - id
+	 * @param String - atributo
+	 * @param String - valor
+	 * @throws Exception
+	 */
 	public void atualizaCadastro(String id, String atributo, String valor) throws Exception {
 		if (!clientesCadastrados.containsKey(id)) {
 			throw new Exception("Erro na consulta de hospede. Hospede de email " + id + " nao foi cadastrado(a).");
@@ -113,6 +150,13 @@ public class SistemaController {
 
 	}
 
+	/**
+	 * Retorna uma informacao de um clente cadastrado, a informacao pode ser o nome, email, data de nascimento ou os pontos do cartao fidelidade.
+	 * @param String - Info
+	 * @param String - atributo
+	 * @return String - informacao
+	 * @throws Exception
+	 */
 	public String getInfo(String Info, String atributo) throws Exception {
 				if (!(clientesCadastrados.containsKey(Info))) {
 			throw new Exception("Erro na consulta de hospede. Hospede de email " + Info + " nao foi cadastrado(a).");
@@ -141,13 +185,21 @@ public class SistemaController {
 			break;	
 			
 		default:
-			System.out.println("inv�lido");
+			System.out.println("invalido");
 			break;
 			
 		}
 		return informacao;
 	}
 
+	/**
+	 * Cria um novo quarto, delegando essa funcao para a factory de quarto.
+	 * 
+	 * @param String - ID
+	 * @param String - tipoQuarto
+	 * @return
+	 * @throws Exception
+	 */
 	public String criaQuarto(String ID, String tipoQuarto) throws Exception {
 		if (catalogoQuartos.containsKey(ID)) {
 			throw new Exception("O quarto de ID" + ID + " ja existe.");
@@ -156,6 +208,15 @@ public class SistemaController {
 		return ID;
 	}
 
+	/**
+	 * Realiza o chekin de um hospede criando uma nova estadia para o mesmo.
+	 * 
+	 * @param String - email
+	 * @param Int - dias
+	 * @param String - ID
+	 * @param String - tipoQuarto
+	 * @throws Exception
+	 */
 	public void realizaCheckin(String email, int dias, String ID, String tipoQuarto) throws Exception {
 		
 		excecoes.checkinIDException(ID);
@@ -193,6 +254,15 @@ public class SistemaController {
 		}
 	}
 
+	/**
+	 * Retorna uma informacao a cerca da hospedagem de um hospede, essa informacao pode ser sobre 
+	 * as hospedaogens aivas, valor total das hospedagens ou os quartos ocupados. 
+	 * 
+	 * @param String - email
+	 * @param String - atributo
+	 * @return String - informacao
+	 * @throws Exception
+	 */
 	public String getInfoHospedagem(String email, String atributo) throws Exception {
 		
 		excecoes.HospedagemAtivaException(email);
@@ -251,6 +321,14 @@ public class SistemaController {
 		return resultado;
 	}
 
+	/**
+	 * Realiza o checkout de um hospede e retorna uma String contendo o valor gasto nas estadias.
+	 * 
+	 * @param String - email
+	 * @param String - quarto
+	 * @return String - valor gasto
+	 * @throws Exception
+	 */
 	public String realizaCheckout(String email, String quarto) throws Exception {
 		
 		if(email == null  || email.trim().isEmpty()) {
@@ -296,7 +374,12 @@ public class SistemaController {
 		return resultado;
 	}
 
-	
+	/**
+	 * Retorna informacoes a respeito das transacoes.
+	 * As informacoes podem ser sobre a quantidade, total ou um historico de transacoes.
+	 * @param String - operacao
+	 * @return String - resultado
+	 */
 	public String consultaTransacoes(String operacao) {
 
 		String resultado = "";
@@ -327,7 +410,15 @@ public class SistemaController {
 		return resultado;
 	}
 	
-
+	/**
+	 * Consulta uma determinada transacao atraves do indice.
+	 * A operacao de consulta pode ser acerca do total, nome do cliente ou detalhes da transacao.
+	 * 
+	 * @param String - operacao
+	 * @param Int - indice
+	 * @return String - resultado
+	 * @throws Exception
+	 */
 	public String consultaTransacoes(String operacao, int indice) throws Exception {
 
 		String resultado = "";
@@ -379,6 +470,15 @@ public class SistemaController {
 	public String consultaMenuRestaurante(){
 		return controllerRestaurante.consultaMenuRestaurante();
 	}
+	
+	/**
+	 * Realiza um pedido no restaurante e retorna uma String com o valor do pedido.
+	 * 
+	 * @param String - id
+	 * @param String - itemMenu
+	 * @return String - valor do pedido
+	 * @throws Exception
+	 */
 	public String realizaPedido(String id, String itemMenu) throws Exception{
 		  String resultado = "";
 		  double precoBruto = 0.0;
@@ -400,7 +500,11 @@ public class SistemaController {
 		  return resultado;
 		 }
 	
-	
+	/**
+	 * Retorna o lucro de todas as operacoes.
+	 * 
+	 * @return Double - valor total
+	 */
 	public double precoTotalOperacoes(){
 		double valor = 0;
 		for (ControleDeGastos controleDeGastos : transacaoes) {
@@ -409,6 +513,14 @@ public class SistemaController {
 		return valor;
 	}
 	
+	/**
+	 * Converte pontos do cartao fidelidade em dinheiro.
+	 * 
+	 * @param String - email
+	 * @param Int - pontos
+	 * @return String - resultado
+	 * @throws Exception
+	 */
 	public String convertePontos(String email, int pontos) throws Exception {
 		
 		Hospede hospedeOperecao = clientesCadastrados.get(email);
