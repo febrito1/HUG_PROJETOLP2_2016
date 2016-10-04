@@ -1,6 +1,5 @@
 package restaurante;
 
-import java.awt.event.ItemEvent;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -9,13 +8,14 @@ import excecoes.ExcecaoRestaurante;
 import excecoes.Excecoes;
 
 public class RestauranteController {
-
+	private String tipoOrdenação = ""; 
 	private List<Alimentacao> cardapio;
 	private List<RefeicaoCompleta> refeicoes;
 	private RefeicaoFactory factoryRefeicao;
 	private PratosFactory factoryPratos;
 	private Excecoes excecoes = new Excecoes();
 	private ExcecaoRestaurante exRestaurante = new ExcecaoRestaurante();
+
 
 	public RestauranteController() {
 
@@ -35,13 +35,14 @@ public class RestauranteController {
 		Alimentacao prato = factoryPratos.criaPrato(nome, preco, descricao);
 		excecoes.verificaPrato(prato);
 		cardapio.add(prato);
+		ordenaMenu(tipoOrdenação);
 		return true;
 	}
 
 	public boolean removeCardapio(Alimentacao prato) {
 		for (Alimentacao removeprato : cardapio) {
 			if (removeprato.equals(prato)) {
-				removeprato.equals(removeprato);
+				cardapio.remove(removeprato);
 				return true;
 			}
 		}
@@ -107,6 +108,7 @@ public class RestauranteController {
 
 		refeicao.setPreco(totalPreco);
 		cardapio.add(refeicao);
+		ordenaMenu(tipoOrdenação);
 	}
 
 	public String consultaRestaurante(String nome, String atributo) throws Exception {
@@ -129,8 +131,10 @@ public class RestauranteController {
 		switch (tipoOrdenacao.toLowerCase()) {
 		case ("nome"):
 			Collections.sort(this.cardapio, new OrdenaAlfabeto());
+			this.tipoOrdenação = "nome";
 			break;
 		case ("preco"):
+			this.tipoOrdenação = "preco";
 			Collections.sort(cardapio, new OrdenaValor());
 			break;
 		}
@@ -153,7 +157,7 @@ public class RestauranteController {
 		
 		for (Alimentacao alimento : cardapio) {
 			if (itemMenu.equalsIgnoreCase(alimento.getNome())) {
-				totalPreco = alimento.getPreco();
+				totalPreco += alimento.getPreco();
 			}
 		}
 		
@@ -162,7 +166,6 @@ public class RestauranteController {
 		}
 		
 		return totalPreco;
-
 	}
 
 	public void fechaSistema() {
