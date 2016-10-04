@@ -66,10 +66,6 @@ public class Facade {
 		controller.cadastraRefeicao(nome, descricao, componentes);
 	}
 
-	public RefeicaoCompleta buscaRefeicao(String nome) {
-		return controller.buscaRefeicao(nome);
-	}
-
 	public Alimentacao buscaCardapio(String nome) {
 		return controller.buscaCardapio(nome);
 	}

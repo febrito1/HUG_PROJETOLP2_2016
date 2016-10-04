@@ -360,10 +360,6 @@ public String realizaCheckout(String email, String quarto) throws Exception {
 		controllerRestaurante.cadastraRefeicao(nome, descricao, componentes);
 	}
 
-	public RefeicaoCompleta buscaRefeicao(String nome) {
-		return controllerRestaurante.buscaRefeicao(nome);
-	}
-
 	public Alimentacao buscaCardapio(String nome) {
 		return controllerRestaurante.buscaCardapio(nome);
 	}
@@ -394,7 +390,7 @@ public String realizaCheckout(String email, String quarto) throws Exception {
 		   precoBruto = controllerRestaurante.totalPedido(itemMenu);
 		   hospedeOperacao.adicionaPontos(precoBruto);
 		   double precoDesconto = hospedeOperacao.precoDesconto(precoBruto);
-		   resultado += String.format("R$%.2f", hospedeOperacao.precoDesconto(precoBruto));
+		   resultado += String.format("R$%.2f", precoDesconto);
 		   ControleDeGastos gastoRestaurante = new TransacoesRestaurante(hospedeOperacao.getNomeHospede(), itemMenu, precoDesconto, 
 				   LocalDate.now());
 		   transacaoes.add(gastoRestaurante);

@@ -10,7 +10,6 @@ import excecoes.Excecoes;
 public class RestauranteController {
 	private String tipoOrdenação = ""; 
 	private List<Alimentacao> cardapio;
-	private List<RefeicaoCompleta> refeicoes;
 	private RefeicaoFactory factoryRefeicao;
 	private PratosFactory factoryPratos;
 	private Excecoes excecoes = new Excecoes();
@@ -70,14 +69,6 @@ public class RestauranteController {
 		return null;
 	}
 
-	public RefeicaoCompleta buscaRefeicao(String nome) {
-		for (RefeicaoCompleta refeicao : refeicoes) {
-			if (nome.equalsIgnoreCase(refeicao.getNome())) {
-				return refeicao;
-			}
-		}
-		return null;
-	}
 
 	public void cadastraRefeicao(String nome, String descricao, String componentes) throws Exception {
 		exRestaurante.CadastroInvalidoRefeicao(nome, descricao, componentes);

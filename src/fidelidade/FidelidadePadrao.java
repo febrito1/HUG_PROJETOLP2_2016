@@ -11,8 +11,7 @@ public class FidelidadePadrao implements CartaoFidelidade {
 		this.pontos = pontos;
 	}
 
-	public FidelidadePadrao() {
-	}
+	public FidelidadePadrao() {}
 
 	@Override
 	public int getPontos() {
@@ -41,7 +40,7 @@ public class FidelidadePadrao implements CartaoFidelidade {
 	
 	private void removePontos(int pontos) throws Exception {
 		if(pontos > getPontos()) {
-			throw new Exception("FUNCIONA MERDA.");
+			throw new Exception("Você não possui pontos suficientes para realizar a operacao.");
 		}	
 		this.pontos = getPontos() - pontos;
 	
