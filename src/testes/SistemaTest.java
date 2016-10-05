@@ -10,6 +10,7 @@ import quarto.Quarto;
 import hotel.SistemaController;
 
 public class SistemaTest {
+	
 	private Hospede hospede;
 	private SistemaController sistema = new SistemaController();
 	private Quarto quarto;
@@ -25,36 +26,37 @@ public class SistemaTest {
 		sistema.atualizaCadastro("r@em.com","nome", "Daniyel");
 		Assert.assertEquals("Daniyel", sistema.getInfo("r@em.com", "nome"));
 	}
-	
+	@Test
 	public void testeCriaQuarto() throws Exception{
 		sistema.criaQuarto("12A","luxo");
 		Assert.assertEquals("12A", sistema.criaQuarto("12A","luxo"));
 		
 	}
+	@Test
 	public void testeExceptionCadastra() throws Exception{
 		try{
 			sistema.cadastraHospede("", "r@em.com", "12/03/1996");
 		}catch(Exception e){
-			assertEquals("Mensagem de excecao capturada.", "String nao pode ser nula ou vazia", e.getMessage());
+			assertEquals("Mensagem de excecao capturada.", "Erro no cadastro de Hospede. Nome do(a) hospede nao pode ser vazio.", e.getMessage());
 		}try{
 			sistema.cadastraHospede("Rebeca", "", "12/03/1996");
 		}catch(Exception e){
-			assertEquals("Mensagem de excecao capturada.", "String nao pode ser nula ou vazia", e.getMessage());
+			assertEquals("Mensagem de excecao capturada.", "Erro no cadastro de Hospede. Email do(a) hospede nao pode ser vazio.", e.getMessage());
 		}try{
 			sistema.cadastraHospede("Rebeca", "r@em.com", "");
 		}catch(Exception e){
-			assertEquals("Mensagem de excecao capturada.", "String nao pode ser nula ou vazia", e.getMessage());
+			assertEquals("Mensagem de excecao capturada.", "Erro no cadastro de Hospede. Data de Nascimento do(a) hospede nao pode ser vazio.", e.getMessage());
 		}try{
 			sistema.cadastraHospede(null, "r@em.com", "12/03/1996");
 		}catch(Exception e){
-			assertEquals("Mensagem de excecao capturada.", "String nao pode ser nula ou vazia", e.getMessage());
+			assertEquals("Mensagem de excecao capturada.", "Erro no cadastro de Hospede. Nome do(a) hospede nao pode ser vazio.", e.getMessage());
 		}try{
 			sistema.cadastraHospede("Rebeca", null, null);
 		}catch(Exception e){
-			assertEquals("Mensagem de excecao capturada.", "String nao pode ser nula ou vazia", e.getMessage());
+			assertEquals("Mensagem de excecao capturada.", "Erro no cadastro de Hospede. Email do(a) hospede nao pode ser vazio.", e.getMessage());
 		}
 	}
-	
+	@Test
 	public void testeCriaQuartoException(){
 		try{
 			sistema.criaQuarto("12B", "simples");
@@ -66,48 +68,14 @@ public class SistemaTest {
 			assertEquals("Mensagem de excecao capturada.", "Erro ao realizar checkin. Quarto " + quarto.getID() + " ja esta ocupado.", e.getMessage());
 		}
 	}
-	
-	public void testeRealizaCheckin(){
-		try{
-			sistema.realizaCheckin("daniyel@gm.cin", 7, "14", "presidencial");
-		}catch(Exception e){
-			assertEquals("Mensagem de excecao capturada.", "Erro na consulta de hospede. Hospede de email " + hospede.getEmailHospede() + " nao foi cadastrado(a).", e.getMessage());
-		}try{
-			sistema.cadastraHospede("Rebeca", "rebeca.e@gm.com", "29/04/1996");
-			sistema.realizaCheckin("rebeca.e@gm.com", 7, "14", "presidencial");
-		}catch(Exception e){
-			assertEquals("Mensagem de excecao capturada.", "Erro ao realizar checkin. Quarto " + quarto.getID()+ " ja esta ocupado.", e.getMessage());
-		}
-	}
-	public void testeInfoHospede(){
-		try{
-			sistema.getInfo("daniyel@gm.cin", "nome");
-		}catch(Exception e){
-			assertEquals("Mensagem de excecao capturada.", "Erro no cadastro de Hospede. Hospede nao cadastrado", e.getMessage());
-	}
-	}
-	public void testeInfoHospedagem(){
-	try{
-		sistema.getInfo("daniyel@gm.cin", "hospedagens ativas");
-	}catch(Exception e){
-		assertEquals("Mensagem de excecao capturada.", "Hospede " + hospede.getNomeHospede() + " nao esta hospedado(a).", e.getMessage());
-	}try{
-		sistema.getInfo("daniyel@gm.cin", "quarto");
-	}catch(Exception e){
-		assertEquals("Mensagem de excecao capturada.", "Hospede " + hospede.getNomeHospede() + " nao esta hospedado(a).", e.getMessage());
-	}try{
-		sistema.getInfo("daniyel@gm.cin", "total");
-	}catch(Exception e){
-		assertEquals("Mensagem de excecao capturada.", "Hospede " + hospede.getNomeHospede() + " nao esta hospedado(a).", e.getMessage());
-	}
-	
-	}
+
+	@Test
 	public void testeCheckout(){
 		try{
 			sistema.realizaCheckout("thiago@as", "12");
 			
 			}catch(Exception e){
-				assertEquals("Mensagem de excecao capturada.", "fail", e.getMessage());
+				assertEquals("Mensagem de excecao capturada.", "Erro ao realizar checkout. Email do(a) hospede esta invalido.", e.getMessage());
 			}
 		}
 	}
