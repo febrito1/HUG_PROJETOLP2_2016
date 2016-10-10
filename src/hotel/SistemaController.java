@@ -1,11 +1,21 @@
 package hotel;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.annotation.processing.Filer;
 
 import hotel.Checkout;
 import excecoes.*;
@@ -23,8 +33,12 @@ import restaurante.RestauranteController;
  * Classe que controla o sistema do hotel com suas funcionalidades
  * 
  */
-public class SistemaController {
+public class SistemaController implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7905505016443154566L;
 	private QuartosFactory factoryQuartos;
 	private FactoryDeHospede factoryHospedes;
 	private RestauranteController controllerRestaurante;
@@ -33,6 +47,8 @@ public class SistemaController {
 	private Map<String, Quarto> quartosOcupados;
 	private Excecoes excecoes = new Excecoes();;
 	private List<ControleDeGastos> transacaoes;
+	private static final String FIM_DE_LINHA = System.lineSeparator();
+
 
 	private LocalDate dataNascimento;
 	private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -52,6 +68,9 @@ public class SistemaController {
 	}
 
 	public void iniciaSistema() {
+	}
+	public String historicoRestaurante(){
+		return controllerRestaurante.historicoRestaurante();
 	}
 
 	/**
@@ -74,9 +93,52 @@ public class SistemaController {
 			throw new Exception("Erro no cadastro de Hospede. A idade do(a) hospede deve ser maior que 18 anos.");
 		}
 		clientesCadastrados.put(email, novoHospede);
+		escreveRelatorioHospede(email);
 		return email;
 	}
-
+	
+	public void escreveRelatorioHospede(String id) throws Exception{
+		File arquivoHospede = new File("cad_hospedes.txt");
+		File arquivoRestaurante = new File("cad_restaurante.txt");
+		try{
+			arquivoHospede.createNewFile();
+			FileReader fr = new FileReader(arquivoHospede);
+			
+			FileWriter fw = new FileWriter(arquivoHospede);
+			BufferedWriter bw = new BufferedWriter(fw);
+			bw.write(historicoHospede(id));
+			BufferedReader br = new BufferedReader(fr);
+			String linha = br.readLine();
+			
+			bw.close();
+		while(linha != null){
+			linha = br.readLine();
+		}
+		}catch (IOException e){
+		}
+	
+	}
+	public void escreveRelatorioRestaurante() throws Exception{
+		
+		File arquivoRestaurante = new File("cad_restaurante.txt");
+		try{
+			arquivoRestaurante.createNewFile();
+			FileReader fr = new FileReader(arquivoRestaurante);
+			
+			FileWriter fw = new FileWriter(arquivoRestaurante);
+			BufferedWriter bw = new BufferedWriter(fw);
+			bw.write(controllerRestaurante.historicoRestaurante());
+			BufferedReader br = new BufferedReader(fr);
+			String linha = br.readLine();
+			
+			bw.close();
+		while(linha != null){
+			linha = br.readLine();
+		}
+		}catch (IOException e){
+		}
+	
+	}
 	/**
 	 * Procura por um hospede cadastrado atraves do email.
 	 * 
@@ -441,6 +503,19 @@ public class SistemaController {
 			break;
 		}
 		return resultado;
+	}
+	
+	public String historicoHospede(String id) throws Exception{
+		String historico = "Cadastro de Hospedes: "+ clientesCadastrados.size() + " hospedes registrados"+ FIM_DE_LINHA;
+		for (int i = 0; i < clientesCadastrados.size(); i++) {
+			historico += 
+			"==> Hospede " + (i+1)+ ":"+ FIM_DE_LINHA +
+			"Email: " + clientesCadastrados.get(id).getEmailHospede() +FIM_DE_LINHA+
+			"Nome: "+ clientesCadastrados.get(id).getNomeHospede()+ FIM_DE_LINHA+
+			"Data de nascimento: " + clientesCadastrados.get(id).getDataNascimento()+FIM_DE_LINHA
+			+ FIM_DE_LINHA;
+		}
+		return historico;
 	}
 	
 	public String consultaRestaurante(String nome, String atributo) throws Exception {
