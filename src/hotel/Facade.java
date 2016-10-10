@@ -1,10 +1,12 @@
 package hotel;
 
-import java.io.File;
+import java.io.IOException;
 
+import banco.BancoDeDados;
 import easyaccept.EasyAccept;
 import restaurante.Alimentacao;
 import restaurante.Prato;
+import restaurante.RefeicaoCompleta;
 
 /**
  * 
@@ -13,24 +15,15 @@ import restaurante.Prato;
 public class Facade {
 
 	private SistemaController controller;
-
+	private BancoDeDados dados;
+	
 	public Facade() {
 		controller = new SistemaController();
+		dados = BancoDeDados.getInstance();
 	}
-	public void escreveRelatorioHospede(String id) throws Exception{
-		controller.escreveRelatorioHospede(id);
-	}
-	public void escreveRelatorioRestaurante(String id) throws Exception{
-		controller.escreveRelatorioHospede(id);
-	}
-	public String historicoRestaurante(){
-		return controller.historicoRestaurante();
-	}
-	public String historicoHospede(String id) throws Exception{
-		return controller.historicoHospede(id);
-	}
-
-	public void iniciaSistema() {
+		
+	public void iniciaSistema() throws IOException {
+		dados.iniciar();
 		controller.iniciaSistema();
 	}
 
@@ -109,9 +102,29 @@ public class Facade {
 	public String realizaPedido(String id, String itemMenu) throws Exception{
 		return controller.realizaPedido(id, itemMenu);
 	}
+	public void escreveRelatorioHospede(String id) throws Exception{
+		dados.escreveRelatorioHospede(id);
+	}
+	public void escreveRelatorioRestaurante(String id) throws Exception{
+		dados.escreveRelatorioHospede(id);
+	}
+	public String historicoRestaurante(){
+		return dados.historicoRestaurante();
+	}
+	public String historicoHospede(String id) throws Exception{
+		return dados.historicoHospede(id);
+	}
+	public String historicoTransacoes(){
+		return dados.historicoTransacoes();
+	}
 	
-	public void fechaSistema() {
+	public void escreveHistorico() throws Exception{
+		dados.escreveHistorico();
+	}
+	
+	public void fechaSistema() throws IOException {
 		controller.fechaSistema();
+		dados.fechar();
 	}
 	
 	public static void main(String[] args) {
@@ -120,3 +133,4 @@ public class Facade {
 	}
 
 }
+

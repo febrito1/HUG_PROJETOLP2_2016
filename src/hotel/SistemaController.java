@@ -1,12 +1,15 @@
 package hotel;
 
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -15,8 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.processing.Filer;
-
+import banco.BancoDeDados;
 import hotel.Checkout;
 import excecoes.*;
 import cliente.Estadia;
@@ -29,15 +31,8 @@ import restaurante.Prato;
 import restaurante.RefeicaoCompleta;
 import restaurante.RestauranteController;
 
-/**
- * Classe que controla o sistema do hotel com suas funcionalidades
- * 
- */
 public class SistemaController implements Serializable{
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 7905505016443154566L;
 	private QuartosFactory factoryQuartos;
 	private FactoryDeHospede factoryHospedes;
@@ -48,40 +43,27 @@ public class SistemaController implements Serializable{
 	private Excecoes excecoes = new Excecoes();;
 	private List<ControleDeGastos> transacaoes;
 	private static final String FIM_DE_LINHA = System.lineSeparator();
-
-
+	private BancoDeDados dados;
 	private LocalDate dataNascimento;
 	private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-	/**
-	 * Inicia o SistemaController
-	 */
 	public SistemaController() {
+		
 		controllerRestaurante = new RestauranteController();
-		transacaoes = new ArrayList<>();
+		setTransacaoes(new ArrayList<>());
 		quartosOcupados = new HashMap<>();
 		catalogoQuartos = new HashMap<>();
-		clientesCadastrados = new HashMap<>();
+		setClientesCadastrados(new HashMap<>());
 		factoryHospedes = new FactoryDeHospede();
 		factoryQuartos = new QuartosFactory();
 
 	}
 
 	public void iniciaSistema() {
+		
 	}
-	public String historicoRestaurante(){
-		return controllerRestaurante.historicoRestaurante();
-	}
+	
 
-	/**
-	 * Cadastra um novo hospede na lista de clientes cadastrados.
-	 * 
-	 * @param String - nome
-	 * @param String - email
-	 * @param String - dataNascimento
-	 * @return String - email
-	 * @throws Exception
-	 */
 	public String cadastraHospede(String nome, String email, String dataNascimento) throws Exception {
 
 		excecoes.CadastroInvalidoException(nome);
@@ -92,94 +74,30 @@ public class SistemaController implements Serializable{
 		if (novoHospede.getIdade() < 18) {
 			throw new Exception("Erro no cadastro de Hospede. A idade do(a) hospede deve ser maior que 18 anos.");
 		}
-		clientesCadastrados.put(email, novoHospede);
-		escreveRelatorioHospede(email);
+		getClientesCadastrados().put(email, novoHospede);
 		return email;
 	}
-	
-	public void escreveRelatorioHospede(String id) throws Exception{
-		File arquivoHospede = new File("cad_hospedes.txt");
-		File arquivoRestaurante = new File("cad_restaurante.txt");
-		try{
-			arquivoHospede.createNewFile();
-			FileReader fr = new FileReader(arquivoHospede);
-			
-			FileWriter fw = new FileWriter(arquivoHospede);
-			BufferedWriter bw = new BufferedWriter(fw);
-			bw.write(historicoHospede(id));
-			BufferedReader br = new BufferedReader(fr);
-			String linha = br.readLine();
-			
-			bw.close();
-		while(linha != null){
-			linha = br.readLine();
-		}
-		}catch (IOException e){
-		}
-	
-	}
-	public void escreveRelatorioRestaurante() throws Exception{
-		
-		File arquivoRestaurante = new File("cad_restaurante.txt");
-		try{
-			arquivoRestaurante.createNewFile();
-			FileReader fr = new FileReader(arquivoRestaurante);
-			
-			FileWriter fw = new FileWriter(arquivoRestaurante);
-			BufferedWriter bw = new BufferedWriter(fw);
-			bw.write(controllerRestaurante.historicoRestaurante());
-			BufferedReader br = new BufferedReader(fr);
-			String linha = br.readLine();
-			
-			bw.close();
-		while(linha != null){
-			linha = br.readLine();
-		}
-		}catch (IOException e){
-		}
-	
-	}
-	/**
-	 * Procura por um hospede cadastrado atraves do email.
-	 * 
-	 * @param String - email
-	 * @return String - email
-	 * @throws Exception
-	 */
+
 	public String buscaHospede(String email) throws Exception {
-		if (!clientesCadastrados.containsKey(email)) {
+		if (!getClientesCadastrados().containsKey(email)) {
 			throw new Exception("Erro na consulta de hospede. Hospede de email " + email + " nao foi cadastrado(a).");
 		}
 		return email;
 	}
 
-	/**
-	 * Remove um hospede cadastrado atraves do email.
-	 * 
-	 * @param String - email
-	 * @throws Exception
-	 */
 	public void removeHospede(String email) throws Exception {
-		if (!clientesCadastrados.containsKey(email)) {
+		if (!getClientesCadastrados().containsKey(email)) {
 			throw new Exception("Erro na remocao do Hospede. Formato de email invalido.");
 		}
-		clientesCadastrados.remove(email);
+		getClientesCadastrados().remove(email);
 	}
 
-	/**
-	 * Atualiza um atributo do hospede, esse atributo pode ser o nome, email ou data de nascimento.
-	 * 
-	 * @param String - id
-	 * @param String - atributo
-	 * @param String - valor
-	 * @throws Exception
-	 */
 	public void atualizaCadastro(String id, String atributo, String valor) throws Exception {
-		if (!clientesCadastrados.containsKey(id)) {
+		if (!getClientesCadastrados().containsKey(id)) {
 			throw new Exception("Erro na consulta de hospede. Hospede de email " + id + " nao foi cadastrado(a).");
 		}
 
-		Hospede clienteatualizado = clientesCadastrados.get(id);
+		Hospede clienteatualizado = getClientesCadastrados().get(id);
 		switch (atributo.toLowerCase()) {
 
 		case ("nome"):
@@ -192,8 +110,8 @@ public class SistemaController implements Serializable{
 
 			clienteatualizado.setEmailHospede(valor);
 
-			clientesCadastrados.remove(id);
-			clientesCadastrados.put(valor, clienteatualizado);
+			getClientesCadastrados().remove(id);
+			getClientesCadastrados().put(valor, clienteatualizado);
 			
 			break;
 
@@ -211,21 +129,15 @@ public class SistemaController implements Serializable{
 		}
 
 	}
+	
 
-	/**
-	 * Retorna uma informacao de um clente cadastrado, a informacao pode ser o nome, email, data de nascimento ou os pontos do cartao fidelidade.
-	 * @param String - Info
-	 * @param String - atributo
-	 * @return String - informacao
-	 * @throws Exception
-	 */
 	public String getInfo(String Info, String atributo) throws Exception {
-				if (!(clientesCadastrados.containsKey(Info))) {
+				if (!(getClientesCadastrados().containsKey(Info))) {
 			throw new Exception("Erro na consulta de hospede. Hospede de email " + Info + " nao foi cadastrado(a).");
 		}
 
 		String informacao = "";
-		Hospede hospedeInfo = clientesCadastrados.get(Info);
+		Hospede hospedeInfo = getClientesCadastrados().get(Info);
 		
 		
 		switch (atributo.toLowerCase()) {
@@ -247,21 +159,13 @@ public class SistemaController implements Serializable{
 			break;	
 			
 		default:
-			System.out.println("invalido");
+			System.out.println("inv�lido");
 			break;
 			
 		}
 		return informacao;
 	}
 
-	/**
-	 * Cria um novo quarto, delegando essa funcao para a factory de quarto.
-	 * 
-	 * @param String - ID
-	 * @param String - tipoQuarto
-	 * @return
-	 * @throws Exception
-	 */
 	public String criaQuarto(String ID, String tipoQuarto) throws Exception {
 		if (catalogoQuartos.containsKey(ID)) {
 			throw new Exception("O quarto de ID" + ID + " ja existe.");
@@ -270,15 +174,6 @@ public class SistemaController implements Serializable{
 		return ID;
 	}
 
-	/**
-	 * Realiza o chekin de um hospede criando uma nova estadia para o mesmo.
-	 * 
-	 * @param String - email
-	 * @param Int - dias
-	 * @param String - ID
-	 * @param String - tipoQuarto
-	 * @throws Exception
-	 */
 	public void realizaCheckin(String email, int dias, String ID, String tipoQuarto) throws Exception {
 		
 		excecoes.checkinIDException(ID);
@@ -287,12 +182,12 @@ public class SistemaController implements Serializable{
 		excecoes.checkinDataInvalida(dias);
 		
 		
-		if (!(clientesCadastrados.containsKey(email))) {
+		if (!(getClientesCadastrados().containsKey(email))) {
 			
 			throw new Exception("Erro ao realizar checkin. Hospede de email " + email + " nao foi cadastrado(a).");
 		}
 		
-		Hospede hospede = clientesCadastrados.get(email);
+		Hospede hospede = getClientesCadastrados().get(email);
 
 		if (catalogoQuartos.containsKey(ID)) {
 			
@@ -316,24 +211,15 @@ public class SistemaController implements Serializable{
 		}
 	}
 
-	/**
-	 * Retorna uma informacao a cerca da hospedagem de um hospede, essa informacao pode ser sobre 
-	 * as hospedaogens aivas, valor total das hospedagens ou os quartos ocupados. 
-	 * 
-	 * @param String - email
-	 * @param String - atributo
-	 * @return String - informacao
-	 * @throws Exception
-	 */
 	public String getInfoHospedagem(String email, String atributo) throws Exception {
 		
 		excecoes.HospedagemAtivaException(email);
 
-		if (!(clientesCadastrados.containsKey(email))) {
+		if (!(getClientesCadastrados().containsKey(email))) {
 			throw new Exception("Erro no cadastro de Hospede. Hospede nao cadastrado");
 		}
 
-		Hospede hospede = clientesCadastrados.get(email);
+		Hospede hospede = getClientesCadastrados().get(email);
 		String resultado = "";
 
 		switch (atributo.toLowerCase()) {
@@ -383,14 +269,6 @@ public class SistemaController implements Serializable{
 		return resultado;
 	}
 
-	/**
-	 * Realiza o checkout de um hospede e retorna uma String contendo o valor gasto nas estadias.
-	 * 
-	 * @param String - email
-	 * @param String - quarto
-	 * @return String - valor gasto
-	 * @throws Exception
-	 */
 	public String realizaCheckout(String email, String quarto) throws Exception {
 		
 		if(email == null  || email.trim().isEmpty()) {
@@ -409,7 +287,7 @@ public class SistemaController implements Serializable{
 		
 		String resultado = "";
 		
-		Hospede clienteOperacao = clientesCadastrados.get(email);
+		Hospede clienteOperacao = getClientesCadastrados().get(email);
 		
 		List<Estadia> estadias = clienteOperacao.getEstadias();
 		
@@ -421,7 +299,7 @@ public class SistemaController implements Serializable{
 				clienteOperacao.adicionaPontos(precoBruto);
 				double preco = clienteOperacao.precoDesconto(precoBruto);
 				ControleDeGastos novoCheckout = new Checkout(clienteOperacao.getNomeHospede(), quarto,preco,LocalDate.now());	
-				transacaoes.add(novoCheckout);
+				getTransacaoes().add(novoCheckout);
 				
 				resultado = String.format("R$%.2f",preco);
 				clienteOperacao.removeEstadia(quarto);
@@ -436,12 +314,7 @@ public class SistemaController implements Serializable{
 		return resultado;
 	}
 
-	/**
-	 * Retorna informacoes a respeito das transacoes.
-	 * As informacoes podem ser sobre a quantidade, total ou um historico de transacoes.
-	 * @param String - operacao
-	 * @return String - resultado
-	 */
+	
 	public String consultaTransacoes(String operacao) {
 
 		String resultado = "";
@@ -450,7 +323,7 @@ public class SistemaController implements Serializable{
 
 		case "quantidade":
 
-			resultado = Integer.toString(transacaoes.size());
+			resultado = Integer.toString(getTransacaoes().size());
 			break;
 
 		case "total":		
@@ -458,7 +331,7 @@ public class SistemaController implements Serializable{
 			break;
 
 		case "nome":
-			for (ControleDeGastos transacoes : transacaoes) {
+			for (ControleDeGastos transacoes : getTransacaoes()) {
 				resultado += transacoes.getNomeCliente() + ";";
 			}
 			if (resultado != "" && resultado.charAt(resultado.length() - 1) == ';') {
@@ -472,50 +345,29 @@ public class SistemaController implements Serializable{
 		return resultado;
 	}
 	
-	/**
-	 * Consulta uma determinada transacao atraves do indice.
-	 * A operacao de consulta pode ser acerca do total, nome do cliente ou detalhes da transacao.
-	 * 
-	 * @param String - operacao
-	 * @param Int - indice
-	 * @return String - resultado
-	 * @throws Exception
-	 */
+
 	public String consultaTransacoes(String operacao, int indice) throws Exception {
 
 		String resultado = "";
-		if (indice > transacaoes.size() || indice < 0) {
+		if (indice > getTransacaoes().size() || indice < 0) {
 			throw new Exception("Erro na consulta de transacoes. Indice invalido.");
 		}
 		switch (operacao.toLowerCase()) {
 
 		case "total":
-			resultado = String.format("R$%.2f", transacaoes.get(indice).getTotalGasto());
+			resultado = String.format("R$%.2f", getTransacaoes().get(indice).getTotalGasto());
 			break;
 		case "nome":
-			resultado = transacaoes.get(indice).getNomeCliente();	
+			resultado = getTransacaoes().get(indice).getNomeCliente();	
 			break;
 			
 		case("detalhes"):
-			resultado = transacaoes.get(indice).getTransacao();
+			resultado = getTransacaoes().get(indice).getTransacao();
 			break;
 		default:
 			break;
 		}
 		return resultado;
-	}
-	
-	public String historicoHospede(String id) throws Exception{
-		String historico = "Cadastro de Hospedes: "+ clientesCadastrados.size() + " hospedes registrados"+ FIM_DE_LINHA;
-		for (int i = 0; i < clientesCadastrados.size(); i++) {
-			historico += 
-			"==> Hospede " + (i+1)+ ":"+ FIM_DE_LINHA +
-			"Email: " + clientesCadastrados.get(id).getEmailHospede() +FIM_DE_LINHA+
-			"Nome: "+ clientesCadastrados.get(id).getNomeHospede()+ FIM_DE_LINHA+
-			"Data de nascimento: " + clientesCadastrados.get(id).getDataNascimento()+FIM_DE_LINHA
-			+ FIM_DE_LINHA;
-		}
-		return historico;
 	}
 	
 	public String consultaRestaurante(String nome, String atributo) throws Exception {
@@ -546,66 +398,95 @@ public class SistemaController implements Serializable{
 		return controllerRestaurante.consultaMenuRestaurante();
 	}
 	
-	/**
-	 * Realiza um pedido no restaurante e retorna uma String com o valor do pedido.
-	 * 
-	 * @param String - id
-	 * @param String - itemMenu
-	 * @return String - valor do pedido
-	 * @throws Exception
-	 */
+	public String historicoRestaurante(){
+		return controllerRestaurante.historicoRestaurante();
+	}
+
 	public String realizaPedido(String id, String itemMenu) throws Exception{
 		  String resultado = "";
 		  double precoBruto = 0.0;
-		  if(!(clientesCadastrados.containsKey(id))){
+		  if(!(getClientesCadastrados().containsKey(id))){
 			  throw new Exception("Erro no realiza pedido. Nao contem este ");
 		  }
 		 
-		  Hospede hospedeOperacao = clientesCadastrados.get(id);
+		  Hospede hospedeOperacao = getClientesCadastrados().get(id);
 		   precoBruto = controllerRestaurante.totalPedido(itemMenu);
 		   hospedeOperacao.adicionaPontos(precoBruto);
 		   double precoDesconto = hospedeOperacao.precoDesconto(precoBruto);
 		   resultado += String.format("R$%.2f", precoDesconto);
 		   ControleDeGastos gastoRestaurante = new TransacoesRestaurante(hospedeOperacao.getNomeHospede(), itemMenu, precoDesconto, 
 				   LocalDate.now());
-		   transacaoes.add(gastoRestaurante);
+		   getTransacaoes().add(gastoRestaurante);
 		  
 		   hospedeOperacao.mudaFidelidade();
 		  
 		  return resultado;
 		 }
 	
-	/**
-	 * Retorna o lucro de todas as operacoes.
-	 * 
-	 * @return Double - valor total
-	 */
+	
 	public double precoTotalOperacoes(){
 		double valor = 0;
-		for (ControleDeGastos controleDeGastos : transacaoes) {
+		for (ControleDeGastos controleDeGastos : getTransacaoes()) {
 			 valor += controleDeGastos.getTotalGasto();
 		}
-		return valor;
+		return valor;	
 	}
 	
-	/**
-	 * Converte pontos do cartao fidelidade em dinheiro.
-	 * 
-	 * @param String - email
-	 * @param Int - pontos
-	 * @return String - resultado
-	 * @throws Exception
-	 */
 	public String convertePontos(String email, int pontos) throws Exception {
 		
-		Hospede hospedeOperecao = clientesCadastrados.get(email);
+		Hospede hospedeOperecao = getClientesCadastrados().get(email);
 		String resultado = hospedeOperecao.convertePontos(pontos);
 		hospedeOperecao.mudaFidelidade();
 		return resultado;
 		
 	}
 	
+	public String escreveRelatorioHospede(String id) throws Exception{
+		return dados.historicoHospede(id);
+	}
+	
+	public String historicoTransacoes(){
+		return dados.historicoTransacoes();
+		
+	}
+	
+	public void escreveHistorico() throws Exception{
+		dados.escreveHistorico();
+	}
+	
+	public String historicoHospede(String id) throws Exception{
+		return dados.historicoHospede(id);
+	}
+	
+	public void escreveRelatorioRestaurante() throws Exception{
+		dados.escreveRelatorioRestaurante();
+	
+	}
+	/**
+	 * Procura por um hospede cadastrado atraves do email.
+	 * 
+	 * @param String - email
+	 * @return String - email
+	 * @throws Exception
+	 */
+		
 	
 	public void fechaSistema() {
+	}
+
+	public Map<String, Hospede> getClientesCadastrados() {
+		return clientesCadastrados;
+	}
+
+	public void setClientesCadastrados(Map<String, Hospede> clientesCadastrados) {
+		this.clientesCadastrados = clientesCadastrados;
+	}
+
+	public List<ControleDeGastos> getTransacaoes() {
+		return transacaoes;
+	}
+
+	public void setTransacaoes(List<ControleDeGastos> transacaoes) {
+		this.transacaoes = transacaoes;
 	}
 }
