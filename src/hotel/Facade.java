@@ -1,9 +1,10 @@
 package hotel;
 
+import java.io.File;
+
 import easyaccept.EasyAccept;
 import restaurante.Alimentacao;
 import restaurante.Prato;
-import restaurante.RefeicaoCompleta;
 
 /**
  * 
@@ -15,6 +16,18 @@ public class Facade {
 
 	public Facade() {
 		controller = new SistemaController();
+	}
+	public void escreveRelatorioHospede(String id) throws Exception{
+		controller.escreveRelatorioHospede(id);
+	}
+	public void escreveRelatorioRestaurante(String id) throws Exception{
+		controller.escreveRelatorioHospede(id);
+	}
+	public String historicoRestaurante(){
+		return controller.historicoRestaurante();
+	}
+	public String historicoHospede(String id) throws Exception{
+		return controller.historicoHospede(id);
 	}
 
 	public void iniciaSistema() {
