@@ -1,23 +1,28 @@
 package restaurante;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import excecoes.ExcecaoRestaurante;
 import excecoes.Excecoes;
+import javafx.scene.shape.Line;
 
 /**
  * Gerencia o restaurante usando das classes de Alimentacao.
  *
  */
-public class RestauranteController {
-	private String tipoOrdenacao = ""; 
+public class RestauranteController implements Serializable{
+	
+	private static final long serialVersionUID = -4456071765281885711L;
+	private String tipoOrdenacao = "";
 	private List<Alimentacao> cardapio;
 	private RefeicaoFactory factoryRefeicao;
 	private PratosFactory factoryPratos;
 	private Excecoes excecoes = new Excecoes();
 	private ExcecaoRestaurante exRestaurante = new ExcecaoRestaurante();
+	private static final String FIM_DE_LINHA = System.lineSeparator();
 
 	/**
 	 * Inicia o controller.
@@ -29,7 +34,7 @@ public class RestauranteController {
 		this.factoryRefeicao = new RefeicaoFactory();
 
 	}
-	
+
 	public void iniciaSistema() {
 
 	}
@@ -37,11 +42,15 @@ public class RestauranteController {
 	/**
 	 * Adiciona um novo prato no cardapio.
 	 * 
-	 * @param String - nome
-	 * @param Double - preco
-	 * @param String - descricao
+	 * @param String
+	 *            - nome
+	 * @param Double
+	 *            - preco
+	 * @param String
+	 *            - descricao
 	 * @return boolean - se conseguiu cadastrar, retorna true
-	 * @throws CadastroInvalidoPrato, verificaPrato
+	 * @throws CadastroInvalidoPrato,
+	 *             verificaPrato
 	 */
 	public boolean cadastraPrato(String nome, double preco, String descricao) throws Exception {
 
@@ -50,14 +59,16 @@ public class RestauranteController {
 		excecoes.verificaPrato(prato);
 		cardapio.add(prato);
 		ordenaMenu(tipoOrdenacao);
+		historicoRestaurante();
 		return true;
 	}
 
 	/**
 	 * Remove um alimento do cardapio.
 	 * 
-	 * @param Alimentacao - prato
-	 * @return boolean - true se remover e false caso contrario 
+	 * @param Alimentacao
+	 *            - prato
+	 * @return boolean - true se remover e false caso contrario
 	 */
 	public boolean removeCardapio(Alimentacao prato) {
 		for (Alimentacao removeprato : cardapio) {
@@ -72,9 +83,11 @@ public class RestauranteController {
 	/**
 	 * Retorna o valor de uma alimentacao com desconto.
 	 * 
-	 * @param Alimentacao - prato
+	 * @param Alimentacao
+	 *            - prato
 	 * @return Double - preco
-	 * @throws verificaPrato, Exception
+	 * @throws verificaPrato,
+	 *             Exception
 	 */
 	public double compraPrato(Alimentacao prato) throws Exception {
 		excecoes.verificaPrato(prato);
@@ -87,7 +100,8 @@ public class RestauranteController {
 	/**
 	 * Retorna true se o alimento existir no cardapio e false caso contrario.
 	 * 
-	 * @param Alimentacao - prato
+	 * @param Alimentacao
+	 *            - prato
 	 * @return boolean
 	 */
 	public boolean buscaPrato(Alimentacao prato) {
@@ -97,7 +111,8 @@ public class RestauranteController {
 	/**
 	 * Retorna uma Alimentacao do cardapio.
 	 * 
-	 * @param String - nome
+	 * @param String
+	 *            - nome
 	 * @return Alimentacao - alimento
 	 */
 	public Alimentacao buscaCardapio(String nome) {
@@ -109,14 +124,17 @@ public class RestauranteController {
 		return null;
 	}
 
-
 	/**
 	 * Adiciona uma nova refeicao ao cardapio.
 	 * 
-	 * @param String - nome
-	 * @param String - descricao
-	 * @param String - componentes
-	 * @throws CadastroInvalidoRefeicao, Exception
+	 * @param String
+	 *            - nome
+	 * @param String
+	 *            - descricao
+	 * @param String
+	 *            - componentes
+	 * @throws CadastroInvalidoRefeicao,
+	 *             Exception
 	 */
 	public void cadastraRefeicao(String nome, String descricao, String componentes) throws Exception {
 		exRestaurante.CadastroInvalidoRefeicao(nome, descricao, componentes);
@@ -153,8 +171,10 @@ public class RestauranteController {
 	/**
 	 * Consulta o preco ou descricao de um alimento do cardapio.
 	 * 
-	 * @param String - nome
-	 * @param String - atributo 
+	 * @param String
+	 *            - nome
+	 * @param String
+	 *            - atributo
 	 * @return String - informacao da consulta
 	 * @throws ConsultaRestauranteException
 	 */
@@ -177,7 +197,8 @@ public class RestauranteController {
 	/**
 	 * Ordena o cardapio atraves do nome ou do preco.
 	 *
-	 * @param String - tipoOrdenacao
+	 * @param String
+	 *            - tipoOrdenacao
 	 */
 	public void ordenaMenu(String tipoOrdenacao) {
 		switch (tipoOrdenacao.toLowerCase()) {
@@ -212,24 +233,48 @@ public class RestauranteController {
 	/**
 	 * Retorna o valor de um item do menu.
 	 * 
-	 * @param String itemMenu
+	 * @param String
+	 *            itemMenu
 	 * @return Double - preco total
 	 * @throws Exception
 	 */
-	public double totalPedido(String itemMenu) throws Exception{
+	public double totalPedido(String itemMenu) throws Exception {
 		double totalPreco = 0;
-		
+
 		for (Alimentacao alimento : cardapio) {
 			if (itemMenu.equalsIgnoreCase(alimento.getNome())) {
 				totalPreco += alimento.getPreco();
 			}
 		}
-		
-		if(totalPreco == 0){
+
+		if (totalPreco == 0) {
 			throw new Exception("Nao contem este item nesse cardapio.");
 		}
-		
+
 		return totalPreco;
+	}
+
+	public String historicoRestaurante() {
+		String historico = "";
+		for (int i = 0; i < cardapio.size(); i++) {
+			historico = "Menu do Restaurante: " + cardapio.size() + " itens no cardapio" + FIM_DE_LINHA + "==> Item "
+					+ (i + 1) + ":" + FIM_DE_LINHA + "Nome: " + cardapio.get(i).getNome() + " Preco: R$" 
+					+ cardapio.get(i).getPreco()+ 0 + FIM_DE_LINHA + "Descricao: " + cardapio.get(i).getDescricao()
+					+ FIM_DE_LINHA + FIM_DE_LINHA;
+		}
+
+		return historico;
+	}
+
+	public String refeicaoHistorico() throws Exception {
+		String historico = "";
+		for (int i = 0; i < cardapio.size(); i++) {
+			historico = "==> Item" + (i + 1) + ":" + FIM_DE_LINHA + "Nome: " + cardapio.get(i).getNome() + " Preco: R$"
+					+ cardapio.get(i).getPreco() + FIM_DE_LINHA + "Descricao: " + cardapio.get(i).getDescricao()
+					+ FIM_DE_LINHA + "Pratos: ";
+		}
+
+		return historico;
 	}
 
 	public void fechaSistema() {
