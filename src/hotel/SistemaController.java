@@ -3,14 +3,21 @@ package hotel;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.DataInputStream;
+import java.io.EOFException;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.PrintWriter;
 import java.io.Serializable;
+import java.io.Writer;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -46,17 +53,25 @@ public class SistemaController implements Serializable{
 	private BancoDeDados dados;
 	private LocalDate dataNascimento;
 	private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
+	private final String directory = "arquivos_sistema";
+	
+	private boolean sistemaLiberado;
+	
+	private ObjectOutputStream sistemaControllerOutput;
+	private ObjectInputStream sistemaControllerInput;
+	private final String sistemaControllerFile = "hug.dat";
+	private SistemaController sistemaController;
+	private RestauranteController restauranteController;
+	
 	public SistemaController() {
 		
 		controllerRestaurante = new RestauranteController();
-		setTransacaoes(new ArrayList<>());
+		transacaoes = new ArrayList<>();
 		quartosOcupados = new HashMap<>();
 		catalogoQuartos = new HashMap<>();
-		setClientesCadastrados(new HashMap<>());
+		clientesCadastrados = new HashMap<>();
 		factoryHospedes = new FactoryDeHospede();
 		factoryQuartos = new QuartosFactory();
-
 	}
 
 	public void iniciaSistema() {
@@ -397,10 +412,7 @@ public class SistemaController implements Serializable{
 	public String consultaMenuRestaurante(){
 		return controllerRestaurante.consultaMenuRestaurante();
 	}
-	
-	public String historicoRestaurante(){
-		return controllerRestaurante.historicoRestaurante();
-	}
+
 
 	public String realizaPedido(String id, String itemMenu) throws Exception{
 		  String resultado = "";
@@ -441,27 +453,234 @@ public class SistemaController implements Serializable{
 		
 	}
 	
-	public String escreveRelatorioHospede(String id) throws Exception{
-		return dados.historicoHospede(id);
+	private void iniciarSistemaController() throws IOException{
+		try{
+			
+			sistemaControllerInput = new ObjectInputStream(new FileInputStream(directory + "/" + sistemaControllerFile));
+			
+			try{
+				
+				sistemaController = (SistemaController) sistemaControllerInput.readObject();
+				
+			}catch(ClassNotFoundException | EOFException e) {
+				sistemaController = new SistemaController();
+			}
+		}catch(FileNotFoundException exp){	
+			
+			sistemaController = new SistemaController();
+			File f = new File(directory + "/" + sistemaControllerFile);	
+			f.getParentFile().mkdirs();
+			
+			try{
+				f.createNewFile();
+			}catch(IOException e2){
+				System.out.println("deu erro");
+			}
+		}catch (IOException e) {
+			System.out.println("IOException: " + e.getMessage());
+		}
 	}
 	
-	public String historicoTransacoes(){
-		return dados.historicoTransacoes();
-		
+	
+	public String historicoRestaurante() {
+		String historico = "";
+		for (int i = 0; i < restauranteController.getCardapio().size(); i++) {
+			historico = "Menu do Restaurante: " + restauranteController.getCardapio().size() + " itens no cardapio" + FIM_DE_LINHA + "==> Item "
+					+ (i + 1) + ":" + FIM_DE_LINHA + "Nome: " + restauranteController.getCardapio().get(i).getNome() + " Preco: R$" 
+					+ restauranteController.getCardapio().get(i).getPreco()+ 0 + FIM_DE_LINHA + "Descricao: " + restauranteController.getCardapio().get(i).getDescricao()
+					+ FIM_DE_LINHA + FIM_DE_LINHA;
+		}
+
+		return historico;
 	}
 	
-	public void escreveHistorico() throws Exception{
-		dados.escreveHistorico();
+	public String refeicaoHistorico() throws Exception {
+		String historico = "";
+		for (int i = 0; i < restauranteController.getCardapio().size(); i++) {
+			historico = "==> Item" + (i + 1) + ":" + FIM_DE_LINHA + "Nome: " + restauranteController.getCardapio().get(i).getNome() + " Preco: R$"
+					+ restauranteController.getCardapio().get(i).getPreco() + FIM_DE_LINHA + "Descricao: " +  restauranteController.getCardapio().get(i).getDescricao()
+					+ FIM_DE_LINHA + "Pratos: ";
+		}
+
+		return historico;
 	}
 	
 	public String historicoHospede(String id) throws Exception{
-		return dados.historicoHospede(id);
+		String historico = "Cadastro de Hospedes: "+ clientesCadastrados.size() + " hospedes registrados"+ FIM_DE_LINHA;
+		for (int i = 0; i < clientesCadastrados.size(); i++) {
+			historico += 
+			"==> Hospede " + (i+1)+ ":"+ FIM_DE_LINHA +
+			"Email: " + clientesCadastrados.get(id).getEmailHospede() +FIM_DE_LINHA+
+			"Nome: "+ clientesCadastrados.get(id).getNomeHospede()+ FIM_DE_LINHA+
+			"Data de nascimento: " + clientesCadastrados.get(id).getAnoNascimento()+FIM_DE_LINHA
+			+ FIM_DE_LINHA;
+		}
+		return historico;
+	}
+
+	public String historicoTransacoes(){
+		
+		String historico = "";
+		double precoTotal = 0.0;
+		
+		for (int i = 0; i < transacaoes.size(); i++) {
+			precoTotal += transacaoes.get(i).getTotalGasto(); 
+			historico ="==> Nome: " + transacaoes.get(i).getNomeCliente() + FIM_DE_LINHA +
+					"Gasto: R$" + transacaoes.get(i).getTotalGasto() + FIM_DE_LINHA 
+					+ "Detalhes: " + transacaoes.get(i).getTransacao()+ FIM_DE_LINHA +
+					"..." + FIM_DE_LINHA;
+		}
+		String historico_2 = " ";
+		for(int i = 0; i < transacaoes.size(); i++){
+			historico_2 = "===== Resumo de transacoes ====="+ FIM_DE_LINHA + 
+		"Lucro total: R$" + precoTotal + FIM_DE_LINHA + 
+		"Total de transacoes:" + transacaoes.size() + FIM_DE_LINHA +
+		"Lucro medio por transacao: R$" + (precoTotal/transacaoes.size()) + FIM_DE_LINHA;
+		}
+		
+		return historico + historico_2;
+		
+	}
+	
+	public void escreveHistoricoTransacoes() throws Exception{
+		File arquivo = new File("C:\\Users\\WIN\\git\\HUG_PROJETOLP2_2016\\arquivos_sistema\\cad_transacoes.txt");
+		try{
+			arquivo.createNewFile();
+			FileReader fr = new FileReader(arquivo);
+			FileWriter fw = new FileWriter(arquivo);
+			BufferedWriter bw = new BufferedWriter(fw);
+			bw.write(historicoTransacoes());
+			BufferedReader br = new BufferedReader(fr);
+			String linha = br.readLine();
+			bw.close();
+			while(linha != null){
+				linha = br.readLine();
+			}
+		}catch(IOException e){
+			System.out.println("aa");
+		}
 	}
 	
 	public void escreveRelatorioRestaurante() throws Exception{
-		dados.escreveRelatorioRestaurante();
+		
+		File arquivoRestaurante = new File("C:\\Users\\WIN\\git\\HUG_PROJETOLP2_2016\\cad_restaurante.txt");
+		try{
+			arquivoRestaurante.createNewFile();
+			FileReader fr = new FileReader(arquivoRestaurante);
+			
+			FileWriter fw = new FileWriter(arquivoRestaurante);
+			BufferedWriter bw = new BufferedWriter(fw);
+			bw.write(historicoRestaurante());
+			BufferedReader br = new BufferedReader(fr);
+			String linha = br.readLine();
+			
+			bw.close();
+		while(linha != null){
+			linha = br.readLine();
+		}
+		}catch (IOException e){
+		}
 	
 	}
+	
+	public void escreveRelatorioHospede(String id) throws Exception{
+		File arquivoHospede = new File("C:\\Users\\WIN\\git\\HUG_PROJETOLP2_2016\\arquivos_sistema\\cad_hospedes.txt");
+		
+		try{
+			arquivoHospede.createNewFile();
+			FileReader fr = new FileReader(arquivoHospede);
+			
+			FileWriter fw = new FileWriter(arquivoHospede);
+			BufferedWriter bw = new BufferedWriter(fw);
+			bw.write(historicoHospede(id));
+			BufferedReader br = new BufferedReader(fr);
+			String linha = br.readLine();
+			
+			bw.close();
+		while(linha != null){
+			linha = br.readLine();
+		}
+		}catch (IOException e){
+		}
+	
+	}
+	
+	public void escreverArquivo(String file, List<List<String>> resposta)
+			throws IOException {
+		boolean anexar = false;
+		File f = new File(file);
+		if (f.length() != 0L)
+			anexar = true;
+		FileWriter writer = new FileWriter(new File(file), anexar);
+		BufferedWriter bufferedWriter = new BufferedWriter(writer);
+		for (List<String> linha : resposta) {
+			for (String elemento : linha) {
+				bufferedWriter.write(elemento);
+			}
+		}
+		writer.close();
+		bufferedWriter.close();
+	}
+	
+	public void teste() throws IOException{
+		FileWriter arquivo = new FileWriter("arquivos_sistema/relatorios/cad_restaurante.txt");
+
+		PrintWriter gravarArquivo = new PrintWriter(arquivo);
+
+		 gravarArquivo.printf("cad_hospedes.txt", "cad_restaurante.txt", "cad_transacoes.txt");                         
+
+	}
+	
+	public void escreveHistoricoHotel() throws Exception {
+		String fileArray[] = { "cad_hospedes.txt", (FIM_DE_LINHA + "=============="), FIM_DE_LINHA,
+				"cad_restaurante.txt", (FIM_DE_LINHA + "=============="), (FIM_DE_LINHA + "=============="), "cad_transacoes.txt", (FIM_DE_LINHA +
+				"=============="), FIM_DE_LINHA };
+		File arquivoHotel = new File("C:\\Users\\WIN\\git\\HUG_PROJETOLP2_2016\\arquivos_sistema\\relatorios\\hotel_principal.txt");
+		arquivoHotel.createNewFile();
+		for (String file : fileArray) {
+		
+			try {
+
+				FileInputStream fi = new FileInputStream(file);
+				DataInputStream di = new DataInputStream(fi);
+				BufferedReader br = new BufferedReader(new InputStreamReader(di));
+				String linha = br.readLine();
+				while (linha != null) {
+					System.out.println(linha);
+					FileWriter filestream = new FileWriter("hotel_principal.txt", true);
+					BufferedWriter out = new BufferedWriter(filestream);
+					out.write(linha);
+
+					linha = br.readLine();
+					out.close();
+
+				}
+
+				di.close();
+			} catch (Exception e) {
+			}
+		}
+	}
+	
+
+	
+	private void fecharSistemaController() throws IOException{
+		try{
+			
+			sistemaControllerOutput = new ObjectOutputStream( new FileOutputStream(directory + "/" + sistemaControllerFile));
+			sistemaControllerOutput.writeObject(sistemaController);
+			
+			sistemaControllerOutput.close();
+		}catch(FileNotFoundException e){
+			File f = new File(directory + "/" + sistemaControllerFile);
+
+			f.getParentFile().mkdirs();
+		} catch (IOException e1) {
+			System.err.println("IOException: " + e1.getMessage());
+		}
+	}
+
+
 	/**
 	 * Procura por um hospede cadastrado atraves do email.
 	 * 
